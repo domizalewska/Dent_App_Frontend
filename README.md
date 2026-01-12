@@ -1,38 +1,143 @@
-# dent_app_frontend
+# 🦷 Dent App Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Frontend aplikacji **Dental Scheduler** – systemu planowania grafików dla przychodni dentystycznej. Zbudowany w oparciu o **Nuxt 3 (Vue 3)** i komunikuje się z backendem Laravel przez REST API.
 
-## Recommended IDE Setup
+---
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 📦 Stack technologiczny
 
-## Recommended Browser Setup
+* **Nuxt 3** – framework Vue 3
+* **TypeScript**
+* **Vite**
+* **Tailwind CSS / Nuxt UI** (opcjonalnie)
+* **ESLint + Prettier** – linting
+* **Husky + lint-staged** – Git hooks
+* **Playwright** – testy E2E
+* **Vitest** – testy jednostkowe (opcjonalnie)
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+---
 
-## Customize configuration
+## 📁 Struktura projektu
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+```
+dent_app_frontend/
+├── assets/
+├── components/
+├── composables/
+├── layouts/
+├── pages/
+├── tests/         # Playwright
+├── public/
+├── nuxt.config.ts
+└── package.json
+```
 
-## Project Setup
+---
 
-```sh
+## ⚙️ Wymagania
+
+* Node.js >= 18
+* npm lub pnpm
+
+---
+
+## 🚀 Instalacja
+
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### ▶️ Uruchomienie w trybie developerskim
 
-```sh
+```bash
 npm run dev
 ```
 
-### Compile and Minify for Production
+Dostępne pod:
 
-```sh
-npm run build
 ```
+http://localhost:3000
+```
+
+### 🏗 Build produkcyjny
+
+```bash
+npm run build
+npm run preview
+```
+
+---
+
+## 🔌 Zmienne środowiskowe
+
+Utwórz plik `.env` w katalogu projektu:
+
+```env
+NUXT_PUBLIC_API_BASE_URL=http://localhost:8000/api
+```
+
+---
+
+## 🔐 Autoryzacja
+
+* Token JWT otrzymywany z backendu (Laravel)
+* Przechowywany w composable (`useAuth`) lub Pinia
+* Automatycznie dodawany w nagłówkach `Authorization` przy `useFetch` lub Axios
+
+---
+
+## 🧪 Testy
+
+### E2E (Playwright)
+
+```bash
+npx playwright install
+npm run test:e2e
+```
+
+Pliki testowe znajdują się w katalogu:
+
+```
+/tests/e2e
+```
+
+---
+
+## 🧹 Linting
+
+```bash
+npm run lint
+npm run lint:fix
+```
+
+---
+
+## 🪝 Husky (Git hooks)
+
+* Pre-commit: ESLint + Prettier
+
+Instalacja hooków:
+
+```bash
+npx husky install
+```
+
+---
+
+## 🔄 Workflow Git
+
+```
+main
+ └── develop
+      └── feature/*
+      └── bugfix/*
+```
+
+* Brak commitów bezpośrednio do `main`
+* Każdy feature → Pull Request
+
+---
+
+## 📄 Licencja
+
+Projekt – tylko do użytku przychodni dentystycznej.
