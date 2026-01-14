@@ -4,14 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: [
-    '@nuxt/eslint',
-    '@nuxt/scripts',
-    '@nuxt/test-utils',
-    '@nuxt/ui',
-    '@nuxtjs/stylelint-module',
-    'shadcn-nuxt',
-  ],
+  modules: ['@nuxt/eslint', '@nuxt/scripts', '@nuxt/test-utils', '@nuxt/ui', 'shadcn-nuxt'],
   shadcn: {
     /**
      * Prefix for all the imported component.
@@ -38,8 +31,11 @@ export default defineNuxtConfig({
     shim: false,
   },
   css: ['~/assets/css/tailwind.css'],
-  vite: {
-    plugins: [tailwindcss()],
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
   },
   runtimeConfig: {
     public: {
