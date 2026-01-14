@@ -1,6 +1,17 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
   "files": [],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "types": ["vite/client"]
+  },
+  "include": ["nuxt.config.ts", "src/**/*.ts", "src/**/*.vue"],
+  "extends": "./.nuxt/tsconfig.json",
   "references": [
     {
       "path": "./.nuxt/tsconfig.app.json"
