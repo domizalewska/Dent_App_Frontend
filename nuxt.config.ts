@@ -31,12 +31,6 @@ export default defineNuxtConfig({
     shim: false,
   },
   css: ['~/assets/css/tailwind.css'],
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
   runtimeConfig: {
     public: {
       apiBase: process.env.BASE_URL || '/api',

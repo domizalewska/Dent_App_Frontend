@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@nuxtjs/stylelint-module": "^5.2.1",
+    "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/vite": "^4.1.18",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
