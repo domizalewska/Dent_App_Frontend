@@ -3,6 +3,11 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
+  colorMode: {
+    preference: 'light',
+    fallback: 'light',
+    classSuffix: '',
+  },
   devtools: { enabled: true },
   modules: ['@nuxt/eslint', '@nuxt/scripts', '@nuxt/test-utils', '@nuxt/ui', 'shadcn-nuxt'],
   shadcn: {
@@ -31,6 +36,9 @@ export default defineNuxtConfig({
     shim: false,
   },
   css: ['~/assets/css/tailwind.css'],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   runtimeConfig: {
     public: {
       apiBase: process.env.BASE_URL || '/api',
