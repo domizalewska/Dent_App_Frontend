@@ -14,10 +14,10 @@ import { Input } from '@/components/ui/input';
 </script>
 
 <template>
-  <Card>
-    <CardHeader class="text-center">
-      <CardTitle class="text-xl"> Welcome back </CardTitle>
-      <CardDescription> Login with your email </CardDescription>
+  <Card class="flex justify-center border-0 shadow-2xl">
+    <CardHeader class="text-center items-center">
+      <CardTitle class="flex text-xl pt-6"> Welcome back </CardTitle>
+      <CardDescription class="flex text-xs pb-3"> Login with your email </CardDescription>
     </CardHeader>
     <CardContent>
       <form>
