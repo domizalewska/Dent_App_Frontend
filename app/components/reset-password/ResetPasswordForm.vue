@@ -1,16 +1,43 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue';
-import { cn } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldSeparator,
-} from '~/components/ui/field';
-import { Input } from '~/components/ui/input';
+import { FieldGroup, FieldLabel } from '~/components/ui/field';
+import { toTypedSchema } from '@vee-validate/zod';
+import { z } from 'zod';
+import { useForm, Field as VeeField } from 'vee-validate';
+import { toast } from 'vue-sonner';
+
+const formSchema = toTypedSchema(
+  z.object({
+    password: z
+      .string()
+      .min(5, 'Hasło musi posiadać minimum 5 znaków')
+      .max(32, 'Hasło maksymalnie może posiadasć 32 znaki'),
+    reset_password: z
+      .string()
+      .min(5, 'Hasło musi posiadać minimum 5 znaków')
+      .max(32, 'Hasło maksymalnie może posiadasć 32 znaki'),
+  }),
+);
+
+const { handleSubmit, resetForm } = useForm({
+  validationSchema: formSchema,
+  initialValues: {
+    password: '',
+    reset_password: '',
+  },
+});
+
+const onSubmit = handleSubmit(
+  (data) => {
+    toast('Sukces!', {
+      description: 'Prawidłowo zresetowano hasło',
+    });
+  },
+  (errors) => {
+    console.log('FORM INVALID', errors);
+  },
+);
 </script>
 
 <template>
@@ -20,23 +47,45 @@ import { Input } from '~/components/ui/input';
       <CardDescription class="flex text-xs pb-3"> Wpisz swoje nowe hasło </CardDescription>
     </CardHeader>
     <CardContent>
-      <form>
+      <form id="form-vee-password-form" @submit.prevent="onSubmit">
         <FieldGroup>
-          <Field>
-            <FieldLabel for="password"> Hasło </FieldLabel>
-            <Input id="hasło" type="password" required />
-          </Field>
-          <Field>
-            <div class="flex items-center">
-              <FieldLabel for="password"> Powtórz hasło </FieldLabel>
-            </div>
-            <Input id="password" type="password" required />
-          </Field>
-          <Field>
-            <Button type="submit"> Resetuj hsało </Button>
-          </Field>
+          <VeeField name="password" v-slot="{ field, errors }">
+            <Field :data-invalid="!!errors.length">
+              <FieldLabel for="form-vee-demo-password"> Hasło </FieldLabel>
+              <Input
+                id="form-vee-demo-password"
+                v-bind="field"
+                type="password"
+                placeholder="Wpisz twoje nowe hasło"
+                :aria-invalid="!!errors.length"
+                rules="required"
+              />
+              <FieldError v-if="errors.length" :errors="errors" />
+            </Field>
+          </VeeField>
+          <VeeField v-slot="{ field, errors }" name="reset_password">
+            <Field :data-invalid="!!errors.length">
+              <FieldLabel for="form-vee-demo-reset-password"> Powtórz hasło </FieldLabel>
+              <Input
+                id="form-vee-demo-reset-password"
+                v-bind="field"
+                type="password"
+                placeholder="Powtórz swoje nowe hasło"
+                :aria-invalid="!!errors.length"
+                rules="required"
+              />
+              <FieldError v-if="errors.length" :errors="errors" />
+            </Field>
+          </VeeField>
         </FieldGroup>
       </form>
     </CardContent>
+    <CardFooter>
+      <Field orientation="horizontal">
+        <Button type="submit" form="form-vee-password-form" class="w-full cursor-pointer">
+          Resetuj hasło
+        </Button>
+      </Field>
+    </CardFooter>
   </Card>
 </template>
