@@ -10,12 +10,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
           ><AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"
         /></DropdownMenuTrigger>
         <DropdownMenuContent class="w-36" align="start" variant="outline">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel class="cursor-pointer">Profil</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
+          <DropdownMenuItem class="cursor-pointer">Powiadomienia</DropdownMenuItem>
+          <DropdownMenuItem class="cursor-pointer">Ustawienia</DropdownMenuItem>
+          <DropdownMenuItem class="cursor-pointer">Wyloguj się</DropdownMenuItem>
         </DropdownMenuContent>
         <AvatarFallback>CN</AvatarFallback>
       </DropdownMenu>

@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import SidebarComponent from '~/components/main/SidebarComponent.vue';
-import { SunMoon } from 'lucide-vue-next';
+import { Sun, Moon } from 'lucide-vue-next';
+import { ref } from 'vue';
+
+const isToggle = ref(false);
+const colorMode = useColorMode();
+function toggleTheme() {
+  isToggle.value = !isToggle.value;
+  isToggle.value ? (colorMode.value = 'dark') : (colorMode.value = 'light');
+}
 </script>
 
 <template>
@@ -14,17 +22,16 @@ import { SunMoon } from 'lucide-vue-next';
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem class="hidden md:block">
-                <BreadcrumbLink href="#"> Building Your Application </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator class="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                <BreadcrumbLink href="#"> Widok główny </BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
           <div class="flex w-full justify-end flex-1 pr-4">
-            <div class="flex gap-2 items-start">
-              <Button variant="ghost" size="icon" class="rounded-full"><SunMoon /> </Button>
+            <div class="flex gap-2 items-start justify-center cursor-pointer">
+              <Button variant="ghost" class="rounded-full" @click="toggleTheme">
+                <Sun v-if="isToggle" />
+                <Moon v-if="!isToggle" />
+              </Button>
               <AvatarComponent class="flex items-start" />
             </div>
           </div>
