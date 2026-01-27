@@ -1,158 +1,62 @@
 <script setup lang="ts">
 import type { SidebarProps } from '@/components/ui/sidebar';
 
-import { GalleryVerticalEnd } from 'lucide-vue-next';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-} from '@/components/ui/sidebar';
+import { BookUser, CalendarDays, GalleryVerticalEnd, Settings2, Users } from 'lucide-vue-next';
+import NavMain from './NavMain.vue';
+
+import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
 
 const props = withDefaults(defineProps<SidebarProps>(), {
-  variant: 'floating',
+  collapsible: 'icon',
 });
 
-// This is sample data.
 const data = {
   navMain: [
     {
-      title: 'Getting Started',
+      title: 'Użytkownicy',
       url: '#',
+      icon: Users,
+      isActive: true,
       items: [
         {
-          title: 'Installation',
-          url: '#',
-        },
-        {
-          title: 'Project Structure',
+          title: 'Lista',
           url: '#',
         },
       ],
     },
     {
-      title: 'Building Your Application',
+      title: 'Harmonogram',
       url: '#',
+      icon: CalendarDays,
       items: [
         {
-          title: 'Routing',
-          url: '#',
-        },
-        {
-          title: 'Data Fetching',
-          url: '#',
-          isActive: true,
-        },
-        {
-          title: 'Rendering',
-          url: '#',
-        },
-        {
-          title: 'Caching',
-          url: '#',
-        },
-        {
-          title: 'Styling',
-          url: '#',
-        },
-        {
-          title: 'Optimizing',
-          url: '#',
-        },
-        {
-          title: 'Configuring',
-          url: '#',
-        },
-        {
-          title: 'Testing',
-          url: '#',
-        },
-        {
-          title: 'Authentication',
-          url: '#',
-        },
-        {
-          title: 'Deploying',
-          url: '#',
-        },
-        {
-          title: 'Upgrading',
-          url: '#',
-        },
-        {
-          title: 'Examples',
+          title: 'Kalendarz',
           url: '#',
         },
       ],
     },
     {
-      title: 'API Reference',
+      title: 'Urlopy',
       url: '#',
+      icon: BookUser,
       items: [
         {
-          title: 'Components',
-          url: '#',
-        },
-        {
-          title: 'File Conventions',
-          url: '#',
-        },
-        {
-          title: 'Functions',
-          url: '#',
-        },
-        {
-          title: 'next.config.js Options',
-          url: '#',
-        },
-        {
-          title: 'CLI',
-          url: '#',
-        },
-        {
-          title: 'Edge Runtime',
+          title: 'Widok urlopów',
           url: '#',
         },
       ],
     },
     {
-      title: 'Architecture',
+      title: 'Ustawienia',
       url: '#',
+      icon: Settings2,
       items: [
         {
-          title: 'Accessibility',
+          title: 'Ogólne',
           url: '#',
         },
         {
-          title: 'Fast Refresh',
-          url: '#',
-        },
-        {
-          title: 'Next.js Compiler',
-          url: '#',
-        },
-        {
-          title: 'Supported Browsers',
-          url: '#',
-        },
-        {
-          title: 'Turbopack',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Community',
-      url: '#',
-      items: [
-        {
-          title: 'Contribution Guide',
+          title: 'Powiadomienia',
           url: '#',
         },
       ],
@@ -174,33 +78,17 @@ const data = {
                 <GalleryVerticalEnd class="size-4" />
               </div>
               <div class="flex flex-col gap-0.5 leading-none">
-                <span class="font-medium">Documentation</span>
+                <span class="font-medium">Dent APP</span>
                 <span class="">v1.0.0</span>
               </div>
             </a>
           </SidebarMenuButton>
         </SidebarMenuItem>
-      </SidebarMenu>
-    </SidebarHeader>
+      </SidebarMenu></SidebarHeader
+    >
     <SidebarContent>
-      <SidebarGroup>
-        <SidebarMenu class="gap-2">
-          <SidebarMenuItem v-for="item in data.navMain" :key="item.title">
-            <SidebarMenuButton as-child>
-              <a :href="item.url" class="font-medium">
-                {{ item.title }}
-              </a>
-            </SidebarMenuButton>
-            <SidebarMenuSub v-if="item.items.length" class="ml-0 border-l-0 px-1.5">
-              <SidebarMenuSubItem v-for="childItem in item.items" :key="childItem.title">
-                <SidebarMenuSubButton as-child :is-active="childItem.isActive">
-                  <a :href="childItem.url">{{ childItem.title }}</a>
-                </SidebarMenuSubButton>
-              </SidebarMenuSubItem>
-            </SidebarMenuSub>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarGroup>
+      <NavMain :items="data.navMain" />
     </SidebarContent>
+    <SidebarRail />
   </Sidebar>
 </template>
