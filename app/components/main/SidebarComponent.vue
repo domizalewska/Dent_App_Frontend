@@ -14,13 +14,13 @@ const data = {
   navMain: [
     {
       title: 'Użytkownicy',
-      url: '#',
+      url: '/users',
       icon: Users,
       isActive: true,
       items: [
         {
           title: 'Lista',
-          url: '#',
+          url: '/users',
         },
       ],
     },
