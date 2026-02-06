@@ -9,7 +9,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
         <DropdownMenuTrigger
           ><AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"
         /></DropdownMenuTrigger>
-        <DropdownMenuContent class="w-36" align="start" variant="outline">
+        <DropdownMenuContent
+          align="start"
+          variant="outline"
+          class="w-36 mr-4 border-b border-[var(--border)]"
+        >
           <DropdownMenuLabel class="cursor-pointer">Profil</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem class="cursor-pointer">Powiadomienia</DropdownMenuItem>
