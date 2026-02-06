@@ -11,7 +11,7 @@ definePageMeta({
 const data = ref<User[]>([]);
 
 async function getData(): Promise<User[]> {
-  return generateMockUsers(10);
+  return generateMockUsers(70);
 }
 
 onMounted(async () => {
