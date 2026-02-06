@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { ColumnDef } from '@tanstack/vue-table';
+import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import {
   FlexRender,
   getCoreRowModel,
@@ -15,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import DataTablePaginator from '~/components/ui/data-table/data-table-paginator.vue';
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[];
@@ -35,11 +37,15 @@ const table = useVueTable({
 
 <template>
   <div class="w-full h-screen">
-    <div class="border rounded-md">
+    <div>
       <Table>
         <TableHeader>
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-            <TableHead v-for="header in headerGroup.headers" :key="header.id">
+            <TableHead
+              v-for="header in headerGroup.headers"
+              :key="header.id"
+              class="font-normal border-b border-[var(--border)]"
+            >
               <FlexRender
                 v-if="!header.isPlaceholder"
                 :render="header.column.columnDef.header"
@@ -54,6 +60,7 @@ const table = useVueTable({
               v-for="row in table.getRowModel().rows"
               :key="row.id"
               :data-state="row.getIsSelected() ? 'selected' : undefined"
+              class="font-medium border-b border-[var(--border)]"
             >
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
@@ -70,23 +77,8 @@ const table = useVueTable({
         </TableBody>
       </Table>
     </div>
-    <div class="flex items-center justify-end py-4 space-x-2">
-      <Button
-        variant="outline"
-        size="sm"
-        :disabled="!table.getCanPreviousPage()"
-        @click="table.previousPage()"
-      >
-        Previous
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        :disabled="!table.getCanNextPage()"
-        @click="table.nextPage()"
-      >
-        Next
-      </Button>
+    <div class="flex items-center justify-center py-4 space-x-2">
+      <DataTablePaginator :table="table" />
     </div>
   </div>
 </template>

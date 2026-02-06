@@ -7,28 +7,28 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: 'id',
     header: () => h('div', { class: 'flex item-center text-center' }, 'Id'),
     cell: ({ row }) => {
-      return h('div', { class: 'text-right font-medium' }, row.original.id);
+      return h('div', { class: 'text-left font-normal' }, row.original.id);
     },
   },
   {
     accessorKey: 'name',
     header: () => h('div', { class: 'flex item-center text-center' }, 'Name'),
     cell: ({ row }) => {
-      return h('div', { class: 'text-right font-medium' }, row.original.name);
+      return h('div', { class: 'text-left font-normal' }, row.original.name);
     },
   },
   {
     accessorKey: 'email',
     header: () => h('div', { class: 'flex item-center text-center' }, 'Email'),
     cell: ({ row }) => {
-      return h('div', { class: 'text-right font-medium' }, row.original.email);
+      return h('div', { class: 'text-left font-normal' }, row.original.email);
     },
   },
   {
     accessorKey: 'phone',
     header: () => h('div', { class: 'flex item-center text-center' }, 'Phone'),
     cell: ({ row }) => {
-      return h('div', { class: 'text-right font-medium' }, row.original.phone);
+      return h('div', { class: 'text-left font-normal' }, row.original.phone);
     },
     enableSorting: true,
   },
@@ -36,7 +36,7 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: 'is_active',
     header: () => h('div', { class: 'flex item-center text-center' }, 'Active'),
     cell: ({ row }) => {
-      return h('div', { class: 'text-right font-medium' }, row.original.is_active);
+      return h('div', { class: 'text-left font-normal' }, row.original.is_active);
     },
   },
 ];
