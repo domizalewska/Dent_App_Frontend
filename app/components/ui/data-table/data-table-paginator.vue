@@ -103,7 +103,7 @@ const visiblePages = computed(() => {
           <SelectTrigger class="h-8 w-[70px]">
             <SelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
           </SelectTrigger>
-          <SelectContent side="top">
+          <SelectContent side="top" class="border-b border-[var(--border)]">
             <SelectItem
               v-for="pageSize in [10, 20, 30, 40, 50]"
               :key="pageSize"
