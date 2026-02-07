@@ -6,7 +6,7 @@ export const mockUser: User = {
   name: faker.person.firstName() + ' ' + faker.person.lastName(),
   email: faker.internet.email(),
   phone: faker.phone.number(),
-  is_active: faker.datatype.boolean(),
+  last_active: faker.date.anytime(),
 };
 
 export function generateMockUsers(count: number): User[] {
@@ -16,5 +16,6 @@ export function generateMockUsers(count: number): User[] {
     name: faker.person.firstName() + ' ' + faker.person.lastName(),
     email: faker.internet.email(),
     phone: faker.phone.number(),
+    last_active: faker.date.past(),
   }));
 }

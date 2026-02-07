@@ -3,5 +3,6 @@ export interface User {
   name: string;
   email: string;
   phone: string;
-  is_active: boolean;
+  last_active: Date;
+  is_active?: boolean;
 }
