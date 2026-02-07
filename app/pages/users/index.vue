@@ -20,7 +20,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex h-screen w-full">
+  <div class="flex w-full">
     <DataTable :columns="columns" :data="data" />
   </div>
 </template>

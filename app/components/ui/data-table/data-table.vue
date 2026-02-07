@@ -36,7 +36,7 @@ const table = useVueTable({
 </script>
 
 <template>
-  <div class="w-full h-screen">
+  <div class="w-full">
     <div>
       <Table>
         <TableHeader>
@@ -44,7 +44,7 @@ const table = useVueTable({
             <TableHead
               v-for="header in headerGroup.headers"
               :key="header.id"
-              class="font-normal border-b border-[var(--border)]"
+              class="font-normal border-b border-border"
             >
               <FlexRender
                 v-if="!header.isPlaceholder"
@@ -60,7 +60,7 @@ const table = useVueTable({
               v-for="row in table.getRowModel().rows"
               :key="row.id"
               :data-state="row.getIsSelected() ? 'selected' : undefined"
-              class="font-normal border-b border-[var(--border)]"
+              class="font-normal border-b border-border"
             >
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
