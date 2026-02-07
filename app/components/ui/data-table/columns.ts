@@ -1,18 +1,12 @@
 import { h } from 'vue';
 import type { ColumnDef } from '@tanstack/vue-table';
 import type { User } from '~/types/users/typesUsers';
+import { formatDateToString } from '~/utils/formatDate';
 
 export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: 'id',
-    header: () => h('div', { class: 'flex item-center text-center' }, 'Id'),
-    cell: ({ row }) => {
-      return h('div', { class: 'text-left font-normal' }, row.original.id);
-    },
-  },
-  {
     accessorKey: 'name',
-    header: () => h('div', { class: 'flex item-center text-center' }, 'Name'),
+    header: () => h('div', { class: 'flex item-center text-center' }, 'Użytkownik'),
     cell: ({ row }) => {
       return h('div', { class: 'text-left font-normal' }, row.original.name);
     },
@@ -26,17 +20,21 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'phone',
-    header: () => h('div', { class: 'flex item-center text-center' }, 'Phone'),
+    header: () => h('div', { class: 'flex item-center text-center' }, 'Telefon'),
     cell: ({ row }) => {
       return h('div', { class: 'text-left font-normal' }, row.original.phone);
     },
     enableSorting: true,
   },
   {
-    accessorKey: 'is_active',
-    header: () => h('div', { class: 'flex item-center text-center' }, 'Active'),
+    accessorKey: 'last_active',
+    header: () => h('div', { class: 'flex item-center text-center' }, 'Aktywność'),
     cell: ({ row }) => {
-      return h('div', { class: 'text-left font-normal' }, row.original.is_active);
+      return h(
+        'div',
+        { class: 'text-left font-normal' },
+        formatDateToString(row.original.last_active, 'dd-MM-yyyy'),
+      );
     },
   },
 ];
