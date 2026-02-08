@@ -2,6 +2,7 @@
 import SidebarComponent from '~/components/main/SidebarComponent.vue';
 import { Sun, Moon } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { breadcrumbs } from '~/composables/useBreadcrumbs';
 
 const isToggle = ref(false);
 const colorMode = useColorMode();
@@ -19,13 +20,14 @@ function toggleTheme() {
         <header class="flex h-16 shrink-0 items-center gap-2 px-4">
           <SidebarTrigger class="-ml-1" />
           <Separator orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem class="hidden md:block">
-                <BreadcrumbLink href="#"> Widok główny </BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          <div class="pr-4 w-full">
+            <BaseBreadcrumb
+              v-for="(item, index) in breadcrumbs"
+              :key="index"
+              :name="item.name"
+              :link="item.link"
+            />
+          </div>
           <div class="flex w-full justify-end flex-1 pr-4">
             <div class="flex gap-2 items-start justify-center cursor-pointer">
               <Button variant="ghost" class="rounded-full" @click="toggleTheme">

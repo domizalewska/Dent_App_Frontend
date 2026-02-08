@@ -3,10 +3,14 @@ import { columns } from '~/components/ui/data-table/columns';
 import DataTable from '~/components/ui/data-table/data-table.vue';
 import { generateMockUsers } from '~/mock/users/mockUsers';
 import type { User } from '~/types/users/typesUsers';
-
+import { useBreadcrumbs } from '~/composables/useBreadcrumbs';
 definePageMeta({
   layout: 'dashboard',
 });
+
+const { set } = useBreadcrumbs();
+
+set([{ name: 'Użytkownicy', link: '/users' }]);
 
 const data = ref<User[]>([]);
 
