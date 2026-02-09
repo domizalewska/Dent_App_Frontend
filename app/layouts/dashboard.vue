@@ -3,6 +3,7 @@ import SidebarComponent from '~/components/main/SidebarComponent.vue';
 import { Sun, Moon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { breadcrumbs } from '~/composables/useBreadcrumbs';
+import { header } from '~/composables/useHeader';
 
 const isToggle = ref(false);
 const colorMode = useColorMode();
@@ -39,7 +40,7 @@ function toggleTheme() {
           </div>
         </header>
         <div class="flex pl-4 pr-4 w-full">
-          <HeaderPage title="Użytkownicy" />
+          <HeaderPage :title="header" />
         </div>
         <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
           <slot />

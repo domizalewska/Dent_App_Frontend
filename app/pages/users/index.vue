@@ -4,6 +4,7 @@ import DataTable from '~/components/ui/data-table/data-table.vue';
 import { generateMockUsers } from '~/mock/users/mockUsers';
 import type { User } from '~/types/users/typesUsers';
 import { useBreadcrumbs } from '~/composables/useBreadcrumbs';
+import { useHeader } from '~/composables/useHeader';
 definePageMeta({
   layout: 'dashboard',
 });
@@ -12,6 +13,10 @@ const { set } = useBreadcrumbs();
 
 set([{ name: 'Użytkownicy', link: '/users' }]);
 
+const { setHeader, resetHeader } = useHeader();
+
+resetHeader();
+setHeader('Użytkownicy');
 const data = ref<User[]>([]);
 
 async function getData(): Promise<User[]> {
