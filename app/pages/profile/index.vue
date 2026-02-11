@@ -16,4 +16,6 @@ const { set } = useBreadcrumbs();
 set([{ name: 'Profile', link: '/profile' }]);
 </script>
 
-<template></template>
+<template>
+  <ProfileHeaderComponent />
+</template>
