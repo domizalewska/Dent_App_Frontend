@@ -17,5 +17,8 @@ set([{ name: 'Profile', link: '/profile' }]);
 </script>
 
 <template>
-  <ProfileHeaderComponent />
+  <div>
+    <ProfileHeaderComponent />
+    <BaseCard />
+  </div>
 </template>
