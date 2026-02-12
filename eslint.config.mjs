@@ -40,6 +40,7 @@ export default withNuxt({
         sortLineLength: false,
       },
     ],
+    'vue/no-multiple-template-root': 'off',
     'vue/html-closing-bracket-newline': ['warn', { singleline: 'never', multiline: 'always' }],
     'vue/html-closing-bracket-spacing': [
       'warn',
@@ -52,4 +53,12 @@ export default withNuxt({
     'no-debugger': ['warn'],
     'vue/component-definition-name-casing': ['error', 'PascalCase'],
   },
+  overrides: [
+    {
+      files: ['*.vue'],
+      rules: {
+        'vue/no-multiple-template-root': 'off'
+      }
+    }
+  ]
 });
