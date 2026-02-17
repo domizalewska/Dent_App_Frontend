@@ -7,5 +7,5 @@ export const useAuth = () => {
     isAuthenticated.value = !!token.value;
   }
 
-  return {isAuthenticated, token};
+  return isAuthenticated.value;
 }
