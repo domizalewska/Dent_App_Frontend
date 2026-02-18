@@ -38,21 +38,15 @@ const onSubmit = handleSubmit(() => {
 <template>
   <Card class="flex justify-center border-0 shadow-2xl">
     <CardHeader class="text-center items-center">
-      <CardTitle class="flex text-xl pt-6">
-        Reset Hasła
-      </CardTitle>
-      <CardDescription class="flex text-xs pb-3">
-        Wpisz swoje nowe hasło
-      </CardDescription>
+      <CardTitle class="flex text-xl pt-6"> Reset Hasła </CardTitle>
+      <CardDescription class="flex text-xs pb-3"> Wpisz swoje nowe hasło </CardDescription>
     </CardHeader>
     <CardContent>
       <form id="form-vee-password-form" @submit="onSubmit">
         <FieldGroup>
           <VeeField v-slot="{ field, errors }" name="password">
             <Field :data-invalid="!!errors.length">
-              <FieldLabel for="form-vee-demo-password">
-                Hasło
-              </FieldLabel>
+              <FieldLabel for="form-vee-demo-password"> Hasło </FieldLabel>
               <Input
                 id="form-vee-demo-password"
                 v-bind="field"
@@ -66,9 +60,7 @@ const onSubmit = handleSubmit(() => {
           </VeeField>
           <VeeField v-slot="{ field, errors }" name="reset_password">
             <Field :data-invalid="!!errors.length">
-              <FieldLabel for="form-vee-demo-reset-password">
-                Powtórz hasło
-              </FieldLabel>
+              <FieldLabel for="form-vee-demo-reset-password"> Powtórz hasło </FieldLabel>
               <Input
                 id="form-vee-demo-reset-password"
                 v-bind="field"
