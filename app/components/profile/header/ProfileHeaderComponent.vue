@@ -4,7 +4,7 @@
   <div class="flex flex-row gap-6 pl-16 mb-6 justify-start items-center">
     <div class="flex flex-row">
       <div class="relative flex shrink-0 overflow-hidden rounded-full size-20">
-        <img src="https://github.com/shadcn.png" alt="@shadcn" class="aspect-square size-full">
+        <img src="https://github.com/shadcn.png" alt="@shadcn" class="aspect-square size-full" />
       </div>
     </div>
     <div class="profile text flex flex-col justify-center">
