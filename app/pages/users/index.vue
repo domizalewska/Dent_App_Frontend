@@ -1,31 +1,32 @@
 <script setup lang="ts">
-import { columns } from '~/components/ui/data-table/columns';
-import DataTable from '~/components/ui/data-table/data-table.vue';
-import { generateMockUsers } from '~/mock/users/mockUsers';
-import type { User } from '~/types/users/typesUsers';
-import { useBreadcrumbs } from '~/composables/useBreadcrumbs';
-import { useHeader } from '~/composables/useHeader';
+import type { User } from '~/types/users/typesUsers'
+import { columns } from '~/components/ui/data-table/columns'
+import DataTable from '~/components/ui/data-table/data-table.vue'
+import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
+import { useHeader } from '~/composables/useHeader'
+import { generateMockUsers } from '~/mock/users/mockUsers'
+
 definePageMeta({
   layout: 'dashboard',
-});
+})
 
-const { set } = useBreadcrumbs();
+const { set } = useBreadcrumbs()
 
-set([{ name: 'Użytkownicy', link: '/users' }]);
+set([{ name: 'Użytkownicy', link: '/users' }])
 
-const { setHeader, resetHeader } = useHeader();
+const { setHeader, resetHeader } = useHeader()
 
-resetHeader();
-setHeader('Użytkownicy');
-const data = ref<User[]>([]);
+resetHeader()
+setHeader('Użytkownicy')
+const data = ref<User[]>([])
 
 async function getData(): Promise<User[]> {
-  return generateMockUsers(70);
+  return generateMockUsers(70)
 }
 
 onMounted(async () => {
-  data.value = await getData();
-});
+  data.value = await getData()
+})
 </script>
 
 <template>

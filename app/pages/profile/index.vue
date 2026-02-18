@@ -1,24 +1,28 @@
 <script setup lang="ts">
-import { useHeader } from '~/composables/useHeader';
-import { useBreadcrumbs } from '~/composables/useBreadcrumbs';
+import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
+import { useHeader } from '~/composables/useHeader'
 
 definePageMeta({
   layout: 'dashboard',
-});
+})
 
-const { setHeader, resetHeader } = useHeader();
+const { setHeader, resetHeader } = useHeader()
 
-resetHeader();
-setHeader('Profile');
+resetHeader()
+setHeader('Profil')
 
-const { set } = useBreadcrumbs();
+const { set } = useBreadcrumbs()
 
-set([{ name: 'Profile', link: '/profile' }]);
+set([{ name: 'Profil', link: '/profil' }])
 </script>
 
 <template>
-  <div>
-    <ProfileHeaderComponent />
-    <BaseCard />
+  <div class="flex w-full">
+    <div class="flex w-full flex-col">
+      <ProfileHeaderComponent />
+    </div>
+  </div>
+  <div class="flex flex-col w-full justify-center items-center">
+    <ProfileTabs />
   </div>
 </template>

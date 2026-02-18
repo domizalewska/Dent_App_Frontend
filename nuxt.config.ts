@@ -8,6 +8,9 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  imports: {
+    dirs: ['~/composables/**', '~/basic/**'],
+  },
   colorMode: {
     preference: 'light',
     fallback: 'light',

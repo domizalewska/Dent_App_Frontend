@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import SidebarComponent from '~/components/main/SidebarComponent.vue';
-import { Sun, Moon } from 'lucide-vue-next';
-import { ref } from 'vue';
-import { breadcrumbs } from '~/composables/useBreadcrumbs';
-import { header } from '~/composables/useHeader';
+import { Moon, Sun } from 'lucide-vue-next'
+import { ref } from 'vue'
+import SidebarComponent from '~/components/main/SidebarComponent.vue'
+import { breadcrumbs } from '~/composables/useBreadcrumbs'
+import { header } from '~/composables/useHeader'
 
-const isToggle = ref(false);
-const colorMode = useColorMode();
+const isToggle = ref(false)
+const colorMode = useColorMode()
 function toggleTheme() {
-  isToggle.value = !isToggle.value;
-  isToggle.value ? (colorMode.value = 'dark') : (colorMode.value = 'light');
+  isToggle.value = !isToggle.value
+  isToggle.value ? (colorMode.value = 'dark') : (colorMode.value = 'light')
 }
 </script>
 

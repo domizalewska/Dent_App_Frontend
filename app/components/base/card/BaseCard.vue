@@ -1,22 +1,24 @@
 <script setup lang="ts">
 defineProps<{
-  cardTitle?: string;
-  cardDescription?: string;
-  cardButtons?: boolean;
-}>();
+  cardTitle?: string
+  cardDescription?: string
+  cardButtons?: boolean
+}>()
 </script>
+
 <template>
   <Card>
-    <CardHeader >
-      <CardTitle >{{ cardTitle }}</CardTitle>
-      <CardDescription >
+    <CardHeader>
+      <slot name="header" />
+      <CardTitle>{{ cardTitle }}</CardTitle>
+      <CardDescription>
         {{ cardDescription }}
       </CardDescription>
     </CardHeader>
     <CardContent class="grid gap-6">
       <slot />
     </CardContent>
-    <CardFooter >
+    <CardFooter>
       <BaseAcceptDeclineButtons v-if="cardButtons" />
     </CardFooter>
   </Card>

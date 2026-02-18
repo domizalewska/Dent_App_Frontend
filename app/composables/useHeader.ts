@@ -1,14 +1,14 @@
-import { ref } from 'vue';
+import { ref } from 'vue'
 
-export const header = ref();
+export const header = ref()
 
 export function useHeader() {
   function setHeader(title: string) {
-    header.value = title;
+    header.value = title
   }
 
   function resetHeader() {
-    header.value = '';
+    header.value = ''
   }
-  return { header, setHeader, resetHeader };
+  return { header, setHeader, resetHeader }
 }

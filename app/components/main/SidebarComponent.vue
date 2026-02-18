@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import type { SidebarProps } from '@/components/ui/sidebar';
+import type { SidebarProps } from '@/components/ui/sidebar'
 
-import { BookUser, CalendarDays, GalleryVerticalEnd, Settings2, Users } from 'lucide-vue-next';
-import NavMain from './NavMain.vue';
+import { BookUser, CalendarDays, GalleryVerticalEnd, Settings2, Users } from 'lucide-vue-next'
+import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
 
-import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar'
+import NavMain from './NavMain.vue'
 
 const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: 'icon',
-});
+})
 
 const data = {
   navMain: [
@@ -62,7 +63,7 @@ const data = {
       ],
     },
   ],
-};
+}
 </script>
 
 <template>
@@ -84,8 +85,8 @@ const data = {
             </a>
           </SidebarMenuButton>
         </SidebarMenuItem>
-      </SidebarMenu></SidebarHeader
-    >
+      </SidebarMenu>
+    </SidebarHeader>
     <SidebarContent>
       <NavMain :items="data.navMain" />
     </SidebarContent>

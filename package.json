@@ -13,6 +13,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@antfu/eslint-config": "^7.4.3",
     "@nuxt/eslint": "^1.12.1",
     "@nuxt/scripts": "^0.13.2",
     "@nuxt/test-utils": "^3.23.0",
@@ -46,8 +47,12 @@
     "@nuxtjs/stylelint-module": "^5.2.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/vite": "^4.1.18",
+    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "@typescript-eslint/parser": "^8.56.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-vue": "^10.8.0",
+    "jiti": "^2.6.1",
     "prettier": "^3.7.4",
     "stylelint": "^16.26.1",
     "stylelint-config-standard": "^39.0.1",

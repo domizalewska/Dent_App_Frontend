@@ -22,4 +22,4 @@ export default defineAppConfig({
   api: {
     timeout: 5000,
   },
-});
+})
