@@ -4,8 +4,14 @@ import withNuxt from './.nuxt/eslint.config.mjs';
 export default withNuxt({
   extends: ['plugin:prettier/recommended', 'eslint:recommended', 'plugin:vue/vue3-recommended'],
   plugins: ['prettier'],
-  files: ['.nuxt/**/*.{ts,js,vue}', 'src/**/*.{ts,js,vue}'],
-  ignores: ['node_modules/**', 'dist/**', '.nuxt/**', 'tests/e2e/**'],
+  files: ['.nuxt/**/*.{ts,js,vue}', 'src/**/*.{ts,js,vue}', 'app/**/*.{ts,js,vue}'],
+  ignores: [
+    'node_modules/**',
+    'dist/**',
+    '.nuxt/**',
+    'tests/e2e/**',
+    'app/components/ui/**'
+  ],
   rules: {
     'prettier/prettier': 'warn',
     'vue/html-self-closing': [
