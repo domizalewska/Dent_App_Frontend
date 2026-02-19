@@ -21,4 +21,4 @@ jobs:
       - name: Check Prettier
         run: npx prettier --check .
       - name: Run ESLint
-        run: npx eslint . --fix
+        run: npx eslint .
