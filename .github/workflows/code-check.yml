@@ -19,6 +19,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Check Prettier
-        run: npx prettier --check "app/**/*.{ts,js,vue,css,scss,html}"
-#      - name: Run ESLint
-#        run: npx eslint "**/*.{ts,js,vue}"
+        run: npx prettier --check ."
+      - name: Run ESLint
+        run: npx eslint . --fix"

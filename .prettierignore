@@ -1,2 +1,6 @@
 app/components/ui/
 app/components/base/
+.agents
+.github
+README.md
+index.html
