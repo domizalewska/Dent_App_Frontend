@@ -19,6 +19,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Check Prettier
-        run: npx prettier --check ."
+        run: npx prettier --check .
       - name: Run ESLint
-        run: npx eslint . --fix"
+        run: npx eslint . --fix
