@@ -9,7 +9,7 @@ const isToggle = ref(false)
 const colorMode = useColorMode()
 function toggleTheme() {
   isToggle.value = !isToggle.value
-  isToggle.value ? (colorMode.value = 'dark') : (colorMode.value = 'light')
+  return isToggle.value ? (colorMode.value = 'dark') : (colorMode.value = 'light')
 }
 </script>
 
