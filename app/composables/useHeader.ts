@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-export const header = ref()
+export const header = ref('')
 
 export function useHeader() {
   function setHeader(title: string) {
