@@ -23,7 +23,7 @@ set([{ name: 'Profil', link: '/profil' }])
         <ProfileHeaderComponent />
       </div>
     </div>
-    <div class="flex flex-col w-full justify-center items-center">
+    <div class="flex flex-col w-full justify-center pr-10 pl-10">
       <ProfileTabs />
     </div>
   </div>
