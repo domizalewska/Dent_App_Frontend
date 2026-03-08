@@ -1,25 +1,34 @@
 <script setup lang="ts">
-defineProps<{
-  cardTitle?: string
+import BaseAcceptDeclineButtons from '~/components/base/buttons/BaseAcceptDeclineButtons.vue'
+
+interface Props {
+  cardTitle: string
   cardDescription?: string
   cardButtons?: boolean
-}>()
+}
+
+defineProps<Props>()
 </script>
 
 <template>
-  <Card>
+  <Card class="flex min-w-0 flex-col gap-2">
     <CardHeader>
-      <slot name="header" />
-      <CardTitle>{{ cardTitle }}</CardTitle>
+      <CardTitle><slot name="header" >
+         {{cardTitle}}
+      </slot></CardTitle>
       <CardDescription>
+        <slot name="description" >
         {{ cardDescription }}
+        </slot>
       </CardDescription>
     </CardHeader>
     <CardContent class="grid gap-6">
-      <slot />
+      <slot name="content"/>
     </CardContent>
     <CardFooter>
-      <BaseAcceptDeclineButtons v-if="cardButtons" />
+      <slot name="footer">
+        <BaseAcceptDeclineButtons v-if="cardButtons"  accept-title="Zatwierdź" decline-title="Anuluj"/>
+      </slot>
     </CardFooter>
   </Card>
 </template>
