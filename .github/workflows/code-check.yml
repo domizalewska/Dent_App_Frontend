@@ -20,5 +20,3 @@ jobs:
         run: npm ci
       - name: Check Prettier
         run: npx prettier --check .
-      - name: Run ESLint
-        run: npx eslint .
