@@ -8,12 +8,12 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center gap-2 md:flex-row">
-    <Button variant="outline">
+  <div class="flex w-full flex-row flex-wrap items-center mt-4 gap-2">
+    <Button variant='secondary' class="w-full md:flex-1" size="sm">
       <span class="text-color font-medium text-xl">{{ declineTitle }}</span>
     </Button>
-    <Button variant="outline">
-      <span class="text-color font-medium text-xl">{{ declineTitle }}</span>
+    <Button class="w-full md:flex-1" size="sm">
+      <span class="text-color font-medium text-xl">{{ acceptTitle }}</span>
     </Button>
   </div>
 </template>
