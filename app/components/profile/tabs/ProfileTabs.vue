@@ -30,11 +30,11 @@ import { Bell, Lock, User } from 'lucide-vue-next'
       </TabsList>
 
       <TabsContent value="profile">
-        <span>dsfsdffdsfsdsf</span>
+        <ProfileCard />
       </TabsContent>
 
       <TabsContent value="password">
-        <span>22324cr243</span>
+        <PasswordCard />
       </TabsContent>
 
       <TabsContent value="notification">
