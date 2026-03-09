@@ -1,6 +1,4 @@
-<script setup lang="ts>">
-import BaseCard from '~/components/base/card/BaseCard.vue'
-</script>
+<script setup lang="ts>"></script>
 
 <template>
   <BaseCard card-title="Zmień hasło" card-buttons class="mt-2">

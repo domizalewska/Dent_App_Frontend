@@ -14,7 +14,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
           variant="outline"
           class="w-36 mr-4 border-b border-border"
         >
-          <DropdownMenuLabel class="cursor-pointer"> Profil </DropdownMenuLabel>
+          <DropdownMenuLabel class="cursor-pointer" @click="navigateTo('/profile')">
+            Profil
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem class="cursor-pointer"> Powiadomienia </DropdownMenuItem>
           <DropdownMenuItem class="cursor-pointer"> Ustawienia </DropdownMenuItem>
