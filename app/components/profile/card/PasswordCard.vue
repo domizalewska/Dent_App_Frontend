@@ -5,15 +5,15 @@
     <template #content>
       <div class="grid gap-3">
         <Label for="tabs-demo-name">Hasło</Label>
-        <Input id="tabs-demo-name" default-value="Pedro Duarte" />
+        <Input id="tabs-demo-name" placeholder="Wpisz swoje hasło" type="password" />
       </div>
       <div class="grid gap-3">
         <Label for="tabs-demo-username">Nowe hasło</Label>
-        <Input id="tabs-demo-username" default-value="@peduarte" />
+        <Input id="tabs-demo-username" placeholder="Wpisz swoje nowe hasło" type="password" />
       </div>
       <div class="grid gap-3">
         <Label for="tabs-demo-username">Powtórz nowe hasło</Label>
-        <Input id="tabs-demo-username" default-value="@peduarte" />
+        <Input id="tabs-demo-username" placeholder="Powtórz swoje nowe hasło" type="password" />
       </div>
     </template>
   </BaseCard>

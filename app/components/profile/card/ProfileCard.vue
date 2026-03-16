@@ -16,7 +16,7 @@
       </div>
     </template>
     <template #footer>
-      <Button class="flex justify-end mt-4">Zapisz zmiany</Button>
+      <Button class="flex mt-4">Zapisz</Button>
     </template>
   </BaseCard>
 </template>

@@ -17,13 +17,11 @@ set([{ name: 'Profil', link: '/profil' }])
 </script>
 
 <template>
-  <div class="flex flex-col w-full">
-    <div class="flex w-full">
-      <div class="flex w-full flex-col">
-        <ProfileHeaderComponent />
-      </div>
+  <div class="flex flex-col w-full justify-center items-center">
+    <div class="flex">
+      <ProfileHeaderComponent />
     </div>
-    <div class="flex flex-col w-full justify-center pr-10 pl-10">
+    <div class="flex flex-col w-[700px]">
       <ProfileTabs />
     </div>
   </div>
