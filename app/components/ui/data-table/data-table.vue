@@ -1,22 +1,9 @@
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef } from '@tanstack/vue-table';
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
-import {
-  FlexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useVueTable,
-} from '@tanstack/vue-table';
+import type { ColumnDef } from '@tanstack/vue-table'
+import { FlexRender, getCoreRowModel, getPaginationRowModel, useVueTable, } from '@tanstack/vue-table'
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import DataTablePaginator from '~/components/ui/data-table/data-table-paginator.vue';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table'
+import DataTablePaginator from '~/components/ui/data-table/data-table-paginator.vue'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[];

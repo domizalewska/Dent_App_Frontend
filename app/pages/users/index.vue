@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { User } from '~/types/users/typesUsers'
-import { columns } from '~/components/ui/data-table/columns'
 import DataTable from '~/components/ui/data-table/data-table.vue'
 import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
-import { generateMockUsers } from '~/mock/users/mockUsers'
+import { usersColumns, UsersEndpoints } from '~/features/users'
+import type { User } from '~/types'
 
 definePageMeta({
   layout: 'dashboard',
@@ -18,19 +17,12 @@ const { setHeader, resetHeader } = useHeader()
 
 resetHeader()
 setHeader('Użytkownicy')
-const data = ref<User[]>([])
 
-async function getData(): Promise<User[]> {
-  return generateMockUsers(70)
-}
-
-onMounted(async () => {
-  data.value = await getData()
-})
+const { data: usersData, pending, error } = usePaginatedAPI<User>(`${UsersEndpoints.LIST}`)
 </script>
 
 <template>
   <div class="flex w-full">
-    <DataTable :columns="columns" :data="data" />
+    <DataTable v-if="usersData?.data" :columns="usersColumns" :data="usersData.data" />
   </div>
 </template>
