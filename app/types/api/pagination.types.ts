@@ -1,6 +1,6 @@
 export type PaginatedResult<T> = {
   current_page: number
-  data: T
+  data: T[]
   from: number
   last_page: number
   per_page: number
@@ -9,7 +9,7 @@ export type PaginatedResult<T> = {
 }
 
 export type PaginatedResponse<T> = {
-  data: T
+  data: T[]
   current_page: number
   from: number
   last_page: number
