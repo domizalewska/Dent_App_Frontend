@@ -1,4 +1,4 @@
-import type { User } from '~/types/users/typesUsers'
+import type { User } from '~/types/user/user.type'
 import { faker } from '@faker-js/faker/locale/en'
 
 export const mockUser: User = {
