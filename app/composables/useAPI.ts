@@ -15,6 +15,7 @@ export function usePaginatedAPI<T>(
   const config = useRuntimeConfig()
   return useFetch<PaginatedResponse<T>>(url, {
     baseURL: config.public.apiBase,
+    server: false,
     ...options,
     $fetch: useNuxtApp().$api as typeof $fetch,
     transform: (response: PaginatedResponse<T>) => ({
