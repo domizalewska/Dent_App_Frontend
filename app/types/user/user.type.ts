@@ -1,8 +1,9 @@
 export interface User {
   id: string
-  name: string
+  first_name: string
+  last_name: string
   email: string
   phone: string
-  last_active: Date
+  created_at: Date
   is_active?: boolean
 }
