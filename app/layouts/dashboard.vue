@@ -1,51 +1,38 @@
 <script setup lang="ts">
-import { Moon, Sun } from 'lucide-vue-next'
-import { ref } from 'vue'
 import SidebarComponent from '~/components/main/SidebarComponent.vue'
-import { breadcrumbs } from '~/composables/useBreadcrumbs'
 import { header } from '~/composables/useHeader'
-
-const isToggle = ref(false)
-const colorMode = useColorMode()
-function toggleTheme() {
-  isToggle.value = !isToggle.value
-  return isToggle.value ? (colorMode.value = 'dark') : (colorMode.value = 'light')
-}
+import { breadcrumbs } from '~/composables/useBreadcrumbs'
 </script>
 
 <template>
-  <div class="flex h-screen">
-    <SidebarProvider :style="{ '--sidebar-width': '19rem' }">
-      <SidebarComponent />
-      <SidebarInset>
-        <header class="flex h-16 shrink-0 items-center gap-2 px-4">
-          <SidebarTrigger class="-ml-1" />
-          <Separator orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
-          <div class="pr-4 w-full">
-            <BaseBreadcrumb
-              v-for="(item, index) in breadcrumbs"
-              :key="index"
-              :name="item.name"
-              :link="item.link"
-            />
-          </div>
-          <div class="flex w-full justify-end flex-1 pr-4">
-            <div class="flex gap-2 items-start justify-center cursor-pointer">
-              <Button variant="ghost" class="rounded-full" @click="toggleTheme">
-                <Sun v-if="isToggle" />
-                <Moon v-if="!isToggle" />
-              </Button>
-              <AvatarComponent class="flex items-start" />
+  <div class="h-screen w-full flex">
+    <div class="flex shrink-0 w-full">
+      <SidebarProvider :style="{ '--sidebar-width': '19rem' }">
+        <SidebarComponent />
+        <SidebarInset>
+          <header class="flex h-16 flex-col w-full gap-2 px-4">
+            <div class="flex mt-2 w-full items-center justify-between">
+              <div class="flex items-center justify-center">
+                <SidebarTrigger class="-ml-1" />
+                <Separator orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
+                <BaseBreadcrumb
+                  v-for="(item, index) in breadcrumbs"
+                  :key="index"
+                  :name="item.name"
+                  :link="item.link"
+                />
+              </div>
+              <HeaderComponent />
             </div>
-          </div>
-        </header>
-        <div class="flex pl-4 pr-4 w-full">
-          <HeaderPage :title="header" />
-        </div>
-        <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <slot />
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+            <div class="flex flex-col w-full">
+              <HeaderPage :title="header" />
+              <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
+                <slot />
+              </div>
+            </div>
+          </header>
+        </SidebarInset>
+      </SidebarProvider>
+    </div>
   </div>
 </template>
