@@ -1,8 +1,8 @@
 import type { LoginPayload, User } from '~/types'
 
-const user = useState<User | null>('user', () => null)
-
 export function useAuth() {
+  const user = useState<User | null>('user', () => null)
+
   const isAuthenticated = ref<boolean>(false)
   const token = ref()
   if (import.meta.client) {
