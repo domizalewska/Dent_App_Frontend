@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import {
@@ -17,43 +14,44 @@ import { useAuth } from '~/composables/useAuth'
 
 const { loginUser } = useAuth()
 const formRef = ref('')
+const email = ref('')
+const password = ref('')
 
-const schema = toTypedSchema(
-  z.object({
-    email: z.string().nonempty('Email jest wymagany').email('Nieprawidłowy email'),
-    password: z.string().min(6, 'Hasło musi mieć min. 6 znaków'),
-  }),
-)
 
-const { handleSubmit } = useForm({ validationSchema: schema })
-
-const onSubmit = handleSubmit((values) => {
-  loginUser(values)
-})
+const onSubmit = async () => {
+  await loginUser({
+    email: email.value,
+    password: password.value,
+  })
+}
 </script>
 
 <template>
-  <Card class="w-full sm:max-w-md mx-auto mt-10">
-    <CardHeader>
-      <CardTitle>Login</CardTitle>
-      <CardDescription>Wprowadź swoje dane logowania</CardDescription>
+  <Card class="flex justify-center border-0 shadow-2xl">
+    <CardHeader class="text-center items-center">
+      <CardTitle class="flex text-xl pt-6">Login</CardTitle>
+      <CardDescription class="flex text-xs pb-3">Wprowadź swoje dane logowania</CardDescription>
     </CardHeader>
 
     <CardContent>
-      <Form ref="formRef" @submit="onSubmit">
+      <Form ref="formRef" as="form" @submit="onSubmit">
         <FieldGroup>
           <div class="mb-4">
             <FieldLabel>Email</FieldLabel>
-            <Input name="email" placeholder="Email" />
+            <Input v-model="email" placeholder="Email" />
           </div>
 
           <div class="mb-4">
             <FieldLabel>Password</FieldLabel>
-            <Input name="password" type="password" placeholder="Hasło" />
+            <Input v-model="password" type="password" placeholder="Hasło" />
           </div>
 
-          <CardFooter class="w-full mt-4">
-            <Button type="submit">Zaloguj się</Button>
+          <CardFooter class="flex flex-col mt-4">
+            <Button class="w-full mb-4" type="submit">Zaloguj się</Button>
+            <FieldDescription class="text-center">
+              Nie posiadasz konta?
+              <a href="#"> Zarejestruj się </a>
+            </FieldDescription>
           </CardFooter>
         </FieldGroup>
       </Form>
