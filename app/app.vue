@@ -8,7 +8,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div id="app">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

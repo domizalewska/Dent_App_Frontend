@@ -1,41 +1,62 @@
 <script setup lang="ts">
-import { Button } from '~/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import { Field, FieldDescription, FieldGroup, FieldLabel } from '~/components/ui/field'
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
 import { Input } from '~/components/ui/input'
+import { Button } from '~/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '~/components/ui/card'
+import { FieldGroup, FieldLabel } from '~/components/ui/field'
+import { useAuth } from '~/composables/useAuth'
+
+const { loginUser } = useAuth()
+const formRef = ref('')
+
+const schema = toTypedSchema(
+  z.object({
+    email: z.string().nonempty('Email jest wymagany').email('Nieprawidłowy email'),
+    password: z.string().min(6, 'Hasło musi mieć min. 6 znaków'),
+  }),
+)
+
+const { handleSubmit } = useForm({ validationSchema: schema })
+
+const onSubmit = handleSubmit((values) => {
+  loginUser(values)
+})
 </script>
 
 <template>
-  <Card class="flex justify-center border-0 shadow-2xl">
-    <CardHeader class="text-center items-center">
-      <CardTitle class="flex text-xl pt-6"> Welcome back </CardTitle>
-      <CardDescription class="flex text-xs pb-3"> Login with your email </CardDescription>
+  <Card class="w-full sm:max-w-md mx-auto mt-10">
+    <CardHeader>
+      <CardTitle>Login</CardTitle>
+      <CardDescription>Wprowadź swoje dane logowania</CardDescription>
     </CardHeader>
+
     <CardContent>
-      <form>
+      <Form ref="formRef" @submit="onSubmit">
         <FieldGroup>
-          <Field>
-            <FieldLabel for="email"> Email </FieldLabel>
-            <Input id="email" type="email" placeholder="m@example.com" required />
-          </Field>
-          <Field>
-            <div class="flex items-center">
-              <FieldLabel for="password"> Password </FieldLabel>
-              <a href="#" class="ml-auto text-sm underline-offset-4 hover:underline">
-                Zapomniałeś hasła?
-              </a>
-            </div>
-            <Input id="password" type="password" required />
-          </Field>
-          <Field>
-            <Button type="submit"> Zaloguj się </Button>
-            <FieldDescription class="text-center">
-              Nie posiadasz konta?
-              <a href="#"> Zarejestruj się </a>
-            </FieldDescription>
-          </Field>
+          <div class="mb-4">
+            <FieldLabel>Email</FieldLabel>
+            <Input name="email" placeholder="Email" />
+          </div>
+
+          <div class="mb-4">
+            <FieldLabel>Password</FieldLabel>
+            <Input name="password" type="password" placeholder="Hasło" />
+          </div>
+
+          <CardFooter class="w-full mt-4">
+            <Button type="submit">Zaloguj się</Button>
+          </CardFooter>
         </FieldGroup>
-      </form>
+      </Form>
     </CardContent>
   </Card>
 </template>

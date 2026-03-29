@@ -17,7 +17,17 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxt/scripts', '@nuxt/test-utils', '@nuxt/ui', 'shadcn-nuxt'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/scripts',
+    '@nuxt/test-utils',
+    '@nuxt/ui',
+    'shadcn-nuxt',
+    '@vee-validate/nuxt',
+  ],
+  veeValidate: {
+    autoImports: true,
+  },
   shadcn: {
     /**
      * Prefix for all the imported component.
