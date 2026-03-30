@@ -21,7 +21,7 @@ export function useAuth() {
     )
     localStorage.setItem('token', token)
     localStorage.setItem('type', type)
-    window.location.href = '/'
+    window.location.href = '/dashboard'
   }
 
   function logoutUser() {
