@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ForgotPasswordForm from '~/components/forgot-password/form/ForgotPasswordForm.vue'
+import ForgotPasswordDetails from '~/components/forgot-password/details/ForgotPasswordDetails.vue'
 
 definePageMeta({
   layout: 'login',
@@ -8,6 +8,6 @@ definePageMeta({
 
 <template>
   <div class="flex w-1/3 pr-20 pt-12 pb-12 flex-col">
-    <ForgotPasswordForm class="flex-1" />
+    <ForgotPasswordDetails class="flex-1" />
   </div>
 </template>
