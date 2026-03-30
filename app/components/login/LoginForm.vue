@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { toTypedSchema } from '@vee-validate/zod'
+import { Field as VeeField, useForm } from 'vee-validate'
+import { z } from 'zod'
+
+import { useAuth } from '~/composables/useAuth'
+import type { LoginPayload } from '~/types'
+
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import {
@@ -9,52 +16,85 @@ import {
   CardHeader,
   CardTitle,
 } from '~/components/ui/card'
-import { FieldGroup, FieldLabel } from '~/components/ui/field'
-import { useAuth } from '~/composables/useAuth'
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field'
 
 const { loginUser } = useAuth()
-const formRef = ref('')
-const email = ref('')
-const password = ref('')
+const formRef = ref()
 
+const formSchema = toTypedSchema(
+  z.object({
+    email: z.string().email('Niepoprawny email'),
+    password: z.string().nonempty('Wprowadź swoje hasło'),
+  }),
+)
 
-const onSubmit = async () => {
-  await loginUser({
-    email: email.value,
-    password: password.value,
-  })
-}
+const { handleSubmit } = useForm<LoginPayload>({
+  validationSchema: formSchema,
+  initialValues: {
+    email: '',
+    password: '',
+  },
+})
+
+const onSubmit = handleSubmit(async (values) => {
+  await loginUser(values)
+})
 </script>
 
 <template>
-  <Card class="flex justify-center border-0 shadow-2xl">
+  <Card class="flex justify-center border-0 shadow-2xl max-w-md mx-auto">
     <CardHeader class="text-center items-center">
-      <CardTitle class="flex text-xl pt-6">Login</CardTitle>
-      <CardDescription class="flex text-xs pb-3">Wprowadź swoje dane logowania</CardDescription>
+      <CardTitle class="text-xl pt-6">Login</CardTitle>
+      <CardDescription class="text-xs pb-3"> Wprowadź swoje dane logowania </CardDescription>
     </CardHeader>
 
     <CardContent>
-      <Form ref="formRef" as="form" @submit="onSubmit">
+      <form @submit="onSubmit">
         <FieldGroup>
-          <div class="mb-4">
-            <FieldLabel>Email</FieldLabel>
-            <Input v-model="email" placeholder="Email" />
-          </div>
+          <VeeField v-slot="{ field, errors }" name="email">
+            <Field :data-invalid="!!errors.length">
+              <FieldLabel>Email</FieldLabel>
 
-          <div class="mb-4">
-            <FieldLabel>Password</FieldLabel>
-            <Input v-model="password" type="password" placeholder="Hasło" />
-          </div>
+              <Input
+                v-bind="field"
+                type="email"
+                placeholder="Email"
+                :aria-invalid="!!errors.length"
+              />
 
-          <CardFooter class="flex flex-col mt-4">
-            <Button class="w-full mb-4" type="submit">Zaloguj się</Button>
-            <FieldDescription class="text-center">
-              Nie posiadasz konta?
-              <a href="#"> Zarejestruj się </a>
-            </FieldDescription>
-          </CardFooter>
+              <FieldError v-if="errors.length" :errors="errors" />
+            </Field>
+          </VeeField>
+
+          <VeeField v-slot="{ field, errors }" name="password">
+            <Field :data-invalid="!!errors.length">
+              <FieldLabel>Hasło</FieldLabel>
+
+              <Input
+                v-bind="field"
+                type="password"
+                placeholder="Hasło"
+                :aria-invalid="!!errors.length"
+              />
+
+              <FieldError v-if="errors.length" :errors="errors" />
+            </Field>
+          </VeeField>
         </FieldGroup>
-      </Form>
+
+        <CardFooter class="flex flex-col mt-4">
+          <Button class="w-full mb-4" type="submit"> Zaloguj się </Button>
+
+          <FieldDescription class="text-center">
+            Nie posiadasz konta?
+            <NuxtLink to="/forgot-password">
+              <div class="text-sm hover:underline text-color focus:outline-none">
+                <span>Zarejestruj się </span>
+              </div>
+            </NuxtLink>
+          </FieldDescription>
+        </CardFooter>
+      </form>
     </CardContent>
   </Card>
 </template>
