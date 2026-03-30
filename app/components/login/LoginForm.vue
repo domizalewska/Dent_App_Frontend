@@ -19,7 +19,6 @@ import {
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field'
 
 const { loginUser } = useAuth()
-const formRef = ref()
 
 const formSchema = toTypedSchema(
   z.object({
