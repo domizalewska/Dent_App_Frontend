@@ -7,7 +7,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="flex w-1/3 pr-20 pt-12 pb-12 flex-col">
+  <div class="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl mx-auto p-6 md:p-10">
     <LoginForm class="flex-1" />
   </div>
 </template>

@@ -41,7 +41,7 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <Card class="flex justify-center border-0 shadow-2xl max-w-md mx-auto">
+  <Card class="flex justify-center border-0 shadow-2xl">
     <CardHeader class="text-center items-center">
       <CardTitle class="text-xl pt-6">Login</CardTitle>
       <CardDescription class="text-xs pb-3"> Wprowadź swoje dane logowania </CardDescription>
@@ -81,14 +81,23 @@ const onSubmit = handleSubmit(async (values) => {
           </VeeField>
         </FieldGroup>
 
-        <CardFooter class="flex flex-col mt-4">
+        <CardFooter class="flex flex-col mt-8">
           <Button class="w-full mb-4" type="submit"> Zaloguj się </Button>
 
           <FieldDescription class="text-center">
             Nie posiadasz konta?
-            <NuxtLink to="/forgot-password">
+            <NuxtLink to="/register">
               <div class="text-sm hover:underline text-color focus:outline-none">
                 <span>Zarejestruj się </span>
+              </div>
+            </NuxtLink>
+          </FieldDescription>
+
+          <FieldDescription class="text-center mt-8">
+            Nie pamiętasz hasła?
+            <NuxtLink to="/forgot-password">
+              <div class="text-sm hover:underline text-color focus:outline-none">
+                <span>Resetuj hasło </span>
               </div>
             </NuxtLink>
           </FieldDescription>

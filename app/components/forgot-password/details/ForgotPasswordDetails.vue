@@ -20,7 +20,7 @@ import {
     </CardHeader>
 
     <CardContent>
-      <CardFooter class="flex flex-col mt-4">
+      <CardFooter class="flex flex-col">
         <Button class="w-full mb-4" type="submit" @click="navigateTo('/login')">
           Zaloguj się
         </Button>
