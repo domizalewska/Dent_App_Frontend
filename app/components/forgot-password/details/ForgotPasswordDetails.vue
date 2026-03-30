@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod'
-import { useForm } from 'vee-validate'
-import { z } from 'zod'
 import { Button } from '~/components/ui/button'
 import {
   Card,
@@ -11,30 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from '~/components/ui/card'
-import { useAPI } from '~/composables/useAPI'
-
-const router = useRouter()
-
-const formSchema = toTypedSchema(
-  z.object({
-    email: z.string().email('Niepoprawny email'),
-  }),
-)
-
-const { handleSubmit } = useForm({
-  validationSchema: formSchema,
-  initialValues: {
-    email: '',
-  },
-})
-
-const onSubmit = handleSubmit(async (values) => {
-  await useAPI('/forgot-password', {
-    method: 'POST',
-    body: values,
-  })
-  await router.push('forgot-password/detail')
-})
 </script>
 
 <template>
