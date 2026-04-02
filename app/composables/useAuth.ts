@@ -11,14 +11,14 @@ export function useAuth() {
 
   async function loginUser(payload: LoginPayload) {
     const { $api } = useNuxtApp()
-    const { token, type }: { token: string; type: string } = await ($api as typeof $fetch)(
-      '/login',
-      {
-        method: 'POST',
-        body: payload,
-      },
-    )
-    localStorage.setItem('token', token)
+    const { token: authToken, type }: { token: string; type: string } = await (
+      $api as typeof $fetch
+    )('/login', {
+      method: 'POST',
+      body: payload,
+    })
+    token.value = authToken
+    localStorage.setItem('token', authToken)
     localStorage.setItem('type', type)
     await navigateTo('/dashboard')
   }
