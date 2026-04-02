@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { SidebarProps } from '@/components/ui/sidebar'
+import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
 
 import { BookUser, CalendarDays, GalleryVerticalEnd, Settings2, Users } from 'lucide-vue-next'
-import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
 
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar'
 import NavMain from './NavMain.vue'
@@ -22,6 +22,18 @@ const data = {
         {
           title: 'Lista',
           url: '/users',
+        },
+      ],
+    },
+    {
+      title: 'Pacjenci',
+      url: '/patients',
+      icon: 'mdi:patient-outline',
+      isActive: true,
+      items: [
+        {
+          title: 'Lista',
+          url: '/patients',
         },
       ],
     },

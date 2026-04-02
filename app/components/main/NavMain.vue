@@ -12,12 +12,13 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
+import { Icon } from '@iconify/vue'
 
 defineProps<{
   items: {
     title: string
     url: string
-    icon?: LucideIcon
+    icon?: LucideIcon | string
     isActive?: boolean
     items?: {
       title: string
@@ -41,7 +42,8 @@ defineProps<{
         <SidebarMenuItem>
           <CollapsibleTrigger as-child>
             <SidebarMenuButton :tooltip="item.title">
-              <component :is="item.icon" v-if="item.icon" />
+              <component :is="item.icon" v-if="item.icon && typeof item.icon !== 'string'" />
+              <Icon v-if="item.icon && typeof item.icon === 'string'" :icon="item.icon" />
               <span>{{ item.title }}</span>
               <ChevronRight
                 class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
