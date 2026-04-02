@@ -22,6 +22,9 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
 </script>
 
 <template>
+  <div v-if="pending" class="flex w-full h-screen justify-center items-center">
+    <BaseDatatableSkeleton />
+  </div>
   <div class="flex w-full">
     <DataTable v-if="usersData?.data" :columns="usersColumns" :data="usersData.data" />
   </div>
