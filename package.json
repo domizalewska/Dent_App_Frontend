@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^10.2.0",
+    "@iconify/vue": "^5.0.0",
     "@nuxt/eslint-config": "^1.15.1",
     "@nuxtjs/stylelint-module": "^5.2.1",
     "@tailwindcss/postcss": "^4.1.18",
