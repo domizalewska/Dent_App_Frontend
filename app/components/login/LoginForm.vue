@@ -74,6 +74,7 @@ const onSubmit = handleSubmit(async (values) => {
                 type="password"
                 placeholder="Hasło"
                 :aria-invalid="!!errors.length"
+                @keyup.enter="onSubmit"
               />
 
               <FieldError v-if="errors.length" :errors="errors" />
