@@ -15,6 +15,11 @@
   },
   "dependencies": {
     "@antfu/eslint-config": "^7.4.3",
+    "@fullcalendar/core": "^6.1.20",
+    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/interaction": "^6.1.20",
+    "@fullcalendar/timegrid": "^6.1.20",
+    "@fullcalendar/vue3": "^6.1.20",
     "@nuxt/eslint": "^1.12.1",
     "@nuxt/scripts": "^0.13.2",
     "@nuxt/test-utils": "^3.23.0",

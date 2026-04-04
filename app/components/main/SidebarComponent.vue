@@ -39,12 +39,12 @@ const data = {
     },
     {
       title: 'Harmonogram',
-      url: '#',
+      url: '/schedule',
       icon: CalendarDays,
       items: [
         {
           title: 'Kalendarz',
-          url: '#',
+          url: '/schedule',
         },
       ],
     },
