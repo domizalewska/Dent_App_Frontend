@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { SidebarProps } from '@/components/ui/sidebar'
+import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
 
 import { BookUser, CalendarDays, GalleryVerticalEnd, Settings2, Users } from 'lucide-vue-next'
-import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
 
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar'
 import NavMain from './NavMain.vue'
@@ -27,12 +27,12 @@ const data = {
     },
     {
       title: 'Harmonogram',
-      url: '#',
+      url: '/schedule',
       icon: CalendarDays,
       items: [
         {
           title: 'Kalendarz',
-          url: '#',
+          url: '/schedule',
         },
       ],
     },
