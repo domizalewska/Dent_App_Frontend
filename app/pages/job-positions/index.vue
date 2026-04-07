@@ -22,7 +22,7 @@ const {
   data: jobPositionsData,
   pending,
   error,
-} = await usePaginatedAPI<JobPosition>(`${JobPositionsEndpoints().LIST}`)
+} = await usePaginatedAPI<JobPosition>(`${JobPositionsEndpoints().TABLE}`)
 </script>
 
 <template>
