@@ -9,11 +9,11 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+const router = useRouter()
 const { set } = useBreadcrumbs()
+const { setHeader, resetHeader } = useHeader()
 
 set([{ name: 'Użytkownicy', link: '/users' }])
-
-const { setHeader, resetHeader } = useHeader()
 
 resetHeader()
 setHeader('Użytkownicy')
@@ -23,6 +23,11 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
 
 <template>
   <div class="flex w-full">
-    <DataTable v-if="usersData?.data" :columns="usersColumns" :data="usersData.data" />
+    <DataTable
+      v-if="usersData?.data"
+      :columns="usersColumns"
+      :data="usersData.data"
+      :on-row-click="(row) => router.push(`/profile/${row.uuid}`)"
+    />
   </div>
 </template>
