@@ -8,6 +8,7 @@ import DataTablePaginator from '~/components/ui/data-table/data-table-paginator.
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onRowClick?: (row: TData) => void;
 }>();
 
 const table = useVueTable({
@@ -19,7 +20,14 @@ const table = useVueTable({
   },
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
+
 });
+
+function handleRowClick(row: TData) {
+  if (props.onRowClick) {
+    props.onRowClick(row)
+  }
+}
 </script>
 
 <template>
@@ -47,7 +55,8 @@ const table = useVueTable({
               v-for="row in table.getRowModel().rows"
               :key="row.id"
               :data-state="row.getIsSelected() ? 'selected' : undefined"
-              class="font-normal border-b border-border"
+              class="font-normal border-b border-border cursor-pointer"
+              @click="handleRowClick(row.original)"
             >
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
