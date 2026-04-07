@@ -13,7 +13,7 @@ definePageMeta({
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()
 
-set([{ name: 'Stanowiska pracy', link: '/job-position' }])
+set([{ name: 'Stanowiska pracy', link: '/job-positions' }])
 
 resetHeader()
 setHeader('Stanowiska pracy')
