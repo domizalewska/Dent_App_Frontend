@@ -1,5 +1,5 @@
 export const JobPositionsEndpoints = (uuid?: string) => ({
-  LIST: '/job-positions/selectlist',
-  TABLE: '/job-positions',
-  JOB_POSITION_DETAIL: `/job-positions/${uuid}`,
+  LIST: '/job-position/selectlist',
+  TABLE: '/job-position',
+  JOB_POSITION_DETAIL: `/job-position/${uuid}`,
 })
