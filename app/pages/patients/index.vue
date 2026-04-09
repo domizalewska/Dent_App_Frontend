@@ -16,7 +16,7 @@ set([{ name: 'Pacjenci', link: '/patients' }])
 const { setHeader, resetHeader } = useHeader()
 
 resetHeader()
-setHeader('Użytkownicy')
+setHeader('Pacjenci')
 
 const {
   data: patientsData,

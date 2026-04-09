@@ -31,6 +31,17 @@ export const patientsColumns: ColumnDef<PatientType>[] = [
     enableSorting: true,
   },
   {
+    accessorKey: 'pesel',
+    header: () => h('div', { class: 'flex item-center text-center text-foreground' }, 'Pesel'),
+    cell: ({ row }) => {
+      return (
+        h('div', { class: 'text-left font-normal text-muted-foreground' }, row.original.pesel) ??
+        'Brak danych'
+      )
+    },
+    enableSorting: true,
+  },
+  {
     accessorKey: 'created_at',
     header: () =>
       h('div', { class: 'flex item-center text-center text-foreground' }, 'Data rejestracji'),
