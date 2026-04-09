@@ -22,12 +22,24 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
 </script>
 
 <template>
-  <div class="flex w-full">
-    <DataTable
-      v-if="usersData?.data"
-      :columns="usersColumns"
-      :data="usersData.data"
-      :on-row-click="(row) => router.push(`/profile/${row.uuid}`)"
-    />
+  <div class="h-full">
+    <div class="flex flex-col">
+      <BaseHeader>
+        <template #right>
+          <div class="flex">
+            <BaseExportFile extension="xlsx" :endpoint="`${UsersEndpoints.EXPORT}`" />
+          </div>
+        </template>
+      </BaseHeader>
+    </div>
+
+    <div class="h-full flex flex-col min-h-0">
+      <DataTable
+        v-if="usersData?.data"
+        :columns="usersColumns"
+        :data="usersData.data"
+        :on-row-click="(row) => router.push(`/profile/${row.uuid}`)"
+      />
+    </div>
   </div>
 </template>
