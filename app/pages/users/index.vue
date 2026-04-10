@@ -4,6 +4,7 @@ import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
 import { usersColumns, UsersEndpoints } from '~/features/users'
 import type { User } from '~/types'
+import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 
 definePageMeta({
   layout: 'dashboard',
@@ -27,6 +28,7 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
       <BaseHeader>
         <template #right>
           <div class="flex gap-2">
+            <BaseTableSearch />
             <BaseExportFile
               :extensions="['xlsx', 'csv', 'pdf']"
               :endpoint="`${UsersEndpoints.EXPORT}`"
