@@ -26,8 +26,12 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
     <div class="flex flex-col">
       <BaseHeader>
         <template #right>
-          <div class="flex">
-            <BaseExportFile extension="xlsx" :endpoint="`${UsersEndpoints.EXPORT}`" />
+          <div class="flex gap-2">
+            <BaseExportFile
+              :extensions="['xlsx', 'csv', 'pdf']"
+              :endpoint="`${UsersEndpoints.EXPORT}`"
+              file-name="Tabela użytkowników"
+            />
           </div>
         </template>
       </BaseHeader>
