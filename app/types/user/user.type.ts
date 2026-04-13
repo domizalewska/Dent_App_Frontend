@@ -7,4 +7,6 @@ export type User = {
   phone: string
   created_at: Date
   is_active?: boolean
+  profile_picture: string
+  background_picture: string
 }
