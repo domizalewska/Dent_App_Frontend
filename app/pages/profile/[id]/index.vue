@@ -6,6 +6,8 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+const { user } = useAuth()
+
 const { setHeader, resetHeader } = useHeader()
 
 resetHeader()
@@ -18,11 +20,8 @@ set([{ name: 'Profil', link: '/profile' }])
 
 <template>
   <div class="flex flex-col w-full justify-center items-center">
-    <div class="flex">
-      <ProfileHeaderComponent />
-    </div>
     <div class="flex flex-col w-[700px]">
-      <ProfileTabs />
+      <ProfileTabs v-if="user" :user="user" />
     </div>
   </div>
 </template>

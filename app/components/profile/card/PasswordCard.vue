@@ -1,20 +1,22 @@
-<script setup lang="ts>"></script>
+<script setup lang="ts">
+import { Shield } from 'lucide-vue-next'
+</script>
 
 <template>
-  <BaseCard card-title="Zmień hasło" card-buttons class="mt-2">
-    <template #content>
-      <div class="grid gap-3">
-        <Label for="tabs-demo-name">Hasło</Label>
-        <Input id="tabs-demo-name" placeholder="Wpisz swoje hasło" type="password" />
+  <Card class="overflow-hidden rounded-t-none">
+    <CardHeader class="border-b px-4 py-3">
+      <div class="flex items-center gap-2">
+        <Shield class="size-4 text-muted-foreground" aria-hidden="true" />
+        <div>
+          <CardTitle class="text-sm font-medium">Zmień hasło</CardTitle>
+          <CardDescription class="text-xs">
+            Aktualizuj swoje hasło regularnie dla bezpieczeństwa
+          </CardDescription>
+        </div>
       </div>
-      <div class="grid gap-3">
-        <Label for="tabs-demo-username">Nowe hasło</Label>
-        <Input id="tabs-demo-username" placeholder="Wpisz swoje nowe hasło" type="password" />
-      </div>
-      <div class="grid gap-3">
-        <Label for="tabs-demo-username">Powtórz nowe hasło</Label>
-        <Input id="tabs-demo-username" placeholder="Powtórz swoje nowe hasło" type="password" />
-      </div>
-    </template>
-  </BaseCard>
+    </CardHeader>
+    <CardContent class="p-0">
+      <PasswordForm />
+    </CardContent>
+  </Card>
 </template>
