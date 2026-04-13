@@ -17,6 +17,7 @@ export function useAuth() {
     )
     token.value = authToken
     if (import.meta.client) {
+      localStorage.setItem('token', authToken)
       localStorage.setItem('type', type)
     }
     await navigateTo('/dashboard')
@@ -26,6 +27,7 @@ export function useAuth() {
     user.value = null
     token.value = null
     if (import.meta.client) {
+      localStorage.removeItem('token')
       localStorage.removeItem('type')
     }
     await navigateTo('/login')
