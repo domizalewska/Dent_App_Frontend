@@ -13,7 +13,7 @@ setHeader('Profil')
 
 const { set } = useBreadcrumbs()
 
-set([{ name: 'Profil', link: '/profil' }])
+set([{ name: 'Profil', link: '/profile' }])
 </script>
 
 <template>

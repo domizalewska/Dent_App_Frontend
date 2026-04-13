@@ -2,6 +2,15 @@
 import SidebarComponent from '~/components/main/SidebarComponent.vue'
 import { header } from '~/composables/useHeader'
 import { breadcrumbs } from '~/composables/useBreadcrumbs'
+
+const { user } = useAuth()
+const { $api } = useNuxtApp()
+
+onMounted(async () => {
+  if (!user.value) {
+    user.value = await ($api as typeof $fetch)('/user')
+  }
+})
 </script>
 
 <template>
