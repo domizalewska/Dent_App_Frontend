@@ -32,7 +32,9 @@ const tabs = [
     <Card class="overflow-hidden pt-0 rounded-b-none border-b-0">
       <div
         class="h-32 bg-muted bg-cover bg-center sm:h-40"
-        style="background-image: url('https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/pawel-czerwinski-O4fAgtXLRwI-unsplash.jpg')"
+        style="
+          background-image: url('https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/pawel-czerwinski-O4fAgtXLRwI-unsplash.jpg');
+        "
       />
       <CardContent class="relative px-6 pb-0">
         <ProfileHeaderComponent :user="user" />

@@ -9,9 +9,7 @@ import { UserRound } from 'lucide-vue-next'
         <UserRound class="size-4 text-muted-foreground" aria-hidden="true" />
         <div>
           <CardTitle class="text-sm font-medium">Dane użytkownika</CardTitle>
-          <CardDescription class="text-xs">
-            Zaktualizuj swoje dane osobowe
-          </CardDescription>
+          <CardDescription class="text-xs"> Zaktualizuj swoje dane osobowe </CardDescription>
         </div>
       </div>
     </CardHeader>
