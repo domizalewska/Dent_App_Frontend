@@ -7,12 +7,12 @@ import type { User } from '~/types'
 
 const { user } = useAuth()
 
-const { data } = useAPI<{ data: User }>('/user/user-info', { server: false })
+const { data } = useAPI<User>('/user/user-info', { server: false })
 
 watch(
   data,
   (val) => {
-    if (val) user.value = val.data
+    if (val) user.value = val
   },
   { immediate: true },
 )
