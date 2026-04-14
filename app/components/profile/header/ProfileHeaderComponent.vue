@@ -17,7 +17,7 @@ defineProps<Props>()
         :src="user.profile_picture"
         :alt="`${user.first_name} ${user.last_name}`"
       />
-      <AvatarFallback class="text-2xl">
+      <AvatarFallback v-else class="text-2xl">
         {{ user.first_name?.[0] }}{{ user.last_name?.[0] }}
       </AvatarFallback>
     </Avatar>

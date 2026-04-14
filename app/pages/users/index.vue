@@ -44,7 +44,7 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
         v-if="usersData?.data"
         :columns="usersColumns"
         :data="usersData.data"
-        :on-row-click="(row) => router.push(`/profile/${row.uuid}`)"
+        :on-row-click="(row) => router.push(`/users/${row.uuid}`)"
       />
     </div>
   </div>
