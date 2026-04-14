@@ -1,4 +1,4 @@
-export interface User {
+export type User = {
   uuid: string
   first_name: string
   last_name: string
@@ -7,4 +7,6 @@ export interface User {
   phone: string
   created_at: Date
   is_active?: boolean
+  profile_picture: string
+  background_picture: string
 }

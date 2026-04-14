@@ -8,15 +8,15 @@ export function useAuth() {
 
   async function loginUser(payload: LoginPayload) {
     const { $api } = useNuxtApp()
-    const { token: authToken, type }: { token: string; type: string } = await ($api as typeof $fetch)(
-      '/login',
-      {
-        method: 'POST',
-        body: payload,
-      },
-    )
+    const { token: authToken, type }: { token: string; type: string } = await (
+      $api as typeof $fetch
+    )('/login', {
+      method: 'POST',
+      body: payload,
+    })
     token.value = authToken
     if (import.meta.client) {
+      localStorage.setItem('token', authToken)
       localStorage.setItem('type', type)
     }
     await navigateTo('/dashboard')
@@ -26,6 +26,7 @@ export function useAuth() {
     user.value = null
     token.value = null
     if (import.meta.client) {
+      localStorage.removeItem('token')
       localStorage.removeItem('type')
     }
     await navigateTo('/login')
