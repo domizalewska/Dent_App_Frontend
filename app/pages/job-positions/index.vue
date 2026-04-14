@@ -8,10 +8,15 @@ import { JobPositionsEndpoints } from '~/features/job-positions'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseIconButton from '~/components/base/buttons/BaseIconButton.vue'
 import { Icon } from '@iconify/vue'
+import JobPositionAddDialog from '~/components/job-positions/JobPositionAddDialog.vue'
+import { useOverlay } from '#ui/composables'
 
 definePageMeta({
   layout: 'dashboard',
 })
+
+const overlay = useOverlay()
+const addDialog = overlay.create(JobPositionAddDialog)
 
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()
@@ -26,13 +31,17 @@ const {
   pending,
   error,
 } = await usePaginatedAPI<JobPosition>(`${JobPositionsEndpoints().TABLE}`)
+
+function addDialogOpen() {
+  addDialog.open()
+}
 </script>
 
 <template>
   <div class="h-full">
     <ClientOnly>
       <Teleport to="#header-page-buttons">
-        <BaseIconButton tooltip="Dodaj stanowisko" side="bottom">
+        <BaseIconButton tooltip="Dodaj stanowisko" side="bottom" @click="addDialogOpen()">
           <template #default>
             <Icon icon="lucide:plus" />
           </template>
@@ -46,7 +55,7 @@ const {
             <BaseTableSearch />
             <BaseExportFile
               :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="`${JobPositionsEndpoints.EXPORT}`"
+              :endpoint="`${JobPositionsEndpoints().EXPORT}`"
               file-name="Tabela stanowisk"
             />
           </div>
