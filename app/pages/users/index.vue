@@ -5,10 +5,14 @@ import { useHeader } from '~/composables/useHeader'
 import { usersColumns, UsersEndpoints } from '~/features/users'
 import type { User } from '~/types'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
+import BaseSwitch from '~/components/base/buttons/BaseSwitch.vue'
+import { computed, ref } from 'vue'
 
 definePageMeta({
   layout: 'dashboard',
 })
+
+const isActive = ref<boolean>(false)
 
 const router = useRouter()
 const { set } = useBreadcrumbs()
@@ -19,11 +23,18 @@ set([{ name: 'Użytkownicy', link: '/users' }])
 resetHeader()
 setHeader('Użytkownicy')
 
+const usersActive = computed(() => {})
+
 const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${UsersEndpoints.LIST}`)
 </script>
 
 <template>
   <div class="h-full">
+    <ClientOnly>
+      <Teleport to="#header-page-buttons">
+        <BaseSwitch :value="isActive" label="Pokaż też nieaktywnych" />
+      </Teleport>
+    </ClientOnly>
     <div class="flex flex-col">
       <BaseHeader>
         <template #right>
