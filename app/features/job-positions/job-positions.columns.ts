@@ -1,6 +1,7 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { JobPosition } from '~/types/job-position/job-position.type'
+import JobPositionColumnAction from '~/components/job-positions/columns/JobPositionColumnAction.vue'
 
 export const jobPositionsColumns: ColumnDef<JobPosition>[] = [
   {
@@ -25,5 +26,10 @@ export const jobPositionsColumns: ColumnDef<JobPosition>[] = [
     cell: ({ row }) => {
       return h('div', { class: 'text-left font-normal text-muted-foreground' }, row.original.m_name)
     },
+  },
+  {
+    accessorKey: 'action',
+    header: () => h('div', { class: 'flex item-center text-center text-foreground' }),
+    cell: ({ row }) => h(JobPositionColumnAction, { uuid: row.original.uuid }),
   },
 ]

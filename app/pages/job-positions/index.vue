@@ -8,7 +8,8 @@ import { JobPositionsEndpoints } from '~/features/job-positions'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseIconButton from '~/components/base/buttons/BaseIconButton.vue'
 import { Icon } from '@iconify/vue'
-import JobPositionAddDialog from '~/components/job-positions/JobPositionAddDialog.vue'
+import JobPositionAddDialog from '~/components/job-positions/dialog/JobPositionAddDialog.vue'
+import { JobPositionTable } from '~/symbols'
 
 definePageMeta({
   layout: 'dashboard',
@@ -26,7 +27,9 @@ const {
   data: jobPositionsData,
   pending,
   error,
-} = await usePaginatedAPI<JobPosition>(`${JobPositionsEndpoints().TABLE}`)
+} = await usePaginatedAPI<JobPosition>(`${JobPositionsEndpoints().TABLE}`, {
+  key: JobPositionTable.toString(),
+})
 
 const isAddDialogOpen = ref(false)
 
