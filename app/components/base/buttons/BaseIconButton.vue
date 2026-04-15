@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 interface Props {
   tooltip: string
   variant?: 'outline' | 'default' | 'ghost'
@@ -12,9 +13,9 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <Tooltip >
-    <TooltipTrigger >
-      <Button :variant="variant" size="icon" class="rounded-full">
+  <Tooltip>
+    <TooltipTrigger as-child>
+      <Button :variant="variant" size="icon" class="rounded-full" v-bind="$attrs">
         <slot />
         <span class="sr-only">{{ tooltip }}</span>
       </Button>

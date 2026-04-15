@@ -9,14 +9,10 @@ import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseIconButton from '~/components/base/buttons/BaseIconButton.vue'
 import { Icon } from '@iconify/vue'
 import JobPositionAddDialog from '~/components/job-positions/JobPositionAddDialog.vue'
-import { useOverlay } from '#ui/composables'
 
 definePageMeta({
   layout: 'dashboard',
 })
-
-const overlay = useOverlay()
-const addDialog = overlay.create(JobPositionAddDialog)
 
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()
@@ -32,8 +28,10 @@ const {
   error,
 } = await usePaginatedAPI<JobPosition>(`${JobPositionsEndpoints().TABLE}`)
 
+const isAddDialogOpen = ref(false)
+
 function addDialogOpen() {
-  addDialog.open()
+  isAddDialogOpen.value = true
 }
 </script>
 
@@ -62,6 +60,7 @@ function addDialogOpen() {
         </template>
       </BaseHeader>
     </div>
+    <JobPositionAddDialog v-if="isAddDialogOpen" @close="isAddDialogOpen = false" />
     <div class="h-full flex flex-col min-h-0">
       <DataTable
         v-if="jobPositionsData?.data"
