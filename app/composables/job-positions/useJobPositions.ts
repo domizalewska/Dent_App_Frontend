@@ -2,6 +2,8 @@ import { useConfirmDialog } from '@vueuse/core'
 import { toast } from 'vue-sonner'
 import { JobPositionsEndpoints } from '~/features/job-positions'
 import type { JobPosition } from '~/types/job-position/job-position.type'
+import { JobPositionTable } from '~/symbols'
+import { refreshNuxtData } from 'nuxt/app'
 
 export const useJobPositions = () => {
   const { $api } = useNuxtApp()
@@ -13,7 +15,7 @@ export const useJobPositions = () => {
       api(JobPositionsEndpoints().TABLE, {
         method: 'POST',
         body: payload,
-      }).then(() => refreshNuxtData(JobPositionsEndpoints().TABLE)),
+      }).then(() => refreshNuxtData(JobPositionTable.toString())),
       {
         success: {
           message: 'Dodany nowy rekord',
@@ -41,7 +43,7 @@ export const useJobPositions = () => {
       api(JobPositionsEndpoints(uuid).JOB_POSITION_DETAIL, {
         method: 'PUT',
         body: payload,
-      }).then(() => refreshNuxtData(JobPositionsEndpoints().TABLE)),
+      }).then(() => refreshNuxtData(JobPositionTable.toString())),
       {
         success: {
           message: 'Zmiany zostały zapisane',
@@ -71,7 +73,7 @@ export const useJobPositions = () => {
     return toast.promise(
       api(JobPositionsEndpoints(uuid).JOB_POSITION_DETAIL, {
         method: 'DELETE',
-      }).then(() => refreshNuxtData(JobPositionsEndpoints().TABLE)),
+      }).then(() => refreshNuxtData(JobPositionTable.toString())),
       {
         success: {
           message: 'Rekord został usunięty',
