@@ -1,4 +1,3 @@
-import { useConfirmDialog } from '@vueuse/core'
 import { toast } from 'vue-sonner'
 import { JobPositionsEndpoints } from '~/features/job-positions'
 import type { JobPosition } from '~/types/job-position/job-position.type'
@@ -7,7 +6,6 @@ import { refreshNuxtData } from 'nuxt/app'
 
 export const useJobPositions = () => {
   const { $api } = useNuxtApp()
-  const { reveal } = useConfirmDialog()
   const api = $api as typeof $fetch
 
   async function addRecord(payload: JobPosition) {
@@ -67,9 +65,6 @@ export const useJobPositions = () => {
   }
 
   async function deleteRecord(uuid: string) {
-    const { data: confirmed } = await reveal()
-    if (!confirmed) return
-
     return toast.promise(
       api(JobPositionsEndpoints(uuid).JOB_POSITION_DETAIL, {
         method: 'DELETE',

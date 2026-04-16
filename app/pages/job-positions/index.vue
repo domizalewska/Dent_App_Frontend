@@ -9,7 +9,9 @@ import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseIconButton from '~/components/base/buttons/BaseIconButton.vue'
 import { Icon } from '@iconify/vue'
 import JobPositionAddDialog from '~/components/job-positions/dialog/JobPositionAddDialog.vue'
+import JobPositionEditDialog from '~/components/job-positions/dialog/JobPositionEditDialog.vue'
 import { JobPositionTable } from '~/symbols'
+import { useDialog } from '~/composables/useDialog'
 
 definePageMeta({
   layout: 'dashboard',
@@ -17,11 +19,11 @@ definePageMeta({
 
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()
-
 set([{ name: 'Stanowiska pracy', link: '/job-positions' }])
-
 resetHeader()
 setHeader('Stanowiska pracy')
+
+const { open, close, activeProps, activeComponent } = useDialog()
 
 const {
   data: jobPositionsData,
@@ -31,10 +33,12 @@ const {
   key: JobPositionTable.toString(),
 })
 
-const isAddDialogOpen = ref(false)
-
 function addDialogOpen() {
-  isAddDialogOpen.value = true
+  open(JobPositionAddDialog)
+}
+
+function onEdit(record: JobPosition) {
+  open(JobPositionEditDialog, { record })
 }
 </script>
 
@@ -63,12 +67,13 @@ function addDialogOpen() {
         </template>
       </BaseHeader>
     </div>
-    <JobPositionAddDialog v-if="isAddDialogOpen" @close="isAddDialogOpen = false" />
+    <component :is="activeComponent" v-bind="activeProps" @close="close" />
     <div class="h-full flex flex-col min-h-0">
       <DataTable
         v-if="jobPositionsData?.data"
         :columns="jobPositionsColumns"
         :data="jobPositionsData.data"
+        :on-row-click="(row) => onEdit(row)"
       />
     </div>
   </div>

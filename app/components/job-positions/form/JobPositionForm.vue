@@ -5,6 +5,10 @@ import { z } from 'zod'
 import { Form } from 'vee-validate'
 import type { JobPosition } from '~/types/job-position/job-position.type'
 
+const props = defineProps<{
+  initialValues?: Partial<JobPosition>
+}>()
+
 const emit = defineEmits(['submit', 'cancel'])
 
 const formSchema = toTypedSchema(
@@ -20,7 +24,7 @@ function onSubmit(values: JobPosition) {
 }
 </script>
 <template>
-  <Form class="px-4 py-4" :validation-schema="formSchema" @submit="onSubmit">
+  <Form class="px-4 py-4" :validation-schema="formSchema" :initial-values="initialValues" @submit="onSubmit">
     <BaseInputForm
       name="name"
       label="Nazwa stanowiska"

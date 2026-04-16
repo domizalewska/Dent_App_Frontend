@@ -18,7 +18,7 @@ function onConfirm() {
     variant="outline"
     size="icon"
     class="rounded-full cursor-pointer"
-    @click="showConfirm = true"
+    @click.stop="showConfirm = true"
   >
     <Trash2 class="size-4" />
   </Button>
