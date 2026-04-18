@@ -2,6 +2,8 @@
 import { Moon, Sun } from 'lucide-vue-next'
 import { ref } from 'vue'
 
+const { user } = useAuth()
+
 const isToggle = ref(false)
 const colorMode = useColorMode()
 function toggleTheme() {
@@ -15,6 +17,8 @@ function toggleTheme() {
       <Sun v-if="isToggle" />
       <Moon v-if="!isToggle" />
     </Button>
-    <AvatarComponent class="flex items-start" />
+    <ClientOnly>
+      <AvatarComponent v-if="user" class="flex items-start" :user="user" />
+    </ClientOnly>
   </div>
 </template>
