@@ -39,16 +39,18 @@ defineProps<Props>()
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
-        <DropdownMenuItem @click="router.push(ProfileRoutes.PROFILE(user.uuid))"
+        <DropdownMenuItem
+          class="cursor-pointer"
+          @click="router.push(ProfileRoutes.PROFILE(user.uuid))"
           ><UserIcon class="mr-2 h-4 w-4" />Profil</DropdownMenuItem
         >
-        <DropdownMenuItem @click="router.push('/settings')"
+        <DropdownMenuItem class="cursor-pointer" @click="router.push('/settings')"
           ><Settings class="mr-2 h-4 w-4" />Ustawienia</DropdownMenuItem
         >
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
-        <DropdownMenuItem variant="destructive" @click="logoutUser()"
+        <DropdownMenuItem class="cursor-pointer" variant="destructive" @click="logoutUser()"
           ><LogOut class="mr-2 h-4 w-4" />Wyloguj się</DropdownMenuItem
         >
       </DropdownMenuGroup>
