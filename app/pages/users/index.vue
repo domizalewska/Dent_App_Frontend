@@ -7,6 +7,7 @@ import type { User } from '~/types'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseSwitch from '~/components/base/buttons/BaseSwitch.vue'
 import { computed, ref } from 'vue'
+import BaseSkeletonHeader from '~/components/base/skeleton/header/BaseSkeletonHeader.vue'
 
 definePageMeta({
   layout: 'dashboard',
@@ -30,15 +31,15 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
 
 <template>
   <div class="h-full">
+    <BaseSkeletonHeader v-if="pending" />
     <BaseTableSkeleton v-if="pending" :columns="4" />
-
     <ClientOnly>
       <Teleport to="#header-page-buttons">
         <BaseSwitch :value="isActive" label="Pokaż też nieaktywnych" />
       </Teleport>
     </ClientOnly>
     <div class="flex flex-col">
-      <BaseHeader>
+      <BaseHeader v-if="usersData?.data">
         <template #right>
           <div class="flex gap-2">
             <BaseTableSearch />
