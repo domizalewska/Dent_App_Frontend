@@ -30,6 +30,8 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
 
 <template>
   <div class="h-full">
+    <BaseTableSkeleton v-if="pending" :columns="4" />
+
     <ClientOnly>
       <Teleport to="#header-page-buttons">
         <BaseSwitch :value="isActive" label="Pokaż też nieaktywnych" />
