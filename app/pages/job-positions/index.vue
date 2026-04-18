@@ -6,7 +6,6 @@ import type { JobPosition } from '~/types/job-position/job-position.type'
 import { jobPositionsColumns } from '~/features/job-positions/job-positions.columns'
 import { JobPositionsEndpoints } from '~/features/job-positions'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
-import BaseIconButton from '~/components/base/buttons/BaseIconButton.vue'
 import { Icon } from '@iconify/vue'
 import JobPositionAddDialog from '~/components/job-positions/dialog/JobPositionAddDialog.vue'
 import JobPositionEditDialog from '~/components/job-positions/dialog/JobPositionEditDialog.vue'
@@ -44,25 +43,26 @@ function onEdit(record: JobPosition) {
 
 <template>
   <div class="h-full">
-    <ClientOnly>
-      <Teleport to="#header-page-buttons">
-        <BaseIconButton tooltip="Dodaj stanowisko" side="bottom" @click="addDialogOpen()">
-          <template #default>
-            <Icon icon="lucide:plus" />
-          </template>
-        </BaseIconButton>
-      </Teleport>
-    </ClientOnly>
     <div class="flex flex-col">
       <BaseHeader>
-        <template #right>
+        <template #left>
           <div class="flex gap-2">
-            <BaseTableSearch />
             <BaseExportFile
               :extensions="['xlsx', 'csv', 'pdf']"
               :endpoint="`${JobPositionsEndpoints().EXPORT}`"
               file-name="Tabela stanowisk"
             />
+          </div>
+        </template>
+        <template #right>
+          <div class="flex gap-2">
+            <BaseTableSearch />
+            <Button variant="default">
+              <span class="text-sm text-color mt-2 mb-2">
+                {{ 'Dodaj wpis' }}
+              </span>
+              <Icon icon="lucide:plus" />
+            </Button>
           </div>
         </template>
       </BaseHeader>
