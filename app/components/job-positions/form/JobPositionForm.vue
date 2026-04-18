@@ -24,7 +24,12 @@ function onSubmit(values: JobPosition) {
 }
 </script>
 <template>
-  <Form class="px-4 py-4" :validation-schema="formSchema" :initial-values="initialValues" @submit="onSubmit">
+  <Form
+    class="px-4 py-4"
+    :validation-schema="formSchema"
+    :initial-values="initialValues"
+    @submit="onSubmit"
+  >
     <BaseInputForm
       name="name"
       label="Nazwa stanowiska"

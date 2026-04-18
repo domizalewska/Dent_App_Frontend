@@ -7,8 +7,8 @@ const props = defineProps<{ uuid: string }>()
 const { deleteRecord } = useJobPositions()
 const showConfirm = ref(false)
 
-function onConfirm() {
-  deleteRecord(props.uuid)
+async function onConfirm() {
+  await deleteRecord(props.uuid)
   showConfirm.value = false
 }
 </script>
