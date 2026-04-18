@@ -57,7 +57,7 @@ function onEdit(record: JobPosition) {
         <template #right>
           <div class="flex gap-2">
             <BaseTableSearch />
-            <Button variant="default">
+            <Button variant="default" @click="addDialogOpen">
               <span class="text-sm text-color mt-2 mb-2">
                 {{ 'Dodaj wpis' }}
               </span>
