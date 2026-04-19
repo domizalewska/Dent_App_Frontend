@@ -27,7 +27,7 @@ const {
   data: patientsData,
   pending,
   error,
-} = await usePaginatedAPI<PatientType>(`${PatientsEndpoints.LIST}`)
+} = await usePaginatedAPI<PatientType>(`${PatientsEndpoints.USER_DETAILS}`)
 </script>
 
 <template>

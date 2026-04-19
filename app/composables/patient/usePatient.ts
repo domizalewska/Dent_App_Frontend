@@ -1,21 +1,20 @@
 import { toast } from 'vue-sonner'
-import { JobPositionsEndpoints } from '~/features/job-positions'
-import type { JobPosition } from '~/types/job-position/job-position.type'
-import { JobPositionTable } from '~/symbols'
 import { refreshNuxtData } from 'nuxt/app'
 import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
 import { PatientsEndpoints } from '~/features/patients'
+import type { PatientType } from '~/types'
+import { PatientTable } from '~/symbols'
 
 export const usePatient = () => {
   const { $api } = useNuxtApp()
   const api = $api as typeof $fetch
 
-  async function addRecord(payload: JobPosition) {
+  async function addRecord(payload: PatientType) {
     return toast.promise(
       api(PatientsEndpoints().TABLE, {
         method: 'POST',
         body: payload,
-      }).then(() => refreshNuxtData(JobPositionTable.toString())),
+      }).then(() => refreshNuxtData(PatientTable.toString())),
       {
         success: { message: 'Dodany nowy rekord', style: toastSuccessStyle },
         error: { message: 'Błąd podczas dodawania rekordu', style: toastErrorStyle },
@@ -23,12 +22,12 @@ export const usePatient = () => {
     )
   }
 
-  async function editRecord(uuid: string, payload: Partial<JobPosition>) {
+  async function editRecord(uuid: string, payload: Partial<PatientType>) {
     return toast.promise(
-      api(JobPositionsEndpoints(uuid).JOB_POSITION_DETAIL, {
+      api(PatientsEndpoints(uuid).JOB_POSITION_DETAIL, {
         method: 'PUT',
         body: payload,
-      }).then(() => refreshNuxtData(JobPositionTable.toString())),
+      }).then(() => refreshNuxtData(PatientTable.toString())),
       {
         success: { message: 'Zmiany zostały zapisane', style: toastSuccessStyle },
         error: { message: 'Błąd podczas zapisywania zmian', style: toastErrorStyle },
@@ -38,9 +37,9 @@ export const usePatient = () => {
 
   async function deleteRecord(uuid: string) {
     return toast.promise(
-      api(JobPositionsEndpoints(uuid).JOB_POSITION_DETAIL, {
+      api(PatientsEndpoints(uuid).JOB_POSITION_DETAIL, {
         method: 'DELETE',
-      }).then(() => refreshNuxtData(JobPositionTable.toString())),
+      }).then(() => refreshNuxtData(PatientTable.toString())),
       {
         success: { message: 'Rekord został usunięty', style: toastSuccessStyle },
         error: { message: 'Błąd podczas usuwania rekordu', style: toastErrorStyle },
