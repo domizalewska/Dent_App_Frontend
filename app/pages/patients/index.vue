@@ -9,12 +9,19 @@ import BaseTableSkeleton from '~/components/base/skeleton/table/BaseTableSkeleto
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseHeader from '~/components/base/header/BaseHeader.vue'
 import BaseExportFile from '~/components/base/export/BaseExportFile.vue'
+import { useDialog } from '~/composables/useDialog'
+import { Icon } from '@iconify/vue'
+import { usePatient } from '~/composables/patient/usePatient'
 
 definePageMeta({
   layout: 'dashboard',
 })
 
 const { set } = useBreadcrumbs()
+
+const { open, close } = useDialog()
+
+const { addRecord } = usePatient()
 
 set([{ name: 'Pacjenci', link: '/patients' }])
 
@@ -28,6 +35,10 @@ const {
   pending,
   error,
 } = await usePaginatedAPI<PatientType>(`${PatientsEndpoints.USER_DETAILS}`)
+
+async function addOpenDialog() {
+  await addRecord
+}
 </script>
 
 <template>
@@ -46,6 +57,14 @@ const {
               :endpoint="`${PatientsEndpoints.EXPORT}`"
               file-name="Tabela pacjentów"
             />
+            <Button @click="addDialogOpen()">
+              <template #default>
+                <span class="text-color font-normal">
+                  {{ 'Dodaj wpis' }}
+                </span>
+                <Icon icon="lucide:plus" />
+              </template>
+            </Button>
           </div>
         </template>
       </BaseHeader>
