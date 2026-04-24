@@ -1,5 +1,5 @@
 export const UsersEndpoints = {
-  LIST: '/user/selectlist',
-  USER_DETAILS: `/user`,
+  LIST_SELECT: '/user/selectlist',
+  LIST: `/user`,
   EXPORT: '/user/export',
 } as const
