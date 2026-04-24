@@ -13,6 +13,12 @@ export function useAuth() {
     )('/login', {
       method: 'POST',
       body: payload,
+      onResponseError({ response }) {
+        if (response.status === 401 || response.status === 404) {
+          throw new Error('Nieprawidłowy email lub hasło')
+        }
+        throw new Error('Wystąpił błąd. Spróbuj ponownie później.')
+      },
     })
     token.value = authToken
     if (import.meta.client) {
