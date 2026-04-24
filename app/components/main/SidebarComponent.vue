@@ -26,6 +26,18 @@ const data = {
       ],
     },
     {
+      title: 'Stanowiska pracy',
+      url: '/job-positions',
+      icon: BookUser,
+      isActive: true,
+      items: [
+        {
+          title: 'Lista',
+          url: '/job-positions',
+        },
+      ],
+    },
+    {
       title: 'Pacjenci',
       url: '/patients',
       icon: 'mdi:patient-outline',
