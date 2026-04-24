@@ -24,7 +24,7 @@ const inputType = computed(() => {
 
 <template>
   <div class="space-y-1.5">
-    <Label :for="name" class="text-xs font-medium text-muted-foreground">{{ label }}</Label>
+    <Label :for="name" class="px-2 text-xs font-medium text-muted-foreground">{{ label }}</Label>
     <div class="relative">
       <Input
         :id="name"
@@ -33,14 +33,14 @@ const inputType = computed(() => {
         :placeholder="placeholder"
         :type="inputType"
         :aria-invalid="!!errorMessage"
-        :class="{ 'pr-10': type === 'password' }"
+        :class="['rounded-xl', 'placeholder:text-sm',{ 'pr-10': type === 'password' }]"
       />
       <Button
         v-if="type === 'password'"
         variant="ghost"
         size="sm"
         type="button"
-        class="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+        class="absolute right-0 top-0 h-full rounded-xl px-3 hover:bg-transparent"
         @click="showPassword = !showPassword"
       >
         <Eye v-if="!showPassword" class="size-4 text-muted-foreground" />
