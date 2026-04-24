@@ -5,6 +5,7 @@ export type PatientType = {
   email?: string
   phone?: string
   pesel?: string
+  address?: string
   is_active: boolean
   created_at: Date
   updated_at: Date

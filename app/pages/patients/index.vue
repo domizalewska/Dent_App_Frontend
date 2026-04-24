@@ -11,7 +11,7 @@ import BaseHeader from '~/components/base/header/BaseHeader.vue'
 import BaseExportFile from '~/components/base/export/BaseExportFile.vue'
 import { useDialog } from '~/composables/useDialog'
 import { Icon } from '@iconify/vue'
-import { usePatient } from '~/composables/patient/usePatient'
+import PatientDialog from '~/components/patients/dialog/PatientDialog.vue'
 
 definePageMeta({
   layout: 'dashboard',
@@ -19,9 +19,7 @@ definePageMeta({
 
 const { set } = useBreadcrumbs()
 
-const { open, close } = useDialog()
-
-const { addRecord } = usePatient()
+const { open, close, activeComponent, activeProps } = useDialog()
 
 set([{ name: 'Pacjenci', link: '/patients' }])
 
@@ -34,10 +32,10 @@ const {
   data: patientsData,
   pending,
   error,
-} = await usePaginatedAPI<PatientType>(`${PatientsEndpoints.USER_DETAILS}`)
+} = await usePaginatedAPI<PatientType>(`${PatientsEndpoints().TABLE}`)
 
 async function addOpenDialog() {
-  await addRecord
+  open(PatientDialog)
 }
 </script>
 
@@ -54,10 +52,10 @@ async function addOpenDialog() {
             <BaseTableSearch />
             <BaseExportFile
               :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="`${PatientsEndpoints.EXPORT}`"
+              :endpoint="`${PatientsEndpoints().EXPORT}`"
               file-name="Tabela pacjentów"
             />
-            <Button @click="addDialogOpen()">
+            <Button @click="addOpenDialog()">
               <template #default>
                 <span class="text-color font-normal">
                   {{ 'Dodaj wpis' }}
@@ -69,6 +67,7 @@ async function addOpenDialog() {
         </template>
       </BaseHeader>
     </div>
+    <component :is="activeComponent" v-bind="activeProps" @close="close" />
     <div class="h-full flex flex-col min-h-0">
       <DataTable v-if="patientsData?.data" :columns="patientsColumns" :data="patientsData.data" />
     </div>

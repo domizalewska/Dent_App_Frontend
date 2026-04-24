@@ -1,5 +1,6 @@
-export const PatientsEndpoints = {
+export const PatientsEndpoints = (uuid?: string) => ({
   LIST: '/patient/selectlist',
-  USER_DETAILS: '/patient',
+  TABLE: '/patient',
   EXPORT: '/patient/export',
-} as const
+  ROW_UUID: `/patient${uuid}`,
+})
