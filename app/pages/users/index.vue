@@ -8,6 +8,7 @@ import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseSwitch from '~/components/base/buttons/BaseSwitch.vue'
 import { computed, ref } from 'vue'
 import BaseSkeletonHeader from '~/components/base/skeleton/header/BaseSkeletonHeader.vue'
+import { ProfileRoutes } from '~/types/routes'
 
 definePageMeta({
   layout: 'dashboard',
@@ -26,7 +27,7 @@ setHeader('Użytkownicy')
 
 const usersActive = computed(() => {})
 
-const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${UsersEndpoints.LIST}`)
+const { data: usersData, pending, error } = await usePaginatedAPI<User>(UsersEndpoints().LIST)
 </script>
 
 <template>
@@ -45,7 +46,7 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
             <BaseTableSearch />
             <BaseExportFile
               :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="`${UsersEndpoints.EXPORT}`"
+              :endpoint="`${UsersEndpoints().EXPORT}`"
               file-name="Tabela użytkowników"
             />
           </div>
@@ -58,7 +59,7 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
         v-if="usersData?.data"
         :columns="usersColumns"
         :data="usersData.data"
-        :on-row-click="(row) => router.push(`/users/${row.uuid}`)"
+        :on-row-click="(row) => router.push(`${ProfileRoutes.PROFILE(row.uuid)}`)"
       />
     </div>
   </div>

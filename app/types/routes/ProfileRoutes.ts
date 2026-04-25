@@ -1,3 +1,3 @@
 export const ProfileRoutes = {
-  PROFILE: (uuid: string) => `/profile/${uuid}`,
+  PROFILE: (uuid: string) => `/users/${uuid}`,
 }
