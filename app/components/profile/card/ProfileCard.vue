@@ -13,7 +13,7 @@ import { UserRound } from 'lucide-vue-next'
         </div>
       </div>
     </CardHeader>
-    <CardContent class="p-0">
+    <CardContent>
       <form class="px-4 py-4">
         <div class="space-y-1.5">
           <Label for="first-name" class="text-xs font-medium text-muted-foreground">Imię</Label>
