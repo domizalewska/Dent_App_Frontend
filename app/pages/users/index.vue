@@ -26,7 +26,7 @@ setHeader('Użytkownicy')
 
 const usersActive = computed(() => {})
 
-const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${UsersEndpoints.LIST}`)
+const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${UsersEndpoints().LIST}`)
 </script>
 
 <template>
@@ -45,7 +45,7 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
             <BaseTableSearch />
             <BaseExportFile
               :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="`${UsersEndpoints.EXPORT}`"
+              :endpoint="`${UsersEndpoints().EXPORT}`"
               file-name="Tabela użytkowników"
             />
           </div>
