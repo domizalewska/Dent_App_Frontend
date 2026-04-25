@@ -2,8 +2,8 @@
 import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
 import type { User } from '~/types'
-import { UsersEndpoints } from '~/features/users'
 import { useAPI } from '~/composables/useAPI'
+import { PatientsEndpoints } from '~/features/patients'
 
 definePageMeta({
   layout: 'dashboard',
@@ -21,13 +21,17 @@ const { set } = useBreadcrumbs()
 
 set([{ name: 'Pacjent', link: '/patients' }])
 
-const { data: userData, pending, error } = await useAPI<User>(UsersEndpoints(id).USER_DETAILS)
+const {
+  data: patientData,
+  pending,
+  error,
+} = await useAPI<User>(PatientsEndpoints(id).PATIENT_DETAILS)
 </script>
 
 <template>
   <div class="flex flex-col w-full justify-center items-center">
     <div class="flex flex-col w-[700px]">
-      <ProfileTabs v-if="userData" :user="userData" />
+      <ProfileTabs v-if="patientData" :user="patientData" />
     </div>
   </div>
 </template>

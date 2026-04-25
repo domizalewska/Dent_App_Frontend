@@ -12,12 +12,15 @@ import BaseExportFile from '~/components/base/export/BaseExportFile.vue'
 import { useDialog } from '~/composables/useDialog'
 import { Icon } from '@iconify/vue'
 import PatientDialog from '~/components/patients/dialog/PatientDialog.vue'
+import { PatientRoutes } from '~/types/routes'
+import { useRouter } from '#vue-router'
 
 definePageMeta({
   layout: 'dashboard',
 })
 
 const { set } = useBreadcrumbs()
+const router = useRouter()
 
 const { open, close, activeComponent, activeProps } = useDialog()
 
@@ -69,7 +72,12 @@ async function addOpenDialog() {
     </div>
     <component :is="activeComponent" v-bind="activeProps" @close="close" />
     <div class="h-full flex flex-col min-h-0">
-      <DataTable v-if="patientsData?.data" :columns="patientsColumns" :data="patientsData.data" />
+      <DataTable
+        v-if="patientsData?.data"
+        :columns="patientsColumns"
+        :data="patientsData.data"
+        :on-row-click="(row) => router.push(PatientRoutes.PATIENT_PROFILE(row.uuid))"
+      />
     </div>
   </div>
 </template>
