@@ -15,11 +15,11 @@ const { id } = params as { id: string }
 const { setHeader, resetHeader } = useHeader()
 
 resetHeader()
-setHeader('Profil')
+setHeader('Pacjent')
 
 const { set } = useBreadcrumbs()
 
-set([{ name: 'Profil', link: '/profile' }])
+set([{ name: 'Pacjent', link: '/patients' }])
 
 const { data: userData, pending, error } = await useAPI<User>(UsersEndpoints(id).USER_DETAILS)
 </script>
