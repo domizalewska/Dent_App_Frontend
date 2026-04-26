@@ -2,6 +2,7 @@
 import { Icon } from '@iconify/vue'
 import type { User } from '~/types'
 import CalendarCard from '~/components/profile/card/CalendarCard.vue'
+import DocumentsCard from '~/components/profile/card/DocumentsCard.vue'
 
 interface Props {
   user: User
@@ -24,6 +25,11 @@ const tabs = [
     name: 'Dostępność',
     value: 'available',
     icon: 'solar:user-id-line-duotone',
+  },
+  {
+    name: 'Umowy',
+    value: 'documents',
+    icon: 'material-symbols:shield-outline',
   },
 ]
 </script>
@@ -63,6 +69,9 @@ const tabs = [
     </TabsContent>
     <TabsContent value="available" class="mt-0">
       <CalendarCard />
+    </TabsContent>
+    <TabsContent value="documents" class="mt-0">
+      <DocumentsCard />
     </TabsContent>
   </Tabs>
 </template>
