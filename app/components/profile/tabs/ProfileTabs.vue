@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import type { User } from '~/types'
+import CalendarCard from '~/components/profile/card/CalendarCard.vue'
 
 interface Props {
   user: User
@@ -20,8 +21,8 @@ const tabs = [
     icon: 'material-symbols:shield-outline',
   },
   {
-    name: 'Powiadomienia',
-    value: 'notifications',
+    name: 'Dostępność',
+    value: 'available',
     icon: 'solar:user-id-line-duotone',
   },
 ]
@@ -60,6 +61,8 @@ const tabs = [
     <TabsContent value="password" class="mt-0">
       <PasswordCard />
     </TabsContent>
-    <TabsContent value="notifications" class="mt-0" />
+    <TabsContent value="available" class="mt-0">
+      <CalendarCard />
+    </TabsContent>
   </Tabs>
 </template>
