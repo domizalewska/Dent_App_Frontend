@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import type { User } from '~/types'
+import CalendarCard from '~/components/profile/card/CalendarCard.vue'
+import DocumentsCard from '~/components/profile/card/DocumentsCard.vue'
+import CompetenciesCard from '~/components/profile/card/CompetenciesCard.vue'
 
 interface Props {
   user: User
@@ -15,14 +18,24 @@ const tabs = [
     icon: 'solar:user-id-line-duotone',
   },
   {
+    name: 'Kompetencje',
+    value: 'competencies',
+    icon: 'solar:diploma-line-duotone',
+  },
+  {
     name: 'Hasło',
     value: 'password',
     icon: 'material-symbols:shield-outline',
   },
   {
-    name: 'Powiadomienia',
-    value: 'notifications',
+    name: 'Dostępność',
+    value: 'available',
     icon: 'solar:user-id-line-duotone',
+  },
+  {
+    name: 'Umowy',
+    value: 'documents',
+    icon: 'material-symbols:shield-outline',
   },
 ]
 </script>
@@ -55,11 +68,19 @@ const tabs = [
     </Card>
 
     <TabsContent value="info" class="mt-0">
-      <ProfileCard />
+      <ProfileCard :user="user" />
+    </TabsContent>
+    <TabsContent value="competencies" class="mt-0">
+      <CompetenciesCard :user="user" />
     </TabsContent>
     <TabsContent value="password" class="mt-0">
       <PasswordCard />
     </TabsContent>
-    <TabsContent value="notifications" class="mt-0" />
+    <TabsContent value="available" class="mt-0">
+      <CalendarCard />
+    </TabsContent>
+    <TabsContent value="documents" class="mt-0">
+      <DocumentsCard />
+    </TabsContent>
   </Tabs>
 </template>

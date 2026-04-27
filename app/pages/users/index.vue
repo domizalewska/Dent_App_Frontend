@@ -27,7 +27,7 @@ setHeader('Użytkownicy')
 
 const usersActive = computed(() => {})
 
-const { data: usersData, pending, error } = await usePaginatedAPI<User>(UsersEndpoints().LIST)
+const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${UsersEndpoints().LIST}`)
 </script>
 
 <template>

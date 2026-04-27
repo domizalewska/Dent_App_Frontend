@@ -21,7 +21,7 @@ const { set } = useBreadcrumbs()
 
 set([{ name: 'Profil', link: '/profile' }])
 
-const { data: userData, pending, error } = await useAPI<User>(UsersEndpoints(id).USER_DETAILS)
+const { data: userData, pending, error } = await useAPI<User>(`${UsersEndpoints(id).USER_DETAILS}`)
 </script>
 
 <template>

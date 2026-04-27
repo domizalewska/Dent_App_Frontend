@@ -1,3 +1,5 @@
+import type { JobPosition } from '~/types/job-position/job-position.type'
+
 export type User = {
   uuid: string
   first_name: string
@@ -13,4 +15,7 @@ export type User = {
   updated_at: string
   profile_picture?: string
   background_picture?: string
+  job_position?: JobPosition
+  pwz_number?: string
+  competencies: string[]
 }
