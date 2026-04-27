@@ -27,15 +27,16 @@ const mappedOptions = computed(() =>
 </script>
 
 <template>
-  <div class="space-y-1.5">
+  <div class="w-full space-y-1.5">
     <Label :for="name" class="px-2 text-xs font-medium text-muted-foreground">{{ label }}</Label>
     <Select :model-value="value" @update:model-value="handleChange">
-      <SelectTrigger :id="name" class="rounded-xl">
+      <SelectTrigger :id="name" class="w-full rounded-xl">
         <SelectValue :placeholder="placeholder" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem
           v-for="option in mappedOptions"
+          v-bind="$attrs"
           :key="option.uuid"
           :value="option.uuid"
         >
