@@ -1,0 +1,48 @@
+<script setup lang="ts" generic="T">
+import { useField } from 'vee-validate'
+
+interface Props {
+  name: string
+  label: string
+  placeholder?: string
+  api: string
+  optionValue: (option: T) => string
+  optionLabel: (option: T) => string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  placeholder: 'Wybierz...',
+})
+
+const { value, errorMessage, handleChange } = useField<string>(() => props.name)
+
+const { data } = useAPI<{ data: T[] }>(props.api)
+
+const mappedOptions = computed(() =>
+  (data.value?.data ?? []).map((e) => ({
+    uuid: props.optionValue(e),
+    name: props.optionLabel(e),
+  })),
+)
+</script>
+
+<template>
+  <div class="space-y-1.5">
+    <Label :for="name" class="px-2 text-xs font-medium text-muted-foreground">{{ label }}</Label>
+    <Select :model-value="value" @update:model-value="handleChange">
+      <SelectTrigger :id="name" class="rounded-xl">
+        <SelectValue :placeholder="placeholder" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem
+          v-for="option in mappedOptions"
+          :key="option.uuid"
+          :value="option.uuid"
+        >
+          {{ option.name }}
+        </SelectItem>
+      </SelectContent>
+    </Select>
+    <p v-if="errorMessage" class="text-xs text-destructive">{{ errorMessage }}</p>
+  </div>
+</template>
