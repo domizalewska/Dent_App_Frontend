@@ -23,7 +23,20 @@ defineProps<Props>()
     </Avatar>
 
     <div class="flex-1 space-y-2 pb-2">
-      <h1 class="text-2xl font-bold">{{ user.first_name }} {{ user.last_name }}</h1>
+      <div class="flex items-center justify-between gap-2">
+        <h1 class="text-2xl font-bold">{{ user.first_name }} {{ user.last_name }}</h1>
+        <Button
+          v-if="user.phone_numbers?.length"
+          as="a"
+          :href="`tel:${user.phone_numbers[0]}`"
+          variant="outline"
+          size="sm"
+          class="shrink-0 gap-1.5 text-xs"
+        >
+          <Phone class="mr-1 size-3" aria-hidden="true" />
+          Zadzwoń
+        </Button>
+      </div>
 
       <p v-if="user.job_position" class="text-sm font-medium text-foreground">
         {{ user.job_position.name }}

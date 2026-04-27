@@ -3,6 +3,7 @@ import { Icon } from '@iconify/vue'
 import type { User } from '~/types'
 import CalendarCard from '~/components/profile/card/CalendarCard.vue'
 import DocumentsCard from '~/components/profile/card/DocumentsCard.vue'
+import CompetenciesCard from '~/components/profile/card/CompetenciesCard.vue'
 
 interface Props {
   user: User
@@ -15,6 +16,11 @@ const tabs = [
     name: 'Informacje',
     value: 'info',
     icon: 'solar:user-id-line-duotone',
+  },
+  {
+    name: 'Kompetencje',
+    value: 'competencies',
+    icon: 'solar:diploma-line-duotone',
   },
   {
     name: 'Hasło',
@@ -63,6 +69,9 @@ const tabs = [
 
     <TabsContent value="info" class="mt-0">
       <ProfileCard :user="user" />
+    </TabsContent>
+    <TabsContent value="competencies" class="mt-0">
+      <CompetenciesCard :user="user" />
     </TabsContent>
     <TabsContent value="password" class="mt-0">
       <PasswordCard />

@@ -17,4 +17,5 @@ export type User = {
   background_picture?: string
   job_position?: JobPosition
   pwz_number?: string
+  competencies: string[]
 }
