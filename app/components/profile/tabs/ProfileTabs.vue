@@ -62,7 +62,7 @@ const tabs = [
     </Card>
 
     <TabsContent value="info" class="mt-0">
-      <ProfileCard />
+      <ProfileCard :user="user" />
     </TabsContent>
     <TabsContent value="password" class="mt-0">
       <PasswordCard />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, MapPin } from 'lucide-vue-next'
+import { BadgeCheck, Calendar, Mail, Phone } from 'lucide-vue-next'
 import type { User } from '~/types'
 
 interface Props {
@@ -22,17 +22,31 @@ defineProps<Props>()
       </AvatarFallback>
     </Avatar>
 
-    <div class="flex-1 space-y-1 pb-2">
+    <div class="flex-1 space-y-2 pb-2">
       <h1 class="text-2xl font-bold">{{ user.first_name }} {{ user.last_name }}</h1>
-      <p class="text-muted-foreground text-sm">{{ user.email }}</p>
+
+      <p v-if="user.job_position" class="text-sm font-medium text-foreground">
+        {{ user.job_position.name }}
+      </p>
+      <p v-else class="text-sm text-muted-foreground">Brak stanowiska</p>
+
+      <div v-if="user.pwz_number" class="flex items-center gap-1.5 text-sm text-muted-foreground">
+        <BadgeCheck class="size-3.5" />
+        PWZ: {{ user.pwz_number }}
+      </div>
+
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-        <span class="flex items-center gap-1">
-          <MapPin class="size-3.5" aria-hidden="true" />
-          Polska
+        <span class="flex items-center gap-1.5">
+          <Mail class="size-3.5" />
+          {{ user.email }}
         </span>
-        <span class="flex items-center gap-1">
-          <Calendar class="size-3.5" aria-hidden="true" />
-          Dołączył
+        <span v-if="user.phone_numbers?.length" class="flex items-center gap-1.5">
+          <Phone class="size-3.5" />
+          {{ user.phone_numbers[0] }}
+        </span>
+        <span class="flex items-center gap-1.5">
+          <Calendar class="size-3.5" />
+          Z nami od
           {{
             new Date(user.created_at).toLocaleDateString('pl-PL', {
               month: 'long',
