@@ -12,8 +12,8 @@ export default defineNuxtConfig({
     dirs: ['~/composables/**', '~/basic/**'],
   },
   colorMode: {
-    preference: 'light',
-    fallback: 'light',
+    preference: 'system',
+    storage: 'sessionStorage',
     classSuffix: '',
   },
   devtools: { enabled: true },
@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/scripts',
     '@nuxt/test-utils',
+    '@nuxtjs/color-mode',
     '@nuxt/ui',
     'shadcn-nuxt',
     '@vee-validate/nuxt',
