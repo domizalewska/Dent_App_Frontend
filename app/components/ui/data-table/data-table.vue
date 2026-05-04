@@ -1,11 +1,11 @@
 <script setup lang="ts" generic="TData, TValue">
 import {
   type ColumnDef,
-  type SortingState,
   FlexRender,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type SortingState,
   useVueTable
 } from '@tanstack/vue-table'
 
@@ -31,6 +31,7 @@ const table = useVueTable({
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
+  manualSorting: true,
   onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
   state: {
     get sorting() { return sorting.value },

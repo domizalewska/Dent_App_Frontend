@@ -1,5 +1,5 @@
 import { h } from 'vue'
-import { ArrowUpDown, Trash2 } from 'lucide-vue-next'
+import { Trash2 } from 'lucide-vue-next'
 import type { ColumnDef } from '@tanstack/vue-table'
 import { formatDateToString } from '~/utils/formatDate'
 import type { User } from '~/types'
@@ -22,16 +22,7 @@ export const usersColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'email',
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        },
-        () => ['Email', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })],
-      )
-    },
+    header: sortableHeader('E-mail'),
     cell: ({ row }) => {
       return h(
         'div',
@@ -43,16 +34,7 @@ export const usersColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'work_email',
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        },
-        () => ['Email pracowniczy', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })],
-      )
-    },
+    header: sortableHeader('E-mail pracowniczy'),
     cell: ({ row }) => {
       return h(
         'div',

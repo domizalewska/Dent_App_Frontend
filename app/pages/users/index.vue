@@ -19,6 +19,8 @@ const router = useRouter()
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()
 
+const { sorting, sortingParams, onSortingChange } = useSorting()
+
 set([{ name: 'Użytkownicy', link: '/users' }])
 
 resetHeader()
@@ -26,7 +28,13 @@ setHeader('Użytkownicy')
 
 const usersActive = computed(() => {})
 
-const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${UsersEndpoints().LIST}`)
+const {
+  data: usersData,
+  pending,
+  error,
+} = await usePaginatedAPI<User>(`${UsersEndpoints().LIST}`, {
+  params: sortingParams,
+})
 </script>
 
 <template>
@@ -58,6 +66,8 @@ const { data: usersData, pending, error } = await usePaginatedAPI<User>(`${Users
         v-if="usersData?.data"
         :columns="usersColumns"
         :data="usersData.data"
+        :sorting="sorting"
+        :on-sorting-change="onSortingChange"
         :on-row-click="(row) => router.push(`/users/${row.uuid}`)"
       />
     </div>
