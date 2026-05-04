@@ -6,6 +6,7 @@ import type { User } from '~/types'
 import BaseBadge from '~/components/base/badge/BaseBadge.vue'
 import { Button } from '~/components/ui/button'
 import { Icon } from '@iconify/vue'
+import { sortableHeader } from '~/utils/sortingHelper'
 
 export const usersColumns: ColumnDef<User>[] = [
   {

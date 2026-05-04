@@ -19,7 +19,7 @@ const router = useRouter()
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()
 
-const { sorting, sortingParams, onSortingChange } = useSorting()
+const { sorting, sortingParams, onSortingChange } = useSorting('user')
 
 set([{ name: 'Użytkownicy', link: '/users' }])
 
