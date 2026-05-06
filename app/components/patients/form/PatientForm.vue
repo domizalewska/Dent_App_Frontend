@@ -43,27 +43,12 @@ function onSubmit(values: Partial<PatientType>) {
     @submit="onSubmit"
   >
     <div class="grid grid-cols-2 gap-4">
-      <BaseInputForm
-        name="first_name"
-        label="Imię"
-        placeholder="Wpisz imię"
-        type="text"
-      />
-      <BaseInputForm
-        name="last_name"
-        label="Nazwisko"
-        placeholder="Wpisz nazwisko"
-        type="text"
-      />
+      <BaseInputForm name="first_name" label="Imię" placeholder="Wpisz imię" type="text" />
+      <BaseInputForm name="last_name" label="Nazwisko" placeholder="Wpisz nazwisko" type="text" />
     </div>
 
     <div class="mt-4">
-      <BaseInputForm
-        name="email"
-        label="Email"
-        placeholder="Wpisz adres email"
-        type="email"
-      />
+      <BaseInputForm name="email" label="Email" placeholder="Wpisz adres email" type="email" />
     </div>
 
     <div class="mt-4">
@@ -76,21 +61,11 @@ function onSubmit(values: Partial<PatientType>) {
     </div>
 
     <div class="mt-4">
-      <BaseInputForm
-        name="pesel"
-        label="PESEL"
-        placeholder="Wpisz numer PESEL"
-        type="text"
-      />
+      <BaseInputForm name="pesel" label="PESEL" placeholder="Wpisz numer PESEL" type="text" />
     </div>
 
     <div class="mt-4">
-      <BaseInputForm
-        name="address"
-        label="Adres"
-        placeholder="Wpisz adres"
-        type="text"
-      />
+      <BaseInputForm name="address" label="Adres" placeholder="Wpisz adres" type="text" />
     </div>
 
     <div class="mt-5 flex items-center justify-end gap-3 border-t pt-4">
