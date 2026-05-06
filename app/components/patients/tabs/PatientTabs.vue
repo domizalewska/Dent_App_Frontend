@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import type { User } from '~/types'
+import type { PatientType } from '~/types'
+import PatientHeaderComponent from '~/components/patients/header/PatientHeaderComponent.vue'
 
 interface Props {
-  user: User
+  patient: PatientType
 }
 
 defineProps<Props>()
@@ -20,8 +21,13 @@ const tabs = [
     icon: 'material-symbols:shield-outline',
   },
   {
-    name: 'Powiadomienia',
-    value: 'notifications',
+    name: 'Zdjęcia',
+    value: 'pictures',
+    icon: 'solar:user-id-line-duotone',
+  },
+  {
+    name: 'Archiwum',
+    value: 'archive',
     icon: 'solar:user-id-line-duotone',
   },
 ]
@@ -37,7 +43,7 @@ const tabs = [
         "
       />
       <CardContent class="relative px-6 pb-0">
-        <ProfileHeaderComponent :user="user" />
+        <PatientHeaderComponent :patient="patient" />
       </CardContent>
       <div class="px-6 pt-2">
         <TabsList class="w-full">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
-import type { User } from '~/types'
+import type { PatientType } from '~/types'
 import { useAPI } from '~/composables/useAPI'
 import { PatientsEndpoints } from '~/features/patients'
 
@@ -25,13 +25,13 @@ const {
   data: patientData,
   pending,
   error,
-} = await useAPI<User>(PatientsEndpoints(id).PATIENT_DETAILS)
+} = await useAPI<PatientType>(PatientsEndpoints(id).PATIENT_DETAILS)
 </script>
 
 <template>
   <div class="flex flex-col w-full justify-center items-center">
     <div class="flex flex-col w-[700px]">
-      <ProfileTabs v-if="patientData" :user="patientData" />
+      <PatientTabs v-if="patientData" :patient="patientData" />
     </div>
   </div>
 </template>
