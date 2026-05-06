@@ -5,9 +5,11 @@ export function useSorting(prefix?: string) {
 
   const sortingParams = computed(() => {
     const id = sorting.value[0]?.id
+    if (!id) return {}
+
+    const direction = sorting.value[0]?.desc ? 'desc' : 'asc'
     return {
-      sort: id ? (prefix ? `${prefix}[${id}]` : id) : undefined,
-      order: sorting.value[0]?.desc ? 'desc' : 'asc',
+      sort: `${id},${direction}`,
     }
   })
 

@@ -22,19 +22,19 @@ export const usersColumns: ColumnDef<User>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: 'email',
+    accessorKey: 'private_email',
     header: sortableHeader('E-mail'),
     cell: ({ row }) => {
       return h(
         'div',
         { class: 'text-left font-normal text-muted-foreground' },
-        row.getValue('email'),
+        row.getValue('private_email'),
       )
     },
     enableSorting: true,
   },
   {
-    accessorKey: 'work_email',
+    accessorKey: 'email',
     header: sortableHeader('E-mail pracowniczy'),
     cell: ({ row }) => {
       return h(
