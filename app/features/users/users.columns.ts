@@ -1,11 +1,12 @@
 import { h } from 'vue'
-import { ArrowUpDown, Trash2 } from 'lucide-vue-next'
+import { Trash2 } from 'lucide-vue-next'
 import type { ColumnDef } from '@tanstack/vue-table'
 import { formatDateToString } from '~/utils/formatDate'
 import type { User } from '~/types'
 import BaseBadge from '~/components/base/badge/BaseBadge.vue'
 import { Button } from '~/components/ui/button'
 import { Icon } from '@iconify/vue'
+import { sortableHeader } from '~/utils/sortingHelper'
 
 export const usersColumns: ColumnDef<User>[] = [
   {
@@ -21,38 +22,20 @@ export const usersColumns: ColumnDef<User>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: 'email',
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        },
-        () => ['Email', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })],
-      )
-    },
+    accessorKey: 'private_email',
+    header: sortableHeader('E-mail'),
     cell: ({ row }) => {
       return h(
         'div',
         { class: 'text-left font-normal text-muted-foreground' },
-        row.getValue('email'),
+        row.getValue('private_email'),
       )
     },
     enableSorting: true,
   },
   {
-    accessorKey: 'work_email',
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        },
-        () => ['Email pracowniczy', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })],
-      )
-    },
+    accessorKey: 'email',
+    header: sortableHeader('E-mail pracowniczy'),
     cell: ({ row }) => {
       return h(
         'div',
