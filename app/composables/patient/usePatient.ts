@@ -24,7 +24,7 @@ export const usePatient = () => {
 
   async function editRecord(uuid: string, payload: Partial<PatientType>) {
     return toast.promise(
-      api(PatientsEndpoints(uuid).TABLE, {
+      api(PatientsEndpoints(uuid).PATIENT_DETAILS, {
         method: 'PUT',
         body: payload,
       }).then(() => refreshNuxtData(PatientTable.toString())),
@@ -37,7 +37,7 @@ export const usePatient = () => {
 
   async function deleteRecord(uuid: string) {
     return toast.promise(
-      api(PatientsEndpoints(uuid).TABLE, {
+      api(PatientsEndpoints(uuid).PATIENT_DETAILS, {
         method: 'DELETE',
       }).then(() => refreshNuxtData(PatientTable.toString())),
       {
