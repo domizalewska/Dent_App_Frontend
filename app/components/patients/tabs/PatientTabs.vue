@@ -36,13 +36,7 @@ const tabs = [
 <template>
   <Tabs default-value="info" class="w-full gap-0">
     <Card class="overflow-hidden pt-0 rounded-b-none border-b-0">
-      <div
-        class="h-32 bg-muted bg-cover bg-center sm:h-40"
-        style="
-          background-image: url('https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/pawel-czerwinski-O4fAgtXLRwI-unsplash.jpg');
-        "
-      />
-      <CardContent class="relative px-6 pb-0">
+      <CardContent class="flex px-6 pb-0">
         <PatientHeaderComponent :patient="patient" />
       </CardContent>
       <div class="px-6 pt-2">
