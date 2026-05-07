@@ -14,6 +14,11 @@ const appointmentData = ref<AppointmentType[]>(generateMockAppointments(props.pa
 </script>
 <template>
   <Card class="overflow-hidden rounded-lg col-span-1">
+    <CardHeader class="px-6 pb-2 pt-4">
+      <CardTitle class="text-xs font-medium text-muted-foreground tracking-wide uppercase">
+        Nadchodzące wizyty
+      </CardTitle>
+    </CardHeader>
     <CardContent class="px-6 pt-4">
       <div class="flex flex-col gap-3">
         <div
