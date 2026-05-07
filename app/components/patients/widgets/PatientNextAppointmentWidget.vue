@@ -13,7 +13,7 @@ const props = defineProps<Props>()
 const appointmentData = ref<AppointmentType[]>(generateMockAppointments(props.patient.uuid, 3))
 </script>
 <template>
-  <Card class="overflow-hidden rounded-lg col-span-1">
+  <Card class="overflow-hidden rounded-lg">
     <CardHeader class="px-6 pb-2 pt-4">
       <CardTitle class="text-xs font-medium text-muted-foreground tracking-wide uppercase">
         Nadchodzące wizyty
