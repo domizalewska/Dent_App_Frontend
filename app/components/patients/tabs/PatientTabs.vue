@@ -55,7 +55,7 @@ const tabs = [
     </Card>
 
     <TabsContent value="info" class="mt-0">
-      <PatientInfoTab />
+      <PatientInfoCard :patient="patient" />
     </TabsContent>
     <TabsContent value="documents" class="mt-0">
       <PasswordCard />
