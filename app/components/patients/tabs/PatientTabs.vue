@@ -2,6 +2,8 @@
 import { Icon } from '@iconify/vue'
 import type { PatientType } from '~/types'
 import PatientHeaderComponent from '~/components/patients/header/PatientHeaderComponent.vue'
+import PatientDocumentsTab from '~/components/patients/tab/PatientDocumentsTab.vue'
+import PatientPictureTab from '~/components/patients/tab/PatientPictureTab.vue'
 
 interface Props {
   patient: PatientType
@@ -58,8 +60,10 @@ const tabs = [
       <PatientInfoCard :patient="patient" />
     </TabsContent>
     <TabsContent value="documents" class="mt-0">
-      <PasswordCard />
+      <PatientDocumentsTab />
     </TabsContent>
-    <TabsContent value="notifications" class="mt-0" />
+    <TabsContent value="pictures" class="mt-0">
+      <PatientPictureTab />
+    </TabsContent>
   </Tabs>
 </template>
