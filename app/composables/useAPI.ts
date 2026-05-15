@@ -5,6 +5,7 @@ export function useAPI<T>(url: string | (() => string), options: UseFetchOptions
   return useFetch(url, {
     ...options,
     $fetch: useNuxtApp().$api as typeof $fetch,
+    server: false,
   })
 }
 

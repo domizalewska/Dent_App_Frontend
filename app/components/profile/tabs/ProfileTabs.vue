@@ -1,49 +1,86 @@
 <script setup lang="ts">
-import { Bell, Lock, User } from 'lucide-vue-next'
+import { Icon } from '@iconify/vue'
+import type { User } from '~/types'
+import CalendarCard from '~/components/profile/card/CalendarCard.vue'
+import DocumentsCard from '~/components/profile/card/DocumentsCard.vue'
+import CompetenciesCard from '~/components/profile/card/CompetenciesCard.vue'
+
+interface Props {
+  user: User
+}
+
+defineProps<Props>()
+
+const tabs = [
+  {
+    name: 'Informacje',
+    value: 'info',
+    icon: 'solar:user-id-line-duotone',
+  },
+  {
+    name: 'Kompetencje',
+    value: 'competencies',
+    icon: 'solar:diploma-line-duotone',
+  },
+  {
+    name: 'Hasło',
+    value: 'password',
+    icon: 'material-symbols:shield-outline',
+  },
+  {
+    name: 'Dostępność',
+    value: 'available',
+    icon: 'solar:user-id-line-duotone',
+  },
+  {
+    name: 'Umowy',
+    value: 'documents',
+    icon: 'material-symbols:shield-outline',
+  },
+]
 </script>
 
 <template>
-  <div class="w-full">
-    <Tabs default-value="profile" class="w-full">
-      <TabsList class="flex w-full gap-4">
-        <TabsTrigger value="profile" as-child>
-          <Button
-            class="flex-1 justify-center gap-2 data-[state=active]:bg-muted"
-            variant="secondary"
-            size="sm"
+  <Tabs default-value="info" class="w-full gap-0">
+    <Card class="overflow-hidden pt-0 rounded-b-none border-b-0">
+      <div
+        class="h-32 bg-muted bg-cover bg-center sm:h-40"
+        style="
+          background-image: url('https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/pawel-czerwinski-O4fAgtXLRwI-unsplash.jpg');
+        "
+      />
+      <CardContent class="relative px-6 pb-0">
+        <ProfileHeaderComponent :user="user" />
+      </CardContent>
+      <div class="px-6 pt-2">
+        <TabsList class="w-full">
+          <TabsTrigger
+            v-for="tab in tabs"
+            :key="tab.name"
+            :value="tab.value"
+            class="flex items-center gap-1 px-2.5 sm:px-3"
           >
-            <User /> Profil
-          </Button>
-        </TabsTrigger>
-
-        <TabsTrigger value="password" as-child>
-          <Button class="flex-1 justify-center gap-2" variant="secondary" size="sm">
-            <Lock /> Hasło
-          </Button>
-        </TabsTrigger>
-
-        <TabsTrigger value="notification" as-child>
-          <Button class="flex-1 justify-center gap-2" variant="secondary" size="sm">
-            <Bell /> Powiadomienia
-          </Button>
-        </TabsTrigger>
-      </TabsList>
-
-      <div class="flex justify-center w-full mt-4">
-        <div class="w-[700px] max-w-full">
-          <TabsContent value="profile">
-            <ProfileCard />
-          </TabsContent>
-
-          <TabsContent value="password">
-            <PasswordCard />
-          </TabsContent>
-
-          <TabsContent value="notification">
-            <span>24332e23e23e3e23</span>
-          </TabsContent>
-        </div>
+            <Icon :icon="tab.icon" />
+            {{ tab.name }}
+          </TabsTrigger>
+        </TabsList>
       </div>
-    </Tabs>
-  </div>
+    </Card>
+
+    <TabsContent value="info" class="mt-0">
+      <ProfileCard :user="user" />
+    </TabsContent>
+    <TabsContent value="competencies" class="mt-0">
+      <CompetenciesCard :user="user" />
+    </TabsContent>
+    <TabsContent value="password" class="mt-0">
+      <PasswordCard />
+    </TabsContent>
+    <TabsContent value="available" class="mt-0">
+      <CalendarCard />
+    </TabsContent>
+    <TabsContent value="documents" class="mt-0">
+      <DocumentsCard />
+    </TabsContent>
+  </Tabs>
 </template>

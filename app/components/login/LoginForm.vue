@@ -17,6 +17,7 @@ import {
   CardTitle,
 } from '~/components/ui/card'
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field'
+import { Alert, AlertDescription } from '~/components/ui/alert'
 
 const { loginUser } = useAuth()
 
@@ -35,8 +36,15 @@ const { handleSubmit } = useForm<LoginPayload>({
   },
 })
 
+const serverError = ref('')
+
 const onSubmit = handleSubmit(async (values) => {
-  await loginUser(values)
+  serverError.value = ''
+  try {
+    await loginUser(values)
+  } catch (error: unknown) {
+    serverError.value = (error as Error)?.message ?? 'Wystąpił błąd. Spróbuj ponownie później.'
+  }
 })
 </script>
 
@@ -80,6 +88,10 @@ const onSubmit = handleSubmit(async (values) => {
             </Field>
           </VeeField>
         </FieldGroup>
+
+        <Alert v-if="serverError" variant="destructive" class="mt-6">
+          <AlertDescription>{{ serverError }}</AlertDescription>
+        </Alert>
 
         <CardFooter class="flex flex-col mt-8">
           <Button class="w-full mb-4" type="submit"> Zaloguj się </Button>

@@ -1,14 +1,11 @@
 <script setup lang="ts">
-const colorMode = useColorMode()
-
-onMounted(() => {
-  colorMode.preference = 'light'
-  colorMode.value = 'light'
-})
+import 'vue-sonner/style.css'
+import { Toaster } from '@/components/ui/sonner'
 </script>
 
 <template>
   <div id="app">
+    <Toaster position="top-right" />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

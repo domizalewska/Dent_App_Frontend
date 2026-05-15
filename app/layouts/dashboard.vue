@@ -2,6 +2,20 @@
 import SidebarComponent from '~/components/main/SidebarComponent.vue'
 import { header } from '~/composables/useHeader'
 import { breadcrumbs } from '~/composables/useBreadcrumbs'
+import { useAPI } from '~/composables/useAPI'
+import type { User } from '~/types'
+
+const { user } = useAuth()
+
+const { data } = useAPI<User>('/user/user-info', { server: false })
+
+watch(
+  data,
+  (val) => {
+    if (val) user.value = val
+  },
+  { immediate: true },
+)
 </script>
 
 <template>

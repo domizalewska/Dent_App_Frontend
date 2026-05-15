@@ -1,7 +1,16 @@
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef } from '@tanstack/vue-table'
-import { FlexRender, getCoreRowModel, getPaginationRowModel, useVueTable, } from '@tanstack/vue-table'
+import {
+  type ColumnDef,
+  FlexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  type SortingState,
+  type Updater,
+  useVueTable
+} from '@tanstack/vue-table'
 
+import { valueUpdater } from '@/components/ui/table/utils'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table'
 import DataTablePaginator from '~/components/ui/data-table/data-table-paginator.vue'
 
@@ -9,7 +18,21 @@ const props = defineProps<{
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   onRowClick?: (row: TData) => void;
+  sorting?: SortingState;
+  onSortingChange?: (updaterOrValue: Updater<SortingState>) => void;
 }>();
+
+const internalSorting = ref<SortingState>([])
+
+const currentSorting = computed(() => props.sorting ?? internalSorting.value)
+
+function handleSortingChange(updaterOrValue: Updater<SortingState>) {
+  if (props.onSortingChange) {
+    props.onSortingChange(updaterOrValue)
+  } else {
+    valueUpdater(updaterOrValue, internalSorting)
+  }
+}
 
 const table = useVueTable({
   get data() {
@@ -20,7 +43,12 @@ const table = useVueTable({
   },
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
-
+  getSortedRowModel: getSortedRowModel(),
+  get manualSorting() { return !!props.onSortingChange },
+  onSortingChange: handleSortingChange,
+  state: {
+    get sorting() { return currentSorting.value },
+  }
 });
 
 function handleRowClick(row: TData) {
