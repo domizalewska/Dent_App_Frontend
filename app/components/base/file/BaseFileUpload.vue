@@ -65,7 +65,7 @@ async function uploadFiles() {
 
   const formData = new FormData()
   for (const file of files.value) {
-    formData.append('files', file)
+    formData.append('files[]', file)
   }
 
   const { $api } = useNuxtApp()

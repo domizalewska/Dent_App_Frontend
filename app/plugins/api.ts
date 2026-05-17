@@ -3,10 +3,14 @@ export default defineNuxtPlugin((nuxtApp) => {
   const { logoutUser } = useAuth()
   const api = $fetch.create({
     baseURL: apiUrl,
+    headers: {
+      Accept: 'application/json',
+    },
     onRequest({ options }) {
       if (import.meta.client) {
         const token = localStorage.getItem('token')
         if (token) {
+          options.headers = new Headers(options.headers as HeadersInit)
           options.headers.set('Authorization', `Bearer ${token}`)
         }
       }

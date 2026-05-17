@@ -19,17 +19,10 @@ defineProps<Props>()
       </CardTitle>
     </CardHeader>
     <CardContent class="px-6 pt-3 pb-4 flex flex-col gap-3">
-      <div class="flex flex-col w-full">
+      <div class="flex flex-col w-full gap-3">
         <BaseFileList
           :endpoint="PatientsEndpoints(patient.uuid).FILE_UPLOADS"
-          :status-config="{
-            signed: { label: 'Podpisana', class: 'bg-secondary text-secondary-foreground' },
-            archived: { label: 'Archiwalny', class: 'bg-secondary text-secondary-foreground' },
-            issued: {
-              label: 'Wystawione',
-              class: 'bg-green-500/15 text-green-500 border border-green-500/30',
-            },
-          }"
+          :download-url="PatientsEndpoints(patient.uuid).FILE_DOWNLOAD"
         />
         <BaseFileUpload :endpoint="PatientsEndpoints(patient.uuid).FILE_UPLOADS" />
       </div>
