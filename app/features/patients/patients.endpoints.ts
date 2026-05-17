@@ -4,4 +4,5 @@ export const PatientsEndpoints = (uuid?: string) => ({
   EXPORT: '/patient/export',
   PATIENT_DETAILS: `/patient/${uuid}`,
   APPOINTMENTS: `/patient/${uuid}/appointments`,
+  FILE_UPLOADS: `/patient/${uuid}/file`,
 })

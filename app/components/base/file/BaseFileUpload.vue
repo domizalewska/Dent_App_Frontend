@@ -3,11 +3,19 @@ import { useDropZone } from '@vueuse/core';
 import { useTemplateRef } from 'vue';
 import { Upload, X } from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
+import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast';
+
+interface Props {
+  endpoint: string
+}
+
+const props = defineProps<Props>()
 
 const MAX_FILES = 5
 const MAX_SIZE = 5 * 1024 * 1024
 
 const files = ref<File[]>([])
+const isUploading = ref(false)
 const dropZoneRef = useTemplateRef('dropZoneRef')
 const fileInput = useTemplateRef('fileInput')
 
@@ -50,6 +58,37 @@ function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} kB`
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+async function uploadFiles() {
+  if (!files.value.length) return
+
+  const formData = new FormData()
+  for (const file of files.value) {
+    formData.append('files', file)
+  }
+
+  const { $api } = useNuxtApp()
+  const api = $api as typeof $fetch
+
+  isUploading.value = true
+  await toast.promise(
+    api(props.endpoint, { method: 'POST', body: formData }).finally(() => {
+      isUploading.value = false
+    }),
+    {
+      success: {
+        message: 'Pliki zostały przesłane',
+        style: toastSuccessStyle,
+      },
+      error: {
+        message: 'Błąd podczas przesyłania plików',
+        style: toastErrorStyle,
+      },
+    },
+  )
+
+  files.value = []
 }
 </script>
 
@@ -104,6 +143,10 @@ function formatSize(bytes: number): string {
           <X class="size-4" />
         </Button>
       </div>
+
+      <Button class="w-full" :disabled="isUploading" @click="uploadFiles">
+        {{ isUploading ? 'Przesyłanie...' : `Prześlij ${files.length} ${files.length === 1 ? 'plik' : 'pliki'}` }}
+      </Button>
     </div>
 
   </div>
