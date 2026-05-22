@@ -4,6 +4,7 @@ import type { PatientType } from '~/types'
 import PatientHeaderComponent from '~/components/patients/header/PatientHeaderComponent.vue'
 import PatientDocumentsTab from '~/components/patients/tab/PatientDocumentsTab.vue'
 import PatientPictureTab from '~/components/patients/tab/PatientPictureTab.vue'
+import PatientArchiveTab from '~/components/patients/tab/PatientArchiveTab.vue'
 
 interface Props {
   patient: PatientType
@@ -64,6 +65,9 @@ const tabs = [
     </TabsContent>
     <TabsContent value="pictures" class="mt-0">
       <PatientPictureTab />
+    </TabsContent>
+    <TabsContent value="archive" class="mt-0">
+      <PatientArchiveTab :patient-uuid="patient.uuid" />
     </TabsContent>
   </Tabs>
 </template>

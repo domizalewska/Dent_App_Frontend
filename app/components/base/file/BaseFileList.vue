@@ -30,6 +30,11 @@ const { data, pending, error } = usePaginatedAPI<FileItem>(() => props.endpoint)
 const { $api } = useNuxtApp()
 const api = $api as typeof $fetch
 
+const previewOpen = ref(false)
+const previewBlobUrl = ref<string | null>(null)
+const previewFile = ref<FileItem | null>(null)
+const previewLoading = ref(false)
+
 const iconBg: Record<string, string> = {
   pdf: 'bg-blue-500/15',
   docx: 'bg-green-500/15',
@@ -57,6 +62,49 @@ function formatDate(dateStr: string): string {
   })
 }
 
+function closePreview() {
+  previewOpen.value = false
+  if (previewBlobUrl.value) {
+    URL.revokeObjectURL(previewBlobUrl.value)
+    previewBlobUrl.value = null
+  }
+  previewFile.value = null
+}
+
+async function openPreview(file: FileItem) {
+  previewFile.value = file
+  previewBlobUrl.value = null
+  previewLoading.value = true
+  previewOpen.value = true
+
+  try {
+    const config = useRuntimeConfig()
+    const token = localStorage.getItem('token')
+    const url = `${config.public.apiBase}${props.downloadUrl(file.uuid)}`
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: '*/*',
+      },
+    })
+
+    if (!response.ok) throw new Error()
+
+    const contentType = response.headers.get('content-type') || file.mimetype
+    const buffer = await response.arrayBuffer()
+    const blob = new Blob([buffer], { type: contentType })
+    previewBlobUrl.value = URL.createObjectURL(blob)
+  }
+  catch {
+    toast('Błąd podglądu', { description: 'Nie udało się załadować pliku', style: toastErrorStyle })
+    previewOpen.value = false
+  }
+  finally {
+    previewLoading.value = false
+  }
+}
+
 async function downloadFile(file: FileItem) {
   try {
     const blob = await api<Blob>(props.downloadUrl(file.uuid), { responseType: 'blob' })
@@ -69,22 +117,6 @@ async function downloadFile(file: FileItem) {
   }
   catch {
     toast('Błąd pobierania', { description: 'Nie udało się pobrać pliku', style: toastErrorStyle })
-  }
-}
-
-async function previewFile(file: FileItem) {
-  const tab = window.open('', '_blank')
-  try {
-    const blob = await api<Blob>(props.downloadUrl(file.uuid), { responseType: 'blob' })
-    const url = URL.createObjectURL(blob)
-    if (tab) {
-      tab.location.href = url
-      setTimeout(() => URL.revokeObjectURL(url), 30000)
-    }
-  }
-  catch {
-    tab?.close()
-    toast('Błąd podglądu', { description: 'Nie udało się otworzyć pliku', style: toastErrorStyle })
   }
 }
 </script>
@@ -110,7 +142,7 @@ async function previewFile(file: FileItem) {
       </div>
     </template>
 
-    <template v-else-if="!error">
+    <template v-else>
       <div
         v-for="file in data?.items"
         :key="file.uuid"
@@ -144,7 +176,7 @@ async function previewFile(file: FileItem) {
           >
             Aktualna
           </span>
-          <Button variant="ghost" size="icon" class="size-8" @click="previewFile(file)">
+          <Button variant="ghost" size="icon" class="size-8" @click="openPreview(file)">
             <Eye class="size-4" />
           </Button>
           <Button variant="ghost" size="icon" class="size-8" @click="downloadFile(file)">
@@ -158,4 +190,37 @@ async function previewFile(file: FileItem) {
       </p>
     </template>
   </div>
+
+  <Dialog :open="previewOpen" @update:open="closePreview">
+    <DialogContent class="max-w-4xl h-[90vh] flex flex-col gap-0 p-0">
+      <DialogHeader class="px-6 py-4 border-b shrink-0">
+        <DialogTitle class="text-sm font-medium truncate">
+          {{ previewFile?.filename }}.{{ previewFile?.extension }}
+        </DialogTitle>
+      </DialogHeader>
+
+      <div class="flex-1 overflow-hidden">
+        <div v-if="previewLoading" class="flex h-full items-center justify-center">
+          <Spinner class="size-6 text-muted-foreground" />
+        </div>
+
+        <template v-else-if="previewBlobUrl">
+          <embed
+            v-if="previewFile?.extension === 'pdf'"
+            :src="previewBlobUrl"
+            type="application/pdf"
+            class="size-full"
+          />
+          <div v-else class="flex h-full flex-col items-center justify-center gap-4 text-muted-foreground">
+            <FileText class="size-12" />
+            <p class="text-sm">Podgląd niedostępny dla tego formatu</p>
+            <Button variant="outline" size="sm" @click="previewFile && downloadFile(previewFile)">
+              <Download class="mr-2 size-4" />
+              Pobierz plik
+            </Button>
+          </div>
+        </template>
+      </div>
+    </DialogContent>
+  </Dialog>
 </template>
