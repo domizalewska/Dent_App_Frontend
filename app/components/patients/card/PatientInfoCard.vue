@@ -2,7 +2,6 @@
 import type { PatientType } from '~/types'
 import PatientInfoFormWidget from '~/components/patients/widgets/PatientInfoFormWidget.vue'
 import PatientNextAppointmentWidget from '~/components/patients/widgets/PatientNextAppointmentWidget.vue'
-import PatientAllergyWidget from '~/components/patients/widgets/PatientAllergyWidget.vue'
 import PatientLastAppointmentWidget from '~/components/patients/widgets/PatientLastAppointmentWidget.vue'
 
 defineProps<{ patient: PatientType }>()
@@ -12,7 +11,6 @@ defineProps<{ patient: PatientType }>()
   <div class="flex gap-4 mt-4">
     <div class="flex flex-col gap-4 flex-[2]">
       <PatientInfoFormWidget :patient="patient" />
-      <PatientAllergyWidget />
     </div>
     <div class="flex flex-col gap-4 flex-[1]">
       <PatientNextAppointmentWidget :patient="patient" />

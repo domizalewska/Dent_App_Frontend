@@ -39,10 +39,10 @@ const tabs = [
 <template>
   <Tabs default-value="info" class="w-full gap-0">
     <Card class="overflow-hidden pt-0 rounded-b-none border-b-0">
-      <CardContent class="flex px-6 pb-0">
+      <CardContent class="flex px-6 pb-0 justify-center">
         <PatientHeaderComponent :patient="patient" />
       </CardContent>
-      <div class="px-6 pt-2">
+      <div class="px-6">
         <TabsList class="w-full">
           <TabsTrigger
             v-for="tab in tabs"

@@ -50,7 +50,6 @@ defineProps<Props>()
         <Phone class="mr-1 size-3" aria-hidden="true" />
         Zadzwoń
       </Button>
-      <Badge variant="destructive">Secondary</Badge>
     </div>
   </div>
 </template>
