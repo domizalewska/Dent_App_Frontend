@@ -28,8 +28,7 @@ onChange((files) => {
 function handleAvatarAction() {
   if (props.user.profile_picture) {
     emit('avatarDelete')
-  }
-  else {
+  } else {
     open()
   }
 }

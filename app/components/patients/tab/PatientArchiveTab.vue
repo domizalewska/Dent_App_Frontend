@@ -39,9 +39,7 @@ const { data, pending, error } = usePaginatedAPI<AppointmentType>(
           :columns="patientAppointmentsColumns"
           :data="data.data"
         />
-        <p v-else class="py-8 text-center text-sm text-muted-foreground">
-          Brak wizyt w archiwum
-        </p>
+        <p v-else class="py-8 text-center text-sm text-muted-foreground">Brak wizyt w archiwum</p>
       </template>
     </CardContent>
   </Card>

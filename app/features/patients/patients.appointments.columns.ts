@@ -34,8 +34,7 @@ export const patientAppointmentsColumns: ColumnDef<AppointmentType>[] = [
   {
     accessorKey: 'name',
     header: () => h('div', { class: 'text-foreground' }, 'Wizyta'),
-    cell: ({ row }) =>
-      h('div', { class: 'text-left font-medium' }, row.original.name),
+    cell: ({ row }) => h('div', { class: 'text-left font-medium' }, row.original.name),
   },
   {
     accessorKey: 'doctor',

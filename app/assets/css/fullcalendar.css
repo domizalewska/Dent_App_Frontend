@@ -1,29 +1,61 @@
-.fc { font-family: inherit; }
-.fc-event { border: none !important; box-shadow: none !important; border-radius: 6px; padding: 3px 7px; font-size: 12px; font-weight: 500; }
-.fc-timegrid-event .fc-event-main { padding: 3px 6px; }
-.fc-daygrid-event { border-radius: 6px; }
+.fc {
+  font-family: inherit;
+}
+.fc-event {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 6px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.fc-timegrid-event .fc-event-main {
+  padding: 3px 6px;
+}
+.fc-daygrid-event {
+  border-radius: 6px;
+}
 
-.fc-timegrid-event { border-left: none !important; }
+.fc-timegrid-event {
+  border-left: none !important;
+}
 
-.fc-day-today { background: transparent !important; }
+.fc-day-today {
+  background: transparent !important;
+}
 
 .fc-day-today .fc-daygrid-day-number,
 .fc-day-today .fc-col-header-cell-cushion {
-    background: #1a1a1a;
-    color: #fff;
-    border-radius: 50%;
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
+  background: #1a1a1a;
+  color: #fff;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
 }
 
-.fc-timegrid-slot-label-cushion { font-size: 11px; color: #999; }
+.fc-timegrid-slot-label-cushion {
+  font-size: 11px;
+  color: #999;
+}
 
-.fc-col-header-cell-cushion { font-size: 12px; font-weight: 500; color: #888; text-decoration: none; }
+.fc-col-header-cell-cushion {
+  font-size: 12px;
+  font-weight: 500;
+  color: #888;
+  text-decoration: none;
+}
 
-.fc-timegrid-slot { border-color: #f0f0f0 !important; }
-.fc-scrollgrid { border: none !important; }
-.fc-scrollgrid td, .fc-scrollgrid th { border-color: #f0f0f0 !important; }
+.fc-timegrid-slot {
+  border-color: #f0f0f0 !important;
+}
+.fc-scrollgrid {
+  border: none !important;
+}
+.fc-scrollgrid td,
+.fc-scrollgrid th {
+  border-color: #f0f0f0 !important;
+}
