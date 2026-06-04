@@ -2,21 +2,9 @@
 import { Download, Eye, FileText } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { toastErrorStyle } from '~/utils/toast'
-
-interface FileItem {
-  uuid: string
-  filename: string
-  extension: string
-  size: string
-  created_at: string
-  mimetype: string
-  is_latest: boolean
-  user: {
-    uuid: string
-    first_name: string
-    last_name: string
-  }
-}
+import type { FileItem } from '~/types/file/file.type'
+import { formatBaseToBlob } from '~/utils/formatBaseToBlob'
+import { formatDateToString } from '~/utils/formatDate'
 
 interface Props {
   endpoint: string
@@ -25,10 +13,18 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { data, pending, error } = usePaginatedAPI<FileItem>(() => props.endpoint)
+const { data: fileData, pending, error } = usePaginatedAPI<FileItem>(() => props.endpoint)
+
+interface FileDownloadResponse {
+  filename: string
+  extension: string
+  mime: string
+  content: string
+}
 
 const { $api } = useNuxtApp()
 const api = $api as typeof $fetch
+
 
 const previewOpen = ref(false)
 const previewBlobUrl = ref<string | null>(null)
@@ -54,13 +50,6 @@ function formatSize(bytes: string): string {
   return `${(b / (1024 * 1024)).toFixed(1)} MB`
 }
 
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('pl-PL', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  })
-}
 
 function closePreview() {
   previewOpen.value = false
@@ -78,23 +67,8 @@ async function openPreview(file: FileItem) {
   previewOpen.value = true
 
   try {
-    const config = useRuntimeConfig()
-    const token = localStorage.getItem('token')
-    const url = `${config.public.apiBase}${props.downloadUrl(file.uuid)}`
-
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: '*/*',
-      },
-    })
-
-    if (!response.ok) throw new Error()
-
-    const contentType = response.headers.get('content-type') || file.mimetype
-    const buffer = await response.arrayBuffer()
-    const blob = new Blob([buffer], { type: contentType })
-    previewBlobUrl.value = URL.createObjectURL(blob)
+    const json = await api<FileDownloadResponse>(props.downloadUrl(file.uuid))
+    previewBlobUrl.value = URL.createObjectURL(formatBaseToBlob(json.content, json.mime))
   }
   catch {
     toast('Błąd podglądu', { description: 'Nie udało się załadować pliku', style: toastErrorStyle })
@@ -107,8 +81,8 @@ async function openPreview(file: FileItem) {
 
 async function downloadFile(file: FileItem) {
   try {
-    const blob = await api<Blob>(props.downloadUrl(file.uuid), { responseType: 'blob' })
-    const url = URL.createObjectURL(blob)
+    const json = await api<FileDownloadResponse>(props.downloadUrl(file.uuid))
+    const url = URL.createObjectURL(formatBaseToBlob(json.content, json.mime))
     const a = document.createElement('a')
     a.href = url
     a.download = `${file.filename}.${file.extension}`
@@ -144,7 +118,7 @@ async function downloadFile(file: FileItem) {
 
     <template v-else>
       <div
-        v-for="file in data?.items"
+        v-for="file in fileData?.data"
         :key="file.uuid"
         class="flex items-center gap-3 rounded-lg border p-3"
       >
@@ -165,7 +139,7 @@ async function downloadFile(file: FileItem) {
             {{ file.filename }}.{{ file.extension }}
           </span>
           <span class="text-xs text-muted-foreground">
-            {{ file.extension.toUpperCase() }} · {{ formatSize(file.size) }} · {{ formatDate(file.created_at) }}
+            {{ file.extension.toUpperCase() }} · {{ formatSize(file.size) }} · {{ formatDateToString(file.created_at) }}
           </span>
         </div>
 
@@ -185,7 +159,7 @@ async function downloadFile(file: FileItem) {
         </div>
       </div>
 
-      <p v-if="!data?.items?.length" class="py-4 text-center text-sm text-muted-foreground">
+      <p v-if="!fileData?.data?.length" class="py-4 text-center text-sm text-muted-foreground">
         Brak dokumentów
       </p>
     </template>
