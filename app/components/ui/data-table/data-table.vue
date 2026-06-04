@@ -59,8 +59,8 @@ function handleRowClick(row: TData) {
 </script>
 
 <template>
-  <div class="w-full">
-    <div>
+  <div class="w-full h-full flex flex-col justify-between">
+    <div class="overflow-auto">
       <Table>
         <TableHeader>
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
@@ -101,7 +101,7 @@ function handleRowClick(row: TData) {
         </TableBody>
       </Table>
     </div>
-    <div class="flex items-center justify-center py-4 space-x-2">
+    <div class="flex items-center justify-center py-4 space-x-2 shrink-0">
       <DataTablePaginator :table="table" />
     </div>
   </div>

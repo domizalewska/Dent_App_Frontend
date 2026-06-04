@@ -43,35 +43,33 @@ async function addOpenDialog() {
 </script>
 
 <template>
-  <div class="h-full">
+  <div class="flex flex-col h-full min-h-0">
     <div v-if="pending" class="flex justify-center items-center">
       <BaseSkeletonHeader />
       <BaseTableSkeleton :columns="4" />
     </div>
-    <div class="flex flex-col">
-      <BaseHeader v-if="patientsData?.data">
-        <template #right>
-          <div class="flex gap-2">
-            <BaseTableSearch />
-            <BaseExportFile
-              :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="`${PatientsEndpoints().EXPORT}`"
-              file-name="Tabela pacjentów"
-            />
-            <Button @click="addOpenDialog()">
-              <template #default>
-                <span class="text-color font-normal">
-                  {{ 'Dodaj wpis' }}
-                </span>
-                <Icon icon="lucide:plus" />
-              </template>
-            </Button>
-          </div>
-        </template>
-      </BaseHeader>
-    </div>
+    <BaseHeader v-if="patientsData?.data">
+      <template #right>
+        <div class="flex gap-2">
+          <BaseTableSearch />
+          <BaseExportFile
+            :extensions="['xlsx', 'csv', 'pdf']"
+            :endpoint="`${PatientsEndpoints().EXPORT}`"
+            file-name="Tabela pacjentów"
+          />
+          <Button @click="addOpenDialog()">
+            <template #default>
+              <span class="text-color font-normal">
+                {{ 'Dodaj wpis' }}
+              </span>
+              <Icon icon="lucide:plus" />
+            </template>
+          </Button>
+        </div>
+      </template>
+    </BaseHeader>
     <component :is="activeComponent" v-bind="activeProps" @close="close" />
-    <div class="h-full flex flex-col min-h-0">
+    <div class="flex-1 min-h-0">
       <DataTable
         v-if="patientsData?.data"
         :columns="patientsColumns"

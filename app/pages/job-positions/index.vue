@@ -42,33 +42,31 @@ function onEdit(record: JobPosition) {
 </script>
 
 <template>
-  <div class="h-full">
-    <div class="flex flex-col">
-      <BaseHeader>
-        <template #left>
-          <div class="flex gap-2">
-            <BaseExportFile
-              :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="`${JobPositionsEndpoints().EXPORT}`"
-              file-name="Tabela stanowisk"
-            />
-          </div>
-        </template>
-        <template #right>
-          <div class="flex gap-2">
-            <BaseTableSearch />
-            <Button variant="default" @click="addDialogOpen">
-              <span class="text-sm text-color mt-2 mb-2">
-                {{ 'Dodaj wpis' }}
-              </span>
-              <Icon icon="lucide:plus" />
-            </Button>
-          </div>
-        </template>
-      </BaseHeader>
-    </div>
+  <div class="flex flex-col h-full min-h-0">
+    <BaseHeader>
+      <template #left>
+        <div class="flex gap-2">
+          <BaseExportFile
+            :extensions="['xlsx', 'csv', 'pdf']"
+            :endpoint="`${JobPositionsEndpoints().EXPORT}`"
+            file-name="Tabela stanowisk"
+          />
+        </div>
+      </template>
+      <template #right>
+        <div class="flex gap-2">
+          <BaseTableSearch />
+          <Button variant="default" @click="addDialogOpen">
+            <span class="text-sm text-color mt-2 mb-2">
+              {{ 'Dodaj wpis' }}
+            </span>
+            <Icon icon="lucide:plus" />
+          </Button>
+        </div>
+      </template>
+    </BaseHeader>
     <component :is="activeComponent" v-bind="activeProps" @close="close" />
-    <div class="h-full flex flex-col min-h-0">
+    <div class="flex-1 min-h-0">
       <DataTable
         v-if="jobPositionsData?.data"
         :columns="jobPositionsColumns"
