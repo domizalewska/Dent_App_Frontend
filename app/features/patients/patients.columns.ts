@@ -4,6 +4,7 @@ import { formatDateToString } from '~/utils/formatDate'
 import type { PatientType } from '~/types'
 import { Button } from '~/components/ui/button'
 import { Trash2 } from 'lucide-vue-next'
+import { sortableHeader } from '~/utils/sortingHelper'
 
 export const patientsColumns: ColumnDef<PatientType>[] = [
   {
@@ -19,14 +20,15 @@ export const patientsColumns: ColumnDef<PatientType>[] = [
   },
   {
     accessorKey: 'email',
-    header: () => h('div', { class: 'flex item-center text-center text-foreground' }, 'Email'),
+    header: sortableHeader('E-mail'),
     cell: ({ row }) => {
       return h('div', { class: 'text-left font-normal text-muted-foreground' }, row.original.email)
     },
+    enableSorting: true,
   },
   {
     accessorKey: 'phone',
-    header: () => h('div', { class: 'flex item-center text-center text-foreground' }, 'Telefon'),
+    header: sortableHeader('Telefon'),
     cell: ({ row }) => {
       return h('div', { class: 'text-left font-normal text-muted-foreground' }, row.original.phone)
     },
@@ -34,7 +36,7 @@ export const patientsColumns: ColumnDef<PatientType>[] = [
   },
   {
     accessorKey: 'pesel',
-    header: () => h('div', { class: 'flex item-center text-center text-foreground' }, 'Pesel'),
+    header: sortableHeader('Pesel'),
     cell: ({ row }) => {
       return (
         h('div', { class: 'text-left font-normal text-muted-foreground' }, row.original.pesel) ??
@@ -45,8 +47,7 @@ export const patientsColumns: ColumnDef<PatientType>[] = [
   },
   {
     accessorKey: 'created_at',
-    header: () =>
-      h('div', { class: 'flex item-center text-center text-foreground' }, 'Data rejestracji'),
+    header: sortableHeader('Data rejestracji'),
     cell: ({ row }) => {
       return h(
         'div',
@@ -54,6 +55,7 @@ export const patientsColumns: ColumnDef<PatientType>[] = [
         formatDateToString(row.original.created_at, 'dd-MM-yyyy'),
       )
     },
+    enableSorting: true,
   },
   {
     accessorKey: 'action',

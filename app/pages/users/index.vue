@@ -6,7 +6,7 @@ import { usersColumns, UsersEndpoints } from '~/features/users'
 import type { User } from '~/types'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseSwitch from '~/components/base/buttons/BaseSwitch.vue'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import BaseSkeletonHeader from '~/components/base/skeleton/header/BaseSkeletonHeader.vue'
 
 definePageMeta({
@@ -25,8 +25,6 @@ set([{ name: 'Użytkownicy', link: '/users' }])
 
 resetHeader()
 setHeader('Użytkownicy')
-
-const usersActive = computed(() => {})
 
 const {
   data: usersData,

@@ -11,6 +11,8 @@ import JobPositionAddDialog from '~/components/job-positions/dialog/JobPositionA
 import JobPositionEditDialog from '~/components/job-positions/dialog/JobPositionEditDialog.vue'
 import { JobPositionTable } from '~/symbols'
 import { useDialog } from '~/composables/useDialog'
+import BaseSkeletonHeader from '~/components/base/skeleton/header/BaseSkeletonHeader.vue'
+import BaseTableSkeleton from '~/components/base/skeleton/table/BaseTableSkeleton.vue'
 
 definePageMeta({
   layout: 'dashboard',
@@ -43,7 +45,11 @@ function onEdit(record: JobPosition) {
 
 <template>
   <div class="flex flex-col h-full min-h-0">
-    <BaseHeader>
+    <div v-if="pending" class="flex justify-center items-center">
+      <BaseSkeletonHeader />
+      <BaseTableSkeleton :columns="4" />
+    </div>
+    <BaseHeader v-if="jobPositionsData?.data">
       <template #left>
         <div class="flex gap-2">
           <BaseExportFile
