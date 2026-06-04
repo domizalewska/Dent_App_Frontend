@@ -107,9 +107,9 @@ export const usersColumns: ColumnDef<User>[] = [
   {
     accessorKey: 'action',
     header: () => h('div', { class: 'flex item-center text-center text-foreground' }),
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return h(
-        'div
+        'div',
         { class: 'text-left font-normal text-muted-foreground' },
         h(
           Button,
