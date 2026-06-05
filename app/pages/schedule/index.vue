@@ -6,10 +6,14 @@ import interactionPlugin from '@fullcalendar/interaction'
 import plLocale from '@fullcalendar/core/locales/pl'
 import { useBreadcrumbs } from '~/composables/useBreadcrumbs.ts'
 import { useHeader } from '~/composables/useHeader.ts'
+import showAddEventDialog from '~/components/schedule/dialog/showAddEventDialog.vue'
+import { useDialog } from '~/composables/useDialog.ts'
 
 definePageMeta({
   layout: 'dashboard',
 })
+
+const { open, close, activeProps, activeComponent } = useDialog()
 
 const { set } = useBreadcrumbs()
 set([{ name: 'Kalendarz', link: '/schedule' }])
@@ -39,7 +43,15 @@ const options = {
   headerToolbar: {
     left: 'prev,next today',
     center: 'title',
-    right: 'timeGridWeek,dayGridMonth',
+    right: 'addEvent,timeGridWeek,dayGridMonth',
+  },
+  customButtons: {
+    addEvent: {
+      text: 'Dodaj zdarzenie',
+      click: () => {
+        open(showAddEventDialog)
+      },
+    },
   },
   buttonText: {
     today: 'Dziś',
@@ -52,6 +64,7 @@ const options = {
 
 <template>
   <div class="fc-wrapper">
+    <component :is="activeComponent" v-bind="activeProps" @close="close" />
     <FullCalendar :options="options" />
   </div>
 </template>
