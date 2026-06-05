@@ -48,10 +48,14 @@ const options = {
   customButtons: {
     addEvent: {
       text: 'Dodaj zdarzenie',
-      click: () => {
-        open(showAddEventDialog)
-      },
+      click: () => open(showAddEventDialog),
     },
+  },
+  select: (selectInfo) => {
+    const date = selectInfo.startStr.slice(0, 10)
+    const start = selectInfo.startStr.slice(11, 16)
+    const end = selectInfo.endStr.slice(11, 16)
+    open(showAddEventDialog, { prefill: { date, start, end } })
   },
   buttonText: {
     today: 'Dziś',

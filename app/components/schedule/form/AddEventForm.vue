@@ -9,6 +9,16 @@ import BaseSelectForm from '~/components/base/form/BaseSelectForm.vue'
 import BaseAcceptDeclineButtons from '~/components/base/buttons/BaseAcceptDeclineButtons.vue'
 import type { EventPayload } from '~/types/event/event.types'
 
+interface Props {
+  prefill?: EventPayload
+}
+
+const props = defineProps<Props>()
+
+const emit = defineEmits<{
+  submit: [values: EventPayload]
+}>()
+
 const formSchema = toTypedSchema(
   z
     .object({
@@ -26,15 +36,15 @@ const formSchema = toTypedSchema(
     }),
 )
 
-const initialValues = {
-  title: '',
-  patient_uuid: '',
-  doctor_uuid: '',
-  date: '',
-  start_time: '',
-  end_time: '',
-  notes: '',
-}
+const initialValues = computed(() => ({
+  title: props.prefill?.title ?? '',
+  patient_uuid: props.prefill?.patient_uuid ?? '',
+  doctor_uuid: props.prefill?.doctor_uuid ?? '',
+  date: props.prefill?.date ?? '',
+  start: props.prefill?.start ?? '',
+  end: props.prefill?.end ?? '',
+  notes: props.prefill?.notes ?? '',
+}))
 
 function onSubmit(values: EventPayload) {
   emit('submit', values)
@@ -84,8 +94,8 @@ function onSubmit(values: EventPayload) {
       <div class="space-y-4">
         <BaseInputForm name="date" label="Data" placeholder="" type="date" />
         <div class="grid grid-cols-2 gap-4">
-          <BaseInputForm name="start_time" label="Godzina rozpoczęcia" placeholder="" type="time" />
-          <BaseInputForm name="end_time" label="Godzina zakończenia" placeholder="" type="time" />
+          <BaseInputForm name="start" label="Godzina rozpoczęcia" placeholder="" type="time" />
+          <BaseInputForm name="end" label="Godzina zakończenia" placeholder="" type="time" />
         </div>
       </div>
     </div>
