@@ -41,9 +41,9 @@ const options = {
     hour12: false,
   },
   headerToolbar: {
-    left: 'prev,next today',
+    left: 'prev today next',
     center: 'title',
-    right: 'addEvent,timeGridWeek,dayGridMonth',
+    right: 'addEvent timeGridWeek dayGridMonth',
   },
   customButtons: {
     addEvent: {
