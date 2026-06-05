@@ -16,13 +16,13 @@ const formSchema = toTypedSchema(
       patient_uuid: z.string().nonempty('Pacjent jest wymagany'),
       doctor_uuid: z.string().nonempty('Lekarz jest wymagany'),
       date: z.string().nonempty('Data jest wymagana'),
-      start_time: z.string().nonempty('Godzina rozpoczęcia jest wymagana'),
-      end_time: z.string().nonempty('Godzina zakończenia jest wymagana'),
+      start: z.string().nonempty('Godzina rozpoczęcia jest wymagana'),
+      end: z.string().nonempty('Godzina zakończenia jest wymagana'),
       notes: z.string().optional(),
     })
-    .refine((data) => data.start_time < data.end_time, {
+    .refine((data) => data.start < data.end, {
       message: 'Godzina zakończenia musi być po godzinie rozpoczęcia',
-      path: ['end_time'],
+      path: ['end'],
     }),
 )
 
@@ -98,7 +98,7 @@ function onSubmit(values: EventPayload) {
     </div>
 
     <div class="flex items-center justify-end gap-3 px-4 py-3">
-      <BaseAcceptDeclineButtons accept-title="Zapisz zdarzenie" decline-title="Anuluj" />
+      <BaseAcceptDeclineButtons accept-title="Zapisz" decline-title="Anuluj" />
     </div>
   </Form>
 </template>

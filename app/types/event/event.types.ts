@@ -4,8 +4,8 @@ interface EventTypes {
   patient_uuid: string
   doctor_uuid: string
   date: string
-  start_time: string
-  end_time: string
+  start: string
+  end: string
   notes?: string
 }
 
