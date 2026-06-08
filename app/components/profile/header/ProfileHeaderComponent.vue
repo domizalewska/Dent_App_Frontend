@@ -9,10 +9,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const emit = defineEmits<{
-  avatarUpload: [file: File]
-  avatarDelete: []
-}>()
+const { uploadAvatar, deleteAvatar } = useUserPictures(props.user.uuid)
 
 const { open, onChange } = useFileDialog({
   accept: 'image/*',
@@ -21,13 +18,13 @@ const { open, onChange } = useFileDialog({
 
 onChange((files) => {
   if (files?.[0]) {
-    emit('avatarUpload', files[0])
+    uploadAvatar(files[0])
   }
 })
 
 function handleAvatarAction() {
   if (props.user.profile_picture) {
-    emit('avatarDelete')
+    deleteAvatar()
   } else {
     open()
   }

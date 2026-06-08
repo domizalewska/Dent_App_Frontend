@@ -4,4 +4,5 @@ export const UsersEndpoints = (uuid?: string) => ({
   USER_DETAILS: `/user/${uuid}`,
   EXPORT: '/user/export',
   AVATAR: `/user/${uuid}/avatar`,
+  BACKGROUND: `/user/${uuid}/background`,
 })

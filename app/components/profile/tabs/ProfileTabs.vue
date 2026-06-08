@@ -12,8 +12,6 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { uploadAvatar, deleteAvatar } = useUserAvatar(props.user.uuid)
-
 const tabs = [
   {
     name: 'Informacje',
@@ -48,11 +46,7 @@ const tabs = [
     <Card class="overflow-hidden pt-0 rounded-b-none border-b-0">
       <ProfileBackgroundPicture :user="user" />
       <CardContent class="relative px-6 pb-0">
-        <ProfileHeaderComponent
-          :user="user"
-          @avatar-upload="uploadAvatar"
-          @avatar-delete="deleteAvatar"
-        />
+        <ProfileHeaderComponent :user="user" />
       </CardContent>
       <div class="px-6 pt-2">
         <TabsList class="w-full">
