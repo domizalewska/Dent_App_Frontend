@@ -34,7 +34,9 @@ function handleBackgroundAction() {
 <template>
   <div
     class="group relative flex h-32 bg-muted bg-cover bg-center sm:h-40"
-    :style="{ backgroundImage: `url('${user.background_picture ?? 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/pawel-czerwinski-O4fAgtXLRwI-unsplash.jpg'}')` }"
+    :style="{
+      backgroundImage: `url('${user.background_picture ?? 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/pawel-czerwinski-O4fAgtXLRwI-unsplash.jpg'}')`,
+    }"
   >
     <button
       class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
