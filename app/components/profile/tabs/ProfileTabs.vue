@@ -4,6 +4,7 @@ import type { User } from '~/types'
 import CalendarCard from '~/components/profile/card/CalendarCard.vue'
 import DocumentsCard from '~/components/profile/card/DocumentsCard.vue'
 import CompetenciesCard from '~/components/profile/card/CompetenciesCard.vue'
+import ProfileBackgroundPicture from '~/components/profile/header/ProfileBackgroundPicture.vue'
 
 interface Props {
   user: User
@@ -45,12 +46,7 @@ const tabs = [
 <template>
   <Tabs default-value="info" class="w-full gap-0">
     <Card class="overflow-hidden pt-0 rounded-b-none border-b-0">
-      <div
-        class="h-32 bg-muted bg-cover bg-center sm:h-40"
-        style="
-          background-image: url('https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/pawel-czerwinski-O4fAgtXLRwI-unsplash.jpg');
-        "
-      />
+      <ProfileBackgroundPicture :user="user" />
       <CardContent class="relative px-6 pb-0">
         <ProfileHeaderComponent
           :user="user"
