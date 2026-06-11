@@ -1,107 +1,87 @@
 <script setup lang="ts">
-import type { SidebarProps } from '@/components/ui/sidebar'
-import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
-
-import { BookUser, CalendarDays, GalleryVerticalEnd, Settings2, Users } from 'lucide-vue-next'
-
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar'
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  type SidebarProps,
+  SidebarRail,
+} from '@/components/ui/sidebar'
+import {
+  Briefcase,
+  CalendarDays,
+  LayoutDashboard,
+  Settings2,
+  Stethoscope,
+  Users,
+} from 'lucide-vue-next'
 import NavMain from './NavMain.vue'
 
-const props = withDefaults(defineProps<SidebarProps>(), {
-  collapsible: 'icon',
-})
+const props = defineProps<SidebarProps>()
 
 const data = {
   navMain: [
     {
-      title: 'Użytkownicy',
+      title: 'Pulpit',
+      url: '/dashboard',
+      icon: LayoutDashboard,
+    },
+    {
+      title: 'Pracownicy',
       url: '/users',
       icon: Users,
-      isActive: true,
-      items: [
-        {
-          title: 'Lista',
-          url: '/users',
-        },
-      ],
     },
     {
-      title: 'Stanowiska pracy',
-      url: '/job-positions',
-      icon: BookUser,
-      isActive: true,
-      items: [
-        {
-          title: 'Lista',
-          url: '/job-positions',
-        },
-      ],
-    },
-    {
-      title: 'Harmonogram',
+      title: 'Grafik wizyt',
       url: '/schedule',
       icon: CalendarDays,
-      items: [
-        {
-          title: 'Kalendarz',
-          url: '/schedule',
-        },
-      ],
     },
     {
-      title: 'Urlopy',
-      url: '#',
-      icon: BookUser,
-      items: [
-        {
-          title: 'Widok urlopów',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Ustawienia',
-      url: '#',
-      icon: Settings2,
-      items: [
-        {
-          title: 'Ogólne',
-          url: '#',
-        },
-        {
-          title: 'Powiadomienia',
-          url: '#',
-        },
-      ],
+      title: 'Stanowiska',
+      url: '/job-positions',
+      icon: Briefcase,
     },
   ],
 }
 </script>
 
 <template>
-  <Sidebar v-bind="props">
+  <Sidebar v-bind="props" collapsible="icon">
     <SidebarHeader>
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton size="lg" as-child>
-            <a href="#">
+            <button>
               <div
                 class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
               >
-                <GalleryVerticalEnd class="size-4" />
+                <Stethoscope class="size-4" />
               </div>
               <div class="flex flex-col gap-0.5 leading-none">
-                <span class="font-medium">Dent APP</span>
-                <span class="">v1.0.0</span>
+                <span class="font-semibold">DentApp</span>
+                <span class="text-muted-foreground text-xs">Klinika Stomatologiczna</span>
               </div>
-            </a>
+            </button>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarHeader>
+    <Separator class="my-2" />
     <SidebarContent>
       <NavMain :items="data.navMain" />
     </SidebarContent>
+    <SidebarFooter>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton :tooltip="'Ustawienia'" @click="navigateTo('/settings')">
+            <Settings2 />
+            <span>Ustawienia</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarFooter>
     <SidebarRail />
   </Sidebar>
 </template>
