@@ -24,27 +24,26 @@ watch(
       <SidebarProvider :style="{ '--sidebar-width': '19rem' }">
         <SidebarComponent />
         <SidebarInset>
-          <header class="flex h-16 flex-col w-full gap-2 px-4">
-            <div class="flex mt-2 w-full items-center justify-between">
-              <div class="flex items-center justify-center">
-                <SidebarTrigger class="-ml-1" />
-                <Separator orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
-                <BaseBreadcrumb
-                  v-for="(item, index) in breadcrumbs"
-                  :key="index"
-                  :name="item.name"
-                  :link="item.link"
-                />
-              </div>
-              <HeaderComponent />
+          <header class="flex h-16 shrink-0 w-full items-center justify-between px-4 bg-sidebar">
+            <div class="flex items-center gap-2">
+              <SidebarTrigger class="-ml-1" />
+              <Separator orientation="vertical" class="data-[orientation=vertical]:h-4" />
+              <BaseBreadcrumb
+                v-for="(item, index) in breadcrumbs"
+                :key="index"
+                :name="item.name"
+                :link="item.link"
+              />
             </div>
-            <div class="flex flex-col w-full">
-              <HeaderPage :title="header" />
-              <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
-                <slot />
-              </div>
-            </div>
+            <HeaderComponent />
           </header>
+          <Separator />
+          <div class="flex flex-col w-full p-4">
+            <HeaderPage :title="header" />
+            <div class="flex flex-1 flex-col gap-4">
+              <slot />
+            </div>
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </div>

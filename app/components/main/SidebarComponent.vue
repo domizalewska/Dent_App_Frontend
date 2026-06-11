@@ -17,9 +17,12 @@ import {
   Stethoscope,
   Users,
 } from 'lucide-vue-next'
+import { useSidebar } from '@/components/ui/sidebar'
 import NavMain from './NavMain.vue'
 
 const props = defineProps<SidebarProps>()
+
+const { open } = useSidebar()
 
 const data = {
   navMain: [
@@ -49,7 +52,7 @@ const data = {
 
 <template>
   <Sidebar v-bind="props" collapsible="icon">
-    <SidebarHeader>
+    <SidebarHeader :class="open ? 'border-b' : 'border-b-0'">
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton size="lg" as-child>
@@ -68,7 +71,6 @@ const data = {
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarHeader>
-    <Separator class="my-2" />
     <SidebarContent>
       <NavMain :items="data.navMain" />
     </SidebarContent>
