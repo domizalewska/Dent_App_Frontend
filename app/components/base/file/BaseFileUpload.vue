@@ -7,6 +7,7 @@ import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast';
 
 interface Props {
   endpoint: string
+  onSuccess?: () => void
 }
 
 const props = defineProps<Props>()
@@ -89,6 +90,7 @@ async function uploadFiles() {
   )
 
   files.value = []
+  props.onSuccess?.()
 }
 </script>
 

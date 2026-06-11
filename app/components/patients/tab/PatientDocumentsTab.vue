@@ -3,29 +3,42 @@ import BaseFileUpload from '~/components/base/file/BaseFileUpload.vue'
 import BaseFileList from '~/components/base/file/BaseFileList.vue'
 import { PatientsEndpoints } from '~/features/patients'
 import type { PatientType } from '~/types'
+import { Plus } from 'lucide-vue-next'
 
 interface Props {
   patient: PatientType
 }
 
 defineProps<Props>()
+
+const isOpen = ref(false)
 </script>
 
 <template>
   <Card class="overflow-hidden rounded-t-none">
-    <CardHeader class="px-6 pt-4 pb-0">
+    <CardHeader class="px-6 pt-4 pb-0 flex flex-row items-center justify-between">
       <CardTitle class="text-sm font-medium text-muted-foreground tracking-wide uppercase">
         Dokumenty pacjenta
       </CardTitle>
+      <Button variant="outline" size="sm" @click="isOpen = true">
+        <Plus class="size-4" />
+        Dodaj plik
+      </Button>
     </CardHeader>
     <CardContent class="px-6 pt-3 pb-4 flex flex-col gap-3">
-      <div class="flex flex-col w-full gap-3">
-        <BaseFileList
-          :endpoint="PatientsEndpoints(patient.uuid).FILE_UPLOADS"
-          :download-url="PatientsEndpoints(patient.uuid).FILE_DOWNLOAD"
-        />
-        <BaseFileUpload :endpoint="PatientsEndpoints(patient.uuid).FILE_UPLOADS" />
-      </div>
+      <BaseFileList
+        :endpoint="PatientsEndpoints(patient.uuid).FILE_UPLOADS"
+        :download-url="PatientsEndpoints(patient.uuid).FILE_DOWNLOAD"
+      />
     </CardContent>
   </Card>
+
+  <Dialog :open="isOpen" @update:open="isOpen = $event">
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Dodaj dokumenty</DialogTitle>
+      </DialogHeader>
+      <BaseFileUpload :endpoint="PatientsEndpoints(patient.uuid).FILE_UPLOADS" :on-success="() => isOpen = false" />
+    </DialogContent>
+  </Dialog>
 </template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useFileDialog } from '@vueuse/core'
 import { BadgeCheck, Calendar, Mail, Pencil, Phone, Trash2 } from 'lucide-vue-next'
 import type { User } from '~/types'
 
@@ -11,16 +10,7 @@ const props = defineProps<Props>()
 
 const { uploadAvatar, deleteAvatar } = useUserPictures(props.user.uuid)
 
-const { open, onChange } = useFileDialog({
-  accept: 'image/*',
-  multiple: false,
-})
-
-onChange((files) => {
-  if (files?.[0]) {
-    uploadAvatar(files[0])
-  }
-})
+const { open } = useFileSelect('image/*', uploadAvatar)
 
 function handleAvatarAction() {
   if (props.user.profile_picture) {

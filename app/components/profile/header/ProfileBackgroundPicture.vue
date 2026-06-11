@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Pencil, Trash2 } from 'lucide-vue-next'
 import type { User } from '~/types'
-import { useFileDialog } from '@vueuse/core'
 
 interface Props {
   user: User
@@ -11,16 +10,7 @@ const props = defineProps<Props>()
 
 const { uploadBackground, deleteBackground } = useUserPictures(props.user.uuid)
 
-const { open, onChange } = useFileDialog({
-  accept: 'image/*',
-  multiple: false,
-})
-
-onChange((files) => {
-  if (files?.[0]) {
-    uploadBackground(files[0])
-  }
-})
+const { open } = useFileSelect('image/*', uploadBackground)
 
 function handleBackgroundAction() {
   if (props.user.background_picture) {
