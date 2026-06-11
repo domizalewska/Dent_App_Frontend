@@ -42,7 +42,7 @@ function onEdit(record: JobPosition) {
 </script>
 
 <template>
-  <div class="h-full">
+  <Card class="h-full px-6">
     <div class="flex flex-col">
       <BaseHeader>
         <template #left>
@@ -76,5 +76,5 @@ function onEdit(record: JobPosition) {
         :on-row-click="(row) => onEdit(row)"
       />
     </div>
-  </div>
+  </Card>
 </template>

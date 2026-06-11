@@ -21,10 +21,10 @@ const { setHeader, resetHeader } = useHeader()
 
 const { sorting, sortingParams, onSortingChange } = useSorting('user')
 
-set([{ name: 'Użytkownicy', link: '/users' }])
+set([{ name: 'Pracownicy', link: '/users' }])
 
 resetHeader()
-setHeader('Użytkownicy')
+setHeader('Pracownicy')
 
 const usersActive = computed(() => {})
 
@@ -38,7 +38,7 @@ const {
 </script>
 
 <template>
-  <div class="h-full">
+  <Card class="h-full">
     <BaseSkeletonHeader v-if="pending" />
     <BaseTableSkeleton v-if="pending" :columns="4" />
     <ClientOnly>
@@ -46,7 +46,7 @@ const {
         <BaseSwitch :value="isActive" label="Pokaż też nieaktywnych" />
       </Teleport>
     </ClientOnly>
-    <div class="flex flex-col">
+    <div class="flex flex-col px-4">
       <BaseHeader v-if="usersData?.data">
         <template #right>
           <div class="flex gap-2">
@@ -61,7 +61,7 @@ const {
       </BaseHeader>
     </div>
 
-    <div class="h-full flex flex-col min-h-0">
+    <div class="h-full flex flex-col min-h-0 px-4">
       <DataTable
         v-if="usersData?.data"
         :columns="usersColumns"
@@ -71,5 +71,5 @@ const {
         :on-row-click="(row) => router.push(`/users/${row.uuid}`)"
       />
     </div>
-  </div>
+  </Card>
 </template>
