@@ -54,7 +54,7 @@ export default defineNuxtConfig({
     strict: true,
     shim: false,
   },
-  css: ['~/assets/css/tailwind.css'],
+  css: ['~/assets/css/tailwind.css', '~/assets/css/fullcalendar.css'],
   vite: {
     plugins: [tailwindcss()],
   },
