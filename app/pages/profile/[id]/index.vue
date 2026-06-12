@@ -19,8 +19,8 @@ set([{ name: 'Profil', link: '/profile' }])
 </script>
 
 <template>
-  <div class="flex flex-col w-full justify-center items-center">
-    <div class="flex flex-col w-[700px]">
+  <div class="flex flex-col justify-center items-center">
+    <div class="flex flex-col px-6">
       <ProfileTabs v-if="user" :user="user" />
     </div>
   </div>

@@ -25,9 +25,7 @@ const { data: userData, pending, error } = await useAPI<User>(`${UsersEndpoints(
 </script>
 
 <template>
-  <div class="flex flex-col w-full justify-center items-center">
-    <div class="flex flex-col w-[700px]">
-      <ProfileTabs v-if="userData" :user="userData" />
-    </div>
+  <div class="flex flex-col w-full justify-center items-center px-6">
+    <ProfileTabs v-if="userData" :user="userData" />
   </div>
 </template>

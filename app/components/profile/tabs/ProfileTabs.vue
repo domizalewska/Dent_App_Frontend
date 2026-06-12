@@ -63,19 +63,19 @@ const tabs = [
       </div>
     </Card>
 
-    <TabsContent value="info" class="mt-0">
+    <TabsContent value="info">
       <ProfileCard :user="user" />
     </TabsContent>
-    <TabsContent value="competencies" class="mt-0">
+    <TabsContent value="competencies">
       <CompetenciesCard :user="user" />
     </TabsContent>
-    <TabsContent value="password" class="mt-0">
+    <TabsContent value="password">
       <PasswordCard />
     </TabsContent>
-    <TabsContent value="available" class="mt-0">
+    <TabsContent value="available">
       <CalendarCard />
     </TabsContent>
-    <TabsContent value="documents" class="mt-0">
+    <TabsContent value="documents">
       <DocumentsCard />
     </TabsContent>
   </Tabs>

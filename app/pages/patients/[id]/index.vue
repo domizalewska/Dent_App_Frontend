@@ -29,9 +29,7 @@ const {
 </script>
 
 <template>
-  <div class="flex flex-col w-full justify-center items-center">
-    <div class="flex flex-col w-[700px]">
-      <PatientTabs v-if="patientData" :patient="patientData" />
-    </div>
+  <div class="flex flex-col w-full justify-center items-center px-6">
+    <PatientTabs v-if="patientData" :patient="patientData" />
   </div>
 </template>
