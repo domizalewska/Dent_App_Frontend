@@ -11,8 +11,6 @@ import JobPositionAddDialog from '~/components/job-positions/dialog/JobPositionA
 import JobPositionEditDialog from '~/components/job-positions/dialog/JobPositionEditDialog.vue'
 import { JobPositionTable } from '~/symbols'
 import { useDialog } from '~/composables/useDialog'
-import BaseSkeletonHeader from '~/components/base/skeleton/header/BaseSkeletonHeader.vue'
-import BaseTableSkeleton from '~/components/base/skeleton/table/BaseTableSkeleton.vue'
 
 definePageMeta({
   layout: 'dashboard',
@@ -44,35 +42,33 @@ function onEdit(record: JobPosition) {
 </script>
 
 <template>
-  <div class="flex flex-col h-full min-h-0">
-    <div v-if="pending" class="flex justify-center items-center">
-      <BaseSkeletonHeader />
-      <BaseTableSkeleton :columns="4" />
+  <Card class="h-full px-6">
+    <div class="flex flex-col">
+      <BaseHeader>
+        <template #left>
+          <div class="flex gap-2">
+            <BaseExportFile
+              :extensions="['xlsx', 'csv', 'pdf']"
+              :endpoint="`${JobPositionsEndpoints().EXPORT}`"
+              file-name="Tabela stanowisk"
+            />
+          </div>
+        </template>
+        <template #right>
+          <div class="flex gap-2">
+            <BaseTableSearch />
+            <Button variant="default" @click="addDialogOpen">
+              <span class="text-sm text-color mt-2 mb-2">
+                {{ 'Dodaj wpis' }}
+              </span>
+              <Icon icon="lucide:plus" />
+            </Button>
+          </div>
+        </template>
+      </BaseHeader>
     </div>
-    <BaseHeader v-if="jobPositionsData?.data">
-      <template #left>
-        <div class="flex gap-2">
-          <BaseExportFile
-            :extensions="['xlsx', 'csv', 'pdf']"
-            :endpoint="`${JobPositionsEndpoints().EXPORT}`"
-            file-name="Tabela stanowisk"
-          />
-        </div>
-      </template>
-      <template #right>
-        <div class="flex gap-2">
-          <BaseTableSearch />
-          <Button variant="default" @click="addDialogOpen">
-            <span class="text-sm text-color mt-2 mb-2">
-              {{ 'Dodaj wpis' }}
-            </span>
-            <Icon icon="lucide:plus" />
-          </Button>
-        </div>
-      </template>
-    </BaseHeader>
     <component :is="activeComponent" v-bind="activeProps" @close="close" />
-    <div class="flex-1 min-h-0">
+    <div class="h-full flex flex-col min-h-0">
       <DataTable
         v-if="jobPositionsData?.data"
         :columns="jobPositionsColumns"
@@ -80,5 +76,5 @@ function onEdit(record: JobPosition) {
         :on-row-click="(row) => onEdit(row)"
       />
     </div>
-  </div>
+  </Card>
 </template>

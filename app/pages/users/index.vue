@@ -6,7 +6,7 @@ import { usersColumns, UsersEndpoints } from '~/features/users'
 import type { User } from '~/types'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseSwitch from '~/components/base/buttons/BaseSwitch.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import BaseSkeletonHeader from '~/components/base/skeleton/header/BaseSkeletonHeader.vue'
 
 definePageMeta({
@@ -21,10 +21,12 @@ const { setHeader, resetHeader } = useHeader()
 
 const { sorting, sortingParams, onSortingChange } = useSorting('user')
 
-set([{ name: 'Użytkownicy', link: '/users' }])
+set([{ name: 'Pracownicy', link: '/users' }])
 
 resetHeader()
-setHeader('Użytkownicy')
+setHeader('Pracownicy')
+
+const usersActive = computed(() => {})
 
 const {
   data: usersData,
@@ -36,7 +38,7 @@ const {
 </script>
 
 <template>
-  <div class="flex flex-col h-full min-h-0">
+  <Card class="h-full">
     <BaseSkeletonHeader v-if="pending" />
     <BaseTableSkeleton v-if="pending" :columns="4" />
     <ClientOnly>
@@ -44,20 +46,22 @@ const {
         <BaseSwitch :value="isActive" label="Pokaż też nieaktywnych" />
       </Teleport>
     </ClientOnly>
-    <BaseHeader v-if="usersData?.data">
-      <template #right>
-        <div class="flex gap-2">
-          <BaseTableSearch />
-          <BaseExportFile
-            :extensions="['xlsx', 'csv', 'pdf']"
-            :endpoint="`${UsersEndpoints().EXPORT}`"
-            file-name="Tabela użytkowników"
-          />
-        </div>
-      </template>
-    </BaseHeader>
+    <div class="flex flex-col px-4">
+      <BaseHeader v-if="usersData?.data">
+        <template #right>
+          <div class="flex gap-2">
+            <BaseTableSearch />
+            <BaseExportFile
+              :extensions="['xlsx', 'csv', 'pdf']"
+              :endpoint="`${UsersEndpoints().EXPORT}`"
+              file-name="Tabela użytkowników"
+            />
+          </div>
+        </template>
+      </BaseHeader>
+    </div>
 
-    <div class="flex-1 min-h-0">
+    <div class="h-full flex flex-col min-h-0 px-4">
       <DataTable
         v-if="usersData?.data"
         :columns="usersColumns"
@@ -67,5 +71,5 @@ const {
         :on-row-click="(row) => router.push(`/users/${row.uuid}`)"
       />
     </div>
-  </div>
+  </Card>
 </template>
