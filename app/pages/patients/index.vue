@@ -43,39 +43,41 @@ async function addOpenDialog() {
 </script>
 
 <template>
-  <div class="flex flex-col h-full min-h-0">
-    <div v-if="pending" class="flex justify-center items-center">
-      <BaseSkeletonHeader />
-      <BaseTableSkeleton :columns="4" />
+  <Card class="h-full px-6">
+    <div class="flex flex-col">
+      <div v-if="pending" class="flex justify-center items-center">
+        <BaseSkeletonHeader />
+        <BaseTableSkeleton :columns="4" />
+      </div>
+      <BaseHeader v-if="patientsData?.data">
+        <template #right>
+          <div class="flex gap-2">
+            <BaseTableSearch />
+            <BaseExportFile
+              :extensions="['xlsx', 'csv', 'pdf']"
+              :endpoint="`${PatientsEndpoints().EXPORT}`"
+              file-name="Tabela pacjentów"
+            />
+            <Button @click="addOpenDialog()">
+              <template #default>
+                <span class="text-color font-normal">
+                  {{ 'Dodaj wpis' }}
+                </span>
+                <Icon icon="lucide:plus" />
+              </template>
+            </Button>
+          </div>
+        </template>
+      </BaseHeader>
+      <component :is="activeComponent" v-bind="activeProps" @close="close" />
+      <div class="flex-1 min-h-0">
+        <DataTable
+          v-if="patientsData?.data"
+          :columns="patientsColumns"
+          :data="patientsData.data"
+          :on-row-click="(row) => router.push(PatientRoutes.PATIENT_PROFILE(row.uuid))"
+        />
+      </div>
     </div>
-    <BaseHeader v-if="patientsData?.data">
-      <template #right>
-        <div class="flex gap-2">
-          <BaseTableSearch />
-          <BaseExportFile
-            :extensions="['xlsx', 'csv', 'pdf']"
-            :endpoint="`${PatientsEndpoints().EXPORT}`"
-            file-name="Tabela pacjentów"
-          />
-          <Button @click="addOpenDialog()">
-            <template #default>
-              <span class="text-color font-normal">
-                {{ 'Dodaj wpis' }}
-              </span>
-              <Icon icon="lucide:plus" />
-            </template>
-          </Button>
-        </div>
-      </template>
-    </BaseHeader>
-    <component :is="activeComponent" v-bind="activeProps" @close="close" />
-    <div class="flex-1 min-h-0">
-      <DataTable
-        v-if="patientsData?.data"
-        :columns="patientsColumns"
-        :data="patientsData.data"
-        :on-row-click="(row) => router.push(PatientRoutes.PATIENT_PROFILE(row.uuid))"
-      />
-    </div>
-  </div>
+  </Card>
 </template>

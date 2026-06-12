@@ -8,6 +8,7 @@ import {
   SidebarMenuItem,
   type SidebarProps,
   SidebarRail,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import {
   Briefcase,
@@ -15,10 +16,9 @@ import {
   LayoutDashboard,
   Settings2,
   Stethoscope,
+  UserRoundSearch,
   Users,
-  UserPlus,
 } from 'lucide-vue-next'
-import { useSidebar } from '@/components/ui/sidebar'
 import NavMain from './NavMain.vue'
 
 const props = defineProps<SidebarProps>()
@@ -40,7 +40,7 @@ const data = {
     {
       title: 'Pacjenci',
       url: '/patients',
-      icon: UserPlus,
+      icon: UserRoundSearch,
     },
     {
       title: 'Grafik wizyt',
