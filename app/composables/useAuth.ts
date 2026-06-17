@@ -3,7 +3,10 @@ import type { LoginPayload, User } from '~/types'
 export function useAuth() {
   const user = useState<User | null>('user', () => null)
 
-  const token = useCookie('token')
+  const token = useState<string | null>('token', () =>
+    import.meta.client ? localStorage.getItem('token') : null,
+  )
+
   const isAuthenticated = computed(() => !!token.value)
 
   async function loginUser(payload: LoginPayload) {
@@ -20,26 +23,25 @@ export function useAuth() {
         throw new Error('Wystąpił błąd. Spróbuj ponownie później.')
       },
     })
+
     token.value = authToken
-    if (import.meta.client) {
-      localStorage.setItem('token', authToken)
-      localStorage.setItem('type', type)
-    }
+    localStorage.setItem('token', authToken)
+    localStorage.setItem('type', type)
+
     await navigateTo('/dashboard')
   }
 
   async function logoutUser() {
     user.value = null
     token.value = null
-    if (import.meta.client) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('type')
-    }
+    localStorage.removeItem('token')
+    localStorage.removeItem('type')
     await navigateTo('/login')
   }
 
   return {
     user,
+    token,
     isAuthenticated,
     loginUser,
     logoutUser,

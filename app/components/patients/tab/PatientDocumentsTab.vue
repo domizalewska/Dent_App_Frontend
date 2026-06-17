@@ -38,7 +38,10 @@ const isOpen = ref(false)
       <DialogHeader>
         <DialogTitle>Dodaj dokumenty</DialogTitle>
       </DialogHeader>
-      <BaseFileUpload :endpoint="PatientsEndpoints(patient.uuid).FILE_UPLOADS" :on-success="() => isOpen = false" />
+      <BaseFileUpload
+        :endpoint="PatientsEndpoints(patient.uuid).FILE_UPLOADS"
+        :on-success="() => (isOpen = false)"
+      />
     </DialogContent>
   </Dialog>
 </template>

@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
-import { Field as VeeField, useForm } from 'vee-validate'
 import { z } from 'zod'
-
+import { Form } from 'vee-validate'
 import { useAuth } from '~/composables/useAuth'
 import type { LoginPayload } from '~/types'
-
-import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
 import {
   Card,
@@ -16,8 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from '~/components/ui/card'
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '~/components/ui/field'
+import { FieldDescription } from '~/components/ui/field'
 import { Alert, AlertDescription } from '~/components/ui/alert'
+import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 
 const { loginUser } = useAuth()
 
@@ -43,7 +41,7 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     await loginUser(values)
   } catch (error: unknown) {
-    serverError.value = (error as Error)?.message ?? 'Wystąpił błąd. Spróbuj ponownie później.'
+    serverError.value = (error as Error)?.message ?? 'Nieprawidłowy mail lub hasło.'
   }
 })
 </script>
@@ -56,39 +54,20 @@ const onSubmit = handleSubmit(async (values) => {
     </CardHeader>
 
     <CardContent>
-      <form @submit="onSubmit">
-        <FieldGroup>
-          <VeeField v-slot="{ field, errors }" name="email">
-            <Field :data-invalid="!!errors.length">
-              <FieldLabel>Email</FieldLabel>
+      <Form @submit="onSubmit">
+        <div class="flex flex-col justify-center align-center mb-4">
+          <BaseInputForm name="email" label="E-mail" placeholder="Wpisz swoj mail" type="text" />
+        </div>
 
-              <Input
-                v-bind="field"
-                type="email"
-                placeholder="Email"
-                :aria-invalid="!!errors.length"
-              />
-
-              <FieldError v-if="errors.length" :errors="errors" />
-            </Field>
-          </VeeField>
-
-          <VeeField v-slot="{ field, errors }" name="password">
-            <Field :data-invalid="!!errors.length">
-              <FieldLabel>Hasło</FieldLabel>
-
-              <Input
-                v-bind="field"
-                type="password"
-                placeholder="Hasło"
-                :aria-invalid="!!errors.length"
-                @keyup.enter="onSubmit"
-              />
-
-              <FieldError v-if="errors.length" :errors="errors" />
-            </Field>
-          </VeeField>
-        </FieldGroup>
+        <div class="flex flex-col justify-center align-center">
+          <BaseInputForm
+            name="password"
+            label="Hasło"
+            placeholder="Wpisz swoje hasło"
+            type="password"
+            @keyup="onSubmit"
+          />
+        </div>
 
         <Alert v-if="serverError" variant="destructive" class="mt-6">
           <AlertDescription>{{ serverError }}</AlertDescription>
@@ -96,15 +75,6 @@ const onSubmit = handleSubmit(async (values) => {
 
         <CardFooter class="flex flex-col mt-8">
           <Button class="w-full mb-4" type="submit"> Zaloguj się </Button>
-
-          <FieldDescription class="text-center">
-            Nie posiadasz konta?
-            <NuxtLink to="/register">
-              <div class="text-sm hover:underline text-color focus:outline-none">
-                <span>Zarejestruj się </span>
-              </div>
-            </NuxtLink>
-          </FieldDescription>
 
           <FieldDescription class="text-center mt-8">
             Nie pamiętasz hasła?
@@ -115,7 +85,7 @@ const onSubmit = handleSubmit(async (values) => {
             </NuxtLink>
           </FieldDescription>
         </CardFooter>
-      </form>
+      </Form>
     </CardContent>
   </Card>
 </template>
