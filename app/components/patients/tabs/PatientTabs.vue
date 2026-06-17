@@ -57,16 +57,16 @@ const tabs = [
       </div>
     </Card>
 
-    <TabsContent value="info" class="mt-0">
+    <TabsContent value="info">
       <PatientInfoCard :patient="patient" />
     </TabsContent>
-    <TabsContent value="documents" class="mt-0">
+    <TabsContent value="documents">
       <PatientDocumentsTab :patient="patient" />
     </TabsContent>
-    <TabsContent value="pictures" class="mt-0">
+    <TabsContent value="pictures">
       <PatientPictureTab />
     </TabsContent>
-    <TabsContent value="archive" class="mt-0">
+    <TabsContent value="archive">
       <PatientArchiveTab :patient-uuid="patient.uuid" />
     </TabsContent>
   </Tabs>
