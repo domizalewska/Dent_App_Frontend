@@ -1,1 +1,1 @@
-export * from '/password.type'
+export * from './password.type'
