@@ -26,24 +26,21 @@ const formSchema = toTypedSchema(
   }),
 )
 
-const { handleSubmit } = useForm<LoginPayload>({
-  validationSchema: formSchema,
-  initialValues: {
-    email: '',
-    password: '',
-  },
-})
-
 const serverError = ref('')
 
-const onSubmit = handleSubmit(async (values) => {
+const initialValues = {
+  email: '',
+  password: '',
+}
+
+const onSubmit = async (values: LoginPayload) => {
   serverError.value = ''
   try {
     await loginUser(values)
   } catch (error: unknown) {
     serverError.value = (error as Error)?.message ?? 'Nieprawidłowy mail lub hasło.'
   }
-})
+}
 </script>
 
 <template>
@@ -54,7 +51,7 @@ const onSubmit = handleSubmit(async (values) => {
     </CardHeader>
 
     <CardContent>
-      <Form @submit="onSubmit">
+      <Form :validation-schema="formSchema" :initial-values="initialValues" @submit="onSubmit">
         <div class="flex flex-col justify-center align-center mb-4">
           <BaseInputForm name="email" label="E-mail" placeholder="Wpisz swoj mail" type="text" />
         </div>
