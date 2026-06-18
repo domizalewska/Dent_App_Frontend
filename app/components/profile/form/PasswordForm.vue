@@ -3,12 +3,13 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { Form } from 'vee-validate'
 import { z } from 'zod'
 import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
-import { useAPI } from '~/composables/useAPI'
 import { UsersEndpoints } from '~/features/users'
 import { toast } from 'vue-sonner'
+import type { PasswordPayload } from '~/types'
 
-const { params } = useRoute()
-const { id } = params as { id: string }
+const { $api } = useNuxtApp()
+
+const { logoutUser } = useAuth()
 
 const formSchema = toTypedSchema(
   z
@@ -19,22 +20,27 @@ const formSchema = toTypedSchema(
     })
     .refine((data) => data.password === data.password_confirmation, {
       message: 'Hasła nie są identyczne',
-      path: ['confirm_password'],
+      path: ['password_confirmation'],
     }),
 )
 
-async function onSubmit(values: FormData) {
+async function onSubmit(values: PasswordPayload) {
   try {
-    await useAPI(`${UsersEndpoints(id).USER_EDIT_PASSWORD}`, {
+    await $api(`${UsersEndpoints().USER_EDIT_PASSWORD}`, {
       method: 'PATCH',
       body: values,
     })
     toast('Sukces!', {
-      description: 'Prawidłowo zresetowano hasło',
+      description: 'Poprawnie zmieniono hasło',
+      style: toastSuccessStyle,
+      duration: 1500,
     })
+    setTimeout(logoutUser, 1500)
   } catch {
     toast('Błąd!', {
       description: 'Wystąpił błąd podczas resetowania hasła',
+      style: toastErrorStyle,
+      duration: 1500,
     })
   }
 }

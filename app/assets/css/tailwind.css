@@ -159,3 +159,7 @@
     cursor: pointer;
   }
 }
+
+[data-sonner-toast] [data-description] {
+  color: var(--normal-text) !important;
+}
