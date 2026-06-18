@@ -8,6 +8,8 @@ import { Button } from '~/components/ui/button'
 import { Icon } from '@iconify/vue'
 import { sortableHeader } from '~/utils/sortingHelper'
 
+const { deactivateUser } = useUser()
+
 export const usersColumns: ColumnDef<User>[] = [
   {
     accessorKey: 'last_name',
@@ -127,7 +129,12 @@ export const usersColumns: ColumnDef<User>[] = [
         { class: 'text-left font-normal text-muted-foreground' },
         h(
           Button,
-          { variant: 'outline', size: 'icon', class: 'rounded-full' },
+          {
+            variant: 'outline',
+            size: 'icon',
+            class: 'rounded-full',
+            onClick: () => deactivateUser(row.original.uuid),
+          },
           { default: () => h(Trash2, { class: 'size-4' }) },
         ),
       )
