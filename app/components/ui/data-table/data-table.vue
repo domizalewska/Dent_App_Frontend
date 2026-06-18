@@ -51,7 +51,8 @@ const table = useVueTable({
   }
 });
 
-function handleRowClick(row: TData) {
+function handleRowClick(row: TData, event: MouseEvent) {
+  if ((event.target as HTMLElement).closest('button')) return
   if (props.onRowClick) {
     props.onRowClick(row)
   }
@@ -84,7 +85,7 @@ function handleRowClick(row: TData) {
               :key="row.id"
               :data-state="row.getIsSelected() ? 'selected' : undefined"
               class="font-normal border-b border-border cursor-pointer"
-              @click="handleRowClick(row.original)"
+              @click="handleRowClick(row.original, $event)"
             >
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />

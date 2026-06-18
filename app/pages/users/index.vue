@@ -33,6 +33,7 @@ const {
   pending,
   error,
 } = await usePaginatedAPI<User>(`${UsersEndpoints().LIST}`, {
+  key: 'users',
   params: sortingParams,
 })
 </script>
