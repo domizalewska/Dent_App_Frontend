@@ -46,27 +46,27 @@ export const usersColumns: ColumnDef<User>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: 'phone',
+    accessorKey: 'phone_number',
     header: () =>
       h('div', { class: 'flex item-center text-center text-foreground' }, 'Telefon służbowy'),
     cell: ({ row }) => {
       return h(
         'div',
         { class: 'text-left font-normal text-muted-foreground' },
-        row.original?.phone_numbers,
+        row.original?.phone_number,
       )
     },
     enableSorting: true,
   },
   {
-    accessorKey: 'phone',
+    accessorKey: 'private_phone_number',
     header: () =>
       h('div', { class: 'flex item-center text-center text-foreground' }, 'Telefon prywatny'),
     cell: ({ row }) => {
       return h(
         'div',
         { class: 'text-left font-normal text-muted-foreground' },
-        row.original?.phone_numbers,
+        row.original?.private_phone_number,
       )
     },
     enableSorting: true,
