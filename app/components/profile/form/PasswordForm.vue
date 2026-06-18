@@ -14,10 +14,10 @@ const formSchema = toTypedSchema(
   z
     .object({
       current_password: z.string().nonempty('Wpisz aktualne hasło'),
-      new_password: z.string().min(8, 'Hasło musi mieć co najmniej 8 znaków'),
-      confirm_password: z.string().nonempty('Powtórz nowe hasło'),
+      password: z.string().min(8, 'Hasło musi mieć co najmniej 8 znaków'),
+      password_confirmation: z.string().nonempty('Powtórz nowe hasło'),
     })
-    .refine((data) => data.new_password === data.confirm_password, {
+    .refine((data) => data.password === data.password_confirmation, {
       message: 'Hasła nie są identyczne',
       path: ['confirm_password'],
     }),
@@ -25,7 +25,7 @@ const formSchema = toTypedSchema(
 
 async function onSubmit(values: FormData) {
   try {
-    await useAPI(`${UsersEndpoints(id).USER_DETAILS}/resetPassword`, {
+    await useAPI(`${UsersEndpoints(id).USER_EDIT_PASSWORD}`, {
       method: 'PATCH',
       body: values,
     })
@@ -52,7 +52,7 @@ async function onSubmit(values: FormData) {
     <div class="my-5 border-t" />
 
     <BaseInputForm
-      name="new_password"
+      name="password"
       label="Nowe hasło"
       placeholder="Utwórz silne hasło"
       type="password"
@@ -60,7 +60,7 @@ async function onSubmit(values: FormData) {
 
     <div class="mt-5">
       <BaseInputForm
-        name="confirm_password"
+        name="password_confirmation"
         label="Powtórz nowe hasło"
         placeholder="Wpisz ponownie nowe hasło"
         type="password"
