@@ -65,7 +65,6 @@ const onSubmit = handleSubmit(async (values) => {
             label="Hasło"
             placeholder="Wpisz swoje hasło"
             type="password"
-            @keyup="onSubmit"
           />
         </div>
 
