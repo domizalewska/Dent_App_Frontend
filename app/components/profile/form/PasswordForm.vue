@@ -3,6 +3,12 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { Form } from 'vee-validate'
 import { z } from 'zod'
 import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
+import { useAPI } from '~/composables/useAPI'
+import { UsersEndpoints } from '~/features/users'
+import { toast } from 'vue-sonner'
+
+const { params } = useRoute()
+const { id } = params as { id: string }
 
 const formSchema = toTypedSchema(
   z
@@ -17,8 +23,20 @@ const formSchema = toTypedSchema(
     }),
 )
 
-const onSubmit = (values: Record<string, unknown>) => {
-  console.log(values)
+async function onSubmit(values: FormData) {
+  try {
+    await useAPI(`${UsersEndpoints(id).USER_DETAILS}/resetPassword`, {
+      method: 'PATCH',
+      body: values,
+    })
+    toast('Sukces!', {
+      description: 'Prawidłowo zresetowano hasło',
+    })
+  } catch {
+    toast('Błąd!', {
+      description: 'Wystąpił błąd podczas resetowania hasła',
+    })
+  }
 }
 </script>
 
