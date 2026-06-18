@@ -47,7 +47,21 @@ export const usersColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'phone',
-    header: () => h('div', { class: 'flex item-center text-center text-foreground' }, 'Telefon'),
+    header: () =>
+      h('div', { class: 'flex item-center text-center text-foreground' }, 'Telefon służbowy'),
+    cell: ({ row }) => {
+      return h(
+        'div',
+        { class: 'text-left font-normal text-muted-foreground' },
+        row.original?.phone_numbers,
+      )
+    },
+    enableSorting: true,
+  },
+  {
+    accessorKey: 'phone',
+    header: () =>
+      h('div', { class: 'flex item-center text-center text-foreground' }, 'Telefon prywatny'),
     cell: ({ row }) => {
       return h(
         'div',
