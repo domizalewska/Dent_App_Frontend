@@ -3,10 +3,9 @@ import { toast } from 'vue-sonner'
 import { refreshNuxtData } from 'nuxt/app'
 
 export const useUser = () => {
-  const { $api } = useNuxtApp()
-  const api = $api as typeof $fetch
-
   async function deactivateUser(uuid: string) {
+    const { $api } = useNuxtApp()
+    const api = $api as typeof $fetch
     await api(UsersEndpoints(uuid).USER_DETAILS, {
       method: 'PUT',
       body: { is_active: false },

@@ -3,7 +3,6 @@ import {
   type ColumnDef,
   FlexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   type SortingState,
   type Updater,
@@ -20,7 +19,12 @@ const props = defineProps<{
   onRowClick?: (row: TData) => void;
   sorting?: SortingState;
   onSortingChange?: (updaterOrValue: Updater<SortingState>) => void;
+  totalItems?: number
+  currentPage?: number
+  perPage?: number
 }>();
+
+const emit = defineEmits<{ 'update:page': [page: number] }>()
 
 const internalSorting = ref<SortingState>([])
 
@@ -42,8 +46,8 @@ const table = useVueTable({
     return props.columns;
   },
   getCoreRowModel: getCoreRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
+  manualPagination: true,
   get manualSorting() { return !!props.onSortingChange },
   onSortingChange: handleSortingChange,
   state: {
@@ -103,7 +107,12 @@ function handleRowClick(row: TData, event: MouseEvent) {
       </Table>
     </div>
     <div class="flex items-center justify-center py-4 space-x-2 shrink-0">
-      <DataTablePaginator :table="table" />
+      <DataTablePaginator
+        :current-page="currentPage ?? 1"
+        :total-items="totalItems ?? 0"
+        :per-page="perPage ?? 15"
+        @update:page="emit('update:page', $event)"
+      />
     </div>
   </div>
 </template>
