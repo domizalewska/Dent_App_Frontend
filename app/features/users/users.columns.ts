@@ -8,6 +8,8 @@ import { Button } from '~/components/ui/button'
 import { Icon } from '@iconify/vue'
 import { sortableHeader } from '~/utils/sortingHelper'
 
+const { deactivateUser } = useUser()
+
 export const usersColumns: ColumnDef<User>[] = [
   {
     accessorKey: 'last_name',
@@ -46,13 +48,27 @@ export const usersColumns: ColumnDef<User>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: 'phone',
-    header: () => h('div', { class: 'flex item-center text-center text-foreground' }, 'Telefon'),
+    accessorKey: 'phone_number',
+    header: () =>
+      h('div', { class: 'flex item-center text-center text-foreground' }, 'Telefon służbowy'),
     cell: ({ row }) => {
       return h(
         'div',
         { class: 'text-left font-normal text-muted-foreground' },
-        row.original?.phone_numbers,
+        row.original?.phone_number,
+      )
+    },
+    enableSorting: true,
+  },
+  {
+    accessorKey: 'private_phone_number',
+    header: () =>
+      h('div', { class: 'flex item-center text-center text-foreground' }, 'Telefon prywatny'),
+    cell: ({ row }) => {
+      return h(
+        'div',
+        { class: 'text-left font-normal text-muted-foreground' },
+        row.original?.private_phone_number,
       )
     },
     enableSorting: true,
@@ -113,7 +129,12 @@ export const usersColumns: ColumnDef<User>[] = [
         { class: 'text-left font-normal text-muted-foreground' },
         h(
           Button,
-          { variant: 'outline', size: 'icon', class: 'rounded-full' },
+          {
+            variant: 'outline',
+            size: 'icon',
+            class: 'rounded-full',
+            onClick: () => deactivateUser(row.original.uuid),
+          },
           { default: () => h(Trash2, { class: 'size-4' }) },
         ),
       )

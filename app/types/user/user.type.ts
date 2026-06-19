@@ -5,10 +5,11 @@ export type User = {
   first_name: string
   last_name: string
   email: string
-  private_email: string | null
-  private_email_verified_at: string | null
-  email_verified_at: string | null
-  phone_numbers?: []
+  private_email?: string
+  private_email_verified_at?: string
+  email_verified_at?: string
+  phone_number?: string
+  private_phone_number?: string
   is_active: boolean
   is_admin: boolean
   created_at: string

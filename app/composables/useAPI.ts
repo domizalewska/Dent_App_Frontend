@@ -1,5 +1,5 @@
 import { useFetch, type UseFetchOptions, useNuxtApp } from 'nuxt/app'
-import type { PaginatedResponse } from '~/types/api/pagination.types'
+import type { PaginatedResponse, PaginatedResult } from '~/types/api/pagination.types'
 
 export function useAPI<T>(url: string | (() => string), options: UseFetchOptions<T> = {}) {
   return useFetch(url, {
@@ -9,19 +9,24 @@ export function useAPI<T>(url: string | (() => string), options: UseFetchOptions
   })
 }
 
-export function usePaginatedAPI<T>(
-  url: string | (() => string),
-  options: UseFetchOptions<PaginatedResponse<T>> = {},
-) {
-  const config = useRuntimeConfig()
-  return useFetch<PaginatedResponse<T>>(url, {
-    baseURL: config.public.apiBase,
-    server: false,
+export function usePaginatedAPI<T>(url: string | (() => string), options?: object) {
+  return useFetch(url, {
     ...options,
     $fetch: useNuxtApp().$api as typeof $fetch,
-    transform: (response: PaginatedResponse<T>) => ({
-      ...response,
-      items: response.data,
-    }),
+    transform(data: PaginatedResult<T>): PaginatedResponse<T> {
+      const { data: items, ...pagination } = data
+      return {
+        data: items,
+        pagination: {
+          current_page: pagination.current_page,
+          from: pagination.from,
+          last_page: pagination.last_page,
+          per_page: pagination.per_page,
+          to: pagination.to,
+          total: pagination.total,
+        },
+      }
+    },
+    server: false,
   })
 }

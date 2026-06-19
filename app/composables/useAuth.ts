@@ -2,10 +2,11 @@ import type { LoginPayload, User } from '~/types'
 
 export function useAuth() {
   const user = useState<User | null>('user', () => null)
+  const token = useState<string | null>('token', () => null)
 
-  const token = useState<string | null>('token', () =>
-    import.meta.client ? localStorage.getItem('token') : null,
-  )
+  if (import.meta.client && !token.value) {
+    token.value = localStorage.getItem('token')
+  }
 
   const isAuthenticated = computed(() => !!token.value)
 
