@@ -11,7 +11,7 @@ const model = defineModel<boolean>()
 
 <template>
   <div class="flex items-center gap-3">
-    <Switch v-model:checked="model" :disabled="disabled" />
+    <Switch v-model="model" :disabled="disabled" />
     <Label class="text-xs font-medium text-muted-foreground">{{ label }}</Label>
   </div>
 </template>

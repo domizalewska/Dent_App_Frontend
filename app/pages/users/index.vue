@@ -28,7 +28,7 @@ const { globalSearch, paramsData, setPage, setSort, sortingState, setSearch } = 
 
 const query = computed(() => ({
   ...paramsData.value,
-  is_active: isActive.value ? undefined : true,
+  'user[is_active]': isActive.value ? undefined : true,
 }))
 
 const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoints().LIST}`, {

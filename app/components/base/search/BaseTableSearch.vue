@@ -7,7 +7,7 @@ import { useDebounceFn } from '@vueuse/core';
 import { onMounted, ref } from 'vue';
 
 interface Props {
-  modelValue?: string;
+  modelValue: string | null;
 }
 
 const props = defineProps<Props>()
