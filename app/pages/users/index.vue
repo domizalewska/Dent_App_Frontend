@@ -21,10 +21,11 @@ set([{ name: 'Pracownicy', link: '/users' }])
 resetHeader()
 setHeader('Pracownicy')
 
-const { globalSearch, paramsData, setPage, setSort, sortingState, setSearch } = usePagination({
-  stateKey: 'users-table',
-  initialSort: 'created_at,desc',
-})
+const { globalSearch, paramsData, setPage, setSort, sortingState, fullFilterList, setSearch } =
+  usePagination({
+    stateKey: 'users-table',
+    initialSort: 'created_at,desc',
+  })
 
 const query = computed(() => ({
   ...paramsData.value,
@@ -54,6 +55,7 @@ const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoint
           <div class="flex gap-2">
             <BaseTableSearch :model-value="globalSearch" @search="setSearch" />
             <BaseExportFile
+              :params="fullFilterList"
               :extensions="['xlsx', 'csv', 'pdf']"
               :endpoint="`${UsersEndpoints().EXPORT}`"
               file-name="Tabela użytkowników"
