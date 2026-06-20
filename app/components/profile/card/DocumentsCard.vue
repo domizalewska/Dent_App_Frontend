@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { Calendar } from 'lucide-vue-next'
+import type { User } from '~/types'
 import DocumentsList from '~/components/documents/DocumentsList.vue'
+
+interface Props {
+  user: User
+}
+
+defineProps<Props>()
 </script>
 
 <template>
   <Card class="overflow-hidden rounded-t-none">
-    <CardHeader class="border-b px-4 py-3">
+    <CardHeader>
       <div class="flex items-center gap-2">
         <Calendar class="size-4 text-muted-foreground" aria-hidden="true" />
         <div>
@@ -15,7 +22,7 @@ import DocumentsList from '~/components/documents/DocumentsList.vue'
       </div>
     </CardHeader>
     <CardContent class="p-0">
-      <DocumentsList />
+      <DocumentsList :user="user" />
     </CardContent>
   </Card>
 </template>
