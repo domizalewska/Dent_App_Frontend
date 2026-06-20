@@ -3,7 +3,6 @@ import { Icon } from '@iconify/vue'
 import type { PatientType } from '~/types'
 import PatientHeaderComponent from '~/components/patients/header/PatientHeaderComponent.vue'
 import PatientDocumentsTab from '~/components/patients/tab/PatientDocumentsTab.vue'
-import PatientPictureTab from '~/components/patients/tab/PatientPictureTab.vue'
 import PatientArchiveTab from '~/components/patients/tab/PatientArchiveTab.vue'
 
 interface Props {
@@ -22,11 +21,6 @@ const tabs = [
     name: 'Dokumenty',
     value: 'documents',
     icon: 'material-symbols:shield-outline',
-  },
-  {
-    name: 'Zdjęcia',
-    value: 'pictures',
-    icon: 'solar:user-id-line-duotone',
   },
   {
     name: 'Archiwum',
@@ -62,9 +56,6 @@ const tabs = [
     </TabsContent>
     <TabsContent value="documents">
       <PatientDocumentsTab :patient="patient" />
-    </TabsContent>
-    <TabsContent value="pictures">
-      <PatientPictureTab />
     </TabsContent>
     <TabsContent value="archive">
       <PatientArchiveTab :patient-uuid="patient.uuid" />

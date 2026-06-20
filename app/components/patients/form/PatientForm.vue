@@ -2,17 +2,16 @@
 import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
-import { Field, Form } from 'vee-validate'
-import type { PatientType } from '~/types'
+import { Form } from 'vee-validate'
+import type { PatientPayload } from '~/types'
 
-const props = defineProps<{
-  initialValues?: Partial<PatientType>
-}>()
+interface Props {
+  patient?: PatientPayload
+}
+
+defineProps<Props>()
 
 const emit = defineEmits(['submit', 'cancel'])
-
-const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
-const INSURANCE_TYPES = ['NFZ', 'Prywatne', 'Brak']
 
 const formSchema = toTypedSchema(
   z.object({
@@ -31,12 +30,11 @@ const formSchema = toTypedSchema(
       .regex(/^\+?[\d\s\-]{9,15}$/, 'Nieprawidłowy numer telefonu')
       .optional()
       .or(z.literal('')),
-    insurance: z.enum(['NFZ', 'Prywatne', 'Brak']).optional(),
-    blood_group: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
+    nip: z.string().optional().or(z.literal('')),
   }),
 )
 
-function onSubmit(values: Partial<PatientType>) {
+function onSubmit(values: PatientPayload) {
   emit('submit', values)
 }
 </script>
@@ -45,7 +43,7 @@ function onSubmit(values: Partial<PatientType>) {
   <Form
     class="px-4 py-4"
     :validation-schema="formSchema"
-    :initial-values="initialValues"
+    :initial-values="{ ...patient }"
     @submit="onSubmit"
   >
     <div class="grid grid-cols-2 gap-4">
@@ -74,40 +72,8 @@ function onSubmit(values: Partial<PatientType>) {
       <BaseInputForm name="address" label="Adres" placeholder="Wpisz adres" type="text" />
     </div>
 
-    <div class="mt-4 grid grid-cols-2 gap-4">
-      <Field v-slot="{ value, handleChange, errorMessage }" name="insurance">
-        <div class="space-y-1.5">
-          <Label class="px-2 text-xs font-medium text-muted-foreground">Ubezpieczenie</Label>
-          <Select :model-value="value" @update:model-value="handleChange">
-            <SelectTrigger class="w-full rounded-xl">
-              <SelectValue placeholder="Wybierz..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem v-for="type in INSURANCE_TYPES" :key="type" :value="type">
-                {{ type }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          <p v-if="errorMessage" class="text-xs text-destructive">{{ errorMessage }}</p>
-        </div>
-      </Field>
-
-      <Field v-slot="{ value, handleChange, errorMessage }" name="blood_group">
-        <div class="space-y-1.5">
-          <Label class="px-2 text-xs font-medium text-muted-foreground">Grupa krwi</Label>
-          <Select :model-value="value" @update:model-value="handleChange">
-            <SelectTrigger class="w-full rounded-xl">
-              <SelectValue placeholder="Wybierz..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem v-for="group in BLOOD_GROUPS" :key="group" :value="group">
-                {{ group }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          <p v-if="errorMessage" class="text-xs text-destructive">{{ errorMessage }}</p>
-        </div>
-      </Field>
+    <div class="mt-4">
+      <BaseInputForm name="nip" label="NIP" placeholder="Wpisz numer nip" type="text" />
     </div>
 
     <div class="mt-5 flex items-center justify-end gap-3 border-t pt-4">
