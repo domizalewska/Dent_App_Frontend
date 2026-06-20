@@ -29,7 +29,6 @@ onMounted(() => {
     <Input
       v-model="searchText"
       v-bind="$attrs"
-      size="small"
       placeholder="Wyszukaj..."
       @update:model-value="debounceInput"
       @keyup.enter="emit('search', searchText ? String(searchText) : null)"

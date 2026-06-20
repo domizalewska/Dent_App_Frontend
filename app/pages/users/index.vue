@@ -2,12 +2,15 @@
 import { computed } from 'vue'
 import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
-import { usersColumns, UsersEndpoints } from '~/features/users'
+import { getUsersColumns, UsersEndpoints } from '~/features/users'
 import type { User } from '~/types'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseSwitch from '~/components/base/buttons/BaseSwitch.vue'
 import BaseSkeletonHeader from '~/components/base/skeleton/header/BaseSkeletonHeader.vue'
 import DataTable from '~/components/ui/data-table/data-table.vue'
+import { Icon } from '@iconify/vue'
+import { useDialog } from '~/composables/useDialog'
+import UsersDialog from '~/components/users/dialog/UsersDialog.vue'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -17,9 +20,18 @@ const router = useRouter()
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()
 
+const { open, close, activeComponent, activeProps } = useDialog()
+
 set([{ name: 'Pracownicy', link: '/users' }])
 resetHeader()
 setHeader('Pracownicy')
+
+const { deactivateUser } = useUser()
+const usersColumns = getUsersColumns(deactivateUser)
+
+async function addOpenDialog() {
+  open(UsersDialog)
+}
 
 const { globalSearch, paramsData, setPage, setSort, sortingState, fullFilterList, setSearch } =
   usePagination({
@@ -60,9 +72,18 @@ const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoint
               :endpoint="`${UsersEndpoints().EXPORT}`"
               file-name="Tabela użytkowników"
             />
+            <Button @click="addOpenDialog()">
+              <template #default>
+                <span class="text-color font-normal">
+                  {{ 'Dodaj pracownika' }}
+                </span>
+                <Icon icon="lucide:plus" />
+              </template>
+            </Button>
           </div>
         </template>
       </BaseHeader>
+      <component :is="activeComponent" v-bind="activeProps" @close="close" />
     </div>
 
     <div class="h-full flex flex-col min-h-0 px-4">
