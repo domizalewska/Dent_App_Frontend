@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
-import { usersColumns, UsersEndpoints } from '~/features/users'
+import { getUsersColumns, UsersEndpoints } from '~/features/users'
 import type { User } from '~/types'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseSwitch from '~/components/base/buttons/BaseSwitch.vue'
@@ -25,6 +25,9 @@ const { open, close, activeComponent, activeProps } = useDialog()
 set([{ name: 'Pracownicy', link: '/users' }])
 resetHeader()
 setHeader('Pracownicy')
+
+const { deactivateUser } = useUser()
+const usersColumns = getUsersColumns(deactivateUser)
 
 async function addOpenDialog() {
   open(UsersDialog)

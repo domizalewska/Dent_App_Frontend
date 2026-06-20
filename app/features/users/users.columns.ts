@@ -8,9 +8,7 @@ import { Button } from '~/components/ui/button'
 import { Icon } from '@iconify/vue'
 import { sortableHeader } from '~/utils/sortingHelper'
 
-const { deactivateUser } = useUser()
-
-export const usersColumns: ColumnDef<User>[] = [
+export const getUsersColumns = (deactivateUser: (uuid: string) => void): ColumnDef<User>[] => [
   {
     accessorKey: 'last_name',
     header: () => h('div', { class: 'flex item-center text-center text-foreground' }, 'Użytkownik'),
@@ -130,10 +128,15 @@ export const usersColumns: ColumnDef<User>[] = [
         h(
           Button,
           {
-            variant: 'outline',
+            variant: 'ghost',
             size: 'icon',
-            class: 'rounded-full',
-            onClick: () => deactivateUser(row.original.uuid),
+            class:
+              'rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10',
+            'aria-label': 'Dezaktywuj użytkownika',
+            onClick: (e: MouseEvent) => {
+              e.stopPropagation()
+              deactivateUser(row.original.uuid)
+            },
           },
           { default: () => h(Trash2, { class: 'size-4' }) },
         ),

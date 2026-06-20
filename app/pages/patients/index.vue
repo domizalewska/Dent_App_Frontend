@@ -19,6 +19,11 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+const { globalSearch, setSearch } = usePagination({
+  stateKey: 'patient-table',
+  initialSort: 'created_at,desc',
+})
+
 const { set } = useBreadcrumbs()
 const router = useRouter()
 
@@ -52,7 +57,7 @@ async function addOpenDialog() {
       <BaseHeader v-if="patientsData?.data">
         <template #right>
           <div class="flex gap-2">
-            <BaseTableSearch />
+            <BaseTableSearch :model-value="globalSearch" @search="setSearch" />
             <BaseExportFile
               :extensions="['xlsx', 'csv', 'pdf']"
               :endpoint="`${PatientsEndpoints().EXPORT}`"
