@@ -76,7 +76,7 @@ const tabs = [
       <CalendarCard />
     </TabsContent>
     <TabsContent value="documents">
-      <DocumentsCard />
+      <DocumentsCard :user="user" />
     </TabsContent>
   </Tabs>
 </template>

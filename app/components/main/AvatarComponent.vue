@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LogOut, Settings, User as UserIcon } from 'lucide-vue-next'
+import { LogOut, User as UserIcon } from 'lucide-vue-next'
 import type { User } from '~/types/user'
 import { useRouter } from '#vue-router'
 import { ProfileRoutes } from '~/types/routes'
@@ -43,9 +43,6 @@ defineProps<Props>()
           class="cursor-pointer"
           @click="router.push(ProfileRoutes.PROFILE(user.uuid))"
           ><UserIcon class="mr-2 h-4 w-4" />Profil</DropdownMenuItem
-        >
-        <DropdownMenuItem class="cursor-pointer" @click="router.push('/settings')"
-          ><Settings class="mr-2 h-4 w-4" />Ustawienia</DropdownMenuItem
         >
       </DropdownMenuGroup>
       <DropdownMenuSeparator />

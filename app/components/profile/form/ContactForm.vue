@@ -2,7 +2,7 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { Form } from 'vee-validate'
 import { z } from 'zod'
-import type { User } from '~/types'
+import type { User, UserPayload } from '~/types'
 import type { JobPosition } from '~/types/job-position/job-position.type'
 import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import BaseSwitchForm from '~/components/base/form/BaseSwitchForm.vue'
@@ -15,13 +15,16 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const { editProfile } = useProfile(props.user.uuid)
+
 const formSchema = toTypedSchema(
   z.object({
     first_name: z.string().nonempty('Imię jest wymagane'),
     last_name: z.string().nonempty('Nazwisko jest wymagane'),
     email: z.string().email('Nieprawidłowy adres email'),
     private_email: z.string().email('Nieprawidłowy adres email').or(z.literal('')).optional(),
-    phone: z.string().optional(),
+    phone_number: z.string().optional(),
+    private_phone_number: z.string().optional(),
     job_position_uuid: z.string().optional(),
     pwz_number: z.string().optional(),
     is_active: z.boolean(),
@@ -33,14 +36,15 @@ const initialValues = {
   last_name: props.user.last_name,
   email: props.user.email,
   private_email: props.user.private_email ?? '',
-  phone: (props.user.phone_numbers as string[])?.[0] ?? '',
+  phone_number: props.user.phone_number,
+  private_phone_number: props.user.private_phone_number ?? '',
   job_position_uuid: props.user.job_position?.uuid ?? '',
   pwz_number: props.user.pwz_number ?? '',
   is_active: props.user.is_active,
 }
 
-function onSubmit(values: typeof initialValues) {
-  console.log(values)
+async function onSubmit(values: UserPayload) {
+  await editProfile(values)
 }
 </script>
 
@@ -65,7 +69,7 @@ function onSubmit(values: typeof initialValues) {
       <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         Kontakt
       </p>
-      <div class="space-y-4">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 mb-4">
         <BaseInputForm
           name="email"
           label="Email służbowy"
@@ -78,7 +82,20 @@ function onSubmit(values: typeof initialValues) {
           placeholder="Wpisz email prywatny"
           type="email"
         />
-        <BaseInputForm name="phone" label="Telefon" placeholder="Wpisz numer telefonu" type="tel" />
+      </div>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <BaseInputForm
+          name="phone_number"
+          label="Telefon służbowy"
+          placeholder="Wpisz służbowy numer telefonu"
+          type="tel"
+        />
+        <BaseInputForm
+          name="private_phone_number"
+          label="Telefon prywatny"
+          placeholder="Wpisz prywatny numer telefonu"
+          type="tel"
+        />
       </div>
     </div>
 
@@ -86,7 +103,7 @@ function onSubmit(values: typeof initialValues) {
       <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         Informacje zawodowe
       </p>
-      <div>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <BaseSelectForm
           name="job_position_uuid"
           label="Stanowisko"
