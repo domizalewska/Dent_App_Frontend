@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from '~/components/ui/card'
 import { useAPI } from '~/composables/useAPI'
+import { UsersEndpoints } from '~/features/users'
 
 const router = useRouter()
 
@@ -26,7 +27,7 @@ const initialValues = {
 }
 
 async function onSubmit(values: FormData) {
-  await useAPI('/forgot-password', {
+  await useAPI(`${UsersEndpoints().LIST}/forgot-password`, {
     method: 'POST',
     body: values,
   })

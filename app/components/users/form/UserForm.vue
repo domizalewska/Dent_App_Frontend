@@ -62,13 +62,33 @@ function onSubmit(values: UserPayload) {
     </div>
 
     <div class="mt-4 grid grid-cols-2 gap-4">
-      <BaseInputForm name="email" label="Email służbowy" placeholder="Wpisz email służbowy" type="email" />
-      <BaseInputForm name="private_email" label="Email prywatny" placeholder="Wpisz email prywatny" type="email" />
+      <BaseInputForm
+        name="email"
+        label="Email służbowy"
+        placeholder="Wpisz email służbowy"
+        type="email"
+      />
+      <BaseInputForm
+        name="private_email"
+        label="Email prywatny"
+        placeholder="Wpisz email prywatny"
+        type="email"
+      />
     </div>
 
     <div class="mt-4 grid grid-cols-2 gap-4">
-      <BaseInputForm name="phone_number" label="Telefon służbowy" placeholder="Wpisz telefon służbowy" type="tel" />
-      <BaseInputForm name="private_phone_number" label="Telefon prywatny" placeholder="Wpisz telefon prywatny" type="tel" />
+      <BaseInputForm
+        name="phone_number"
+        label="Telefon służbowy"
+        placeholder="Wpisz telefon służbowy"
+        type="tel"
+      />
+      <BaseInputForm
+        name="private_phone_number"
+        label="Telefon prywatny"
+        placeholder="Wpisz telefon prywatny"
+        type="tel"
+      />
     </div>
 
     <div class="mt-4 grid grid-cols-2 gap-4">
