@@ -7,6 +7,7 @@ interface Props {
   label: string
   placeholder: string
   type?: string
+  required?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,7 +25,9 @@ const inputType = computed(() => {
 
 <template>
   <div class="space-y-1.5">
-    <Label :for="name" class="px-2 text-xs font-medium text-muted-foreground">{{ label }}</Label>
+    <Label :for="name" class="px-2 text-xs font-medium text-muted-foreground">
+      {{ label }}<span v-if="required" class="text-destructive">*</span>
+    </Label>
     <div class="relative">
       <Input
         :id="name"
