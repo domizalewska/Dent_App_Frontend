@@ -2,6 +2,7 @@ import type { UserPayload } from '~/types'
 import { UsersEndpoints } from '~/features/users'
 import { toast } from 'vue-sonner'
 import { refreshNuxtData } from '#app'
+import { profileKey } from './key'
 
 export const useProfile = (uuid: string) => {
   async function editProfile(payload: UserPayload) {
@@ -17,7 +18,7 @@ export const useProfile = (uuid: string) => {
       duration: 1500,
     })
 
-    await refreshNuxtData(`profile-${uuid}`)
+    await refreshNuxtData(profileKey(uuid))
   }
   return {
     editProfile,

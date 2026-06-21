@@ -4,6 +4,7 @@ import { useHeader } from '~/composables/useHeader'
 import type { PatientType } from '~/types'
 import { useAPI } from '~/composables/useAPI'
 import { PatientsEndpoints } from '~/features/patients'
+import { patientDetailKey } from '~/composables/patient/key'
 
 definePageMeta({
   layout: 'dashboard',
@@ -25,7 +26,7 @@ const {
   data: patientData,
   pending,
   error,
-} = await useAPI<PatientType>(PatientsEndpoints(id).PATIENT_DETAILS)
+} = await useAPI<PatientType>(PatientsEndpoints(id).PATIENT_DETAILS, { key: patientDetailKey(id) })
 </script>
 
 <template>

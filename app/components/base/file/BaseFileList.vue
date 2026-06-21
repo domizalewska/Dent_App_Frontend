@@ -13,7 +13,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { data: fileData, pending, error } = usePaginatedAPI<FileItem>(() => props.endpoint)
+const { data: fileData, pending, error } = usePaginatedAPI<FileItem>(() => props.endpoint, { key: props.endpoint })
 
 interface FileDownloadResponse {
   filename: string

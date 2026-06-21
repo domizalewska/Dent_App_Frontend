@@ -4,6 +4,7 @@ import { useTemplateRef } from 'vue';
 import { Upload, X } from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
 import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast';
+import { refreshNuxtData } from 'nuxt/app';
 
 interface Props {
   endpoint: string
@@ -90,6 +91,7 @@ async function uploadFiles() {
   )
 
   files.value = []
+  await refreshNuxtData(props.endpoint)
   props.onSuccess?.()
 }
 </script>

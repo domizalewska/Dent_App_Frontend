@@ -2,6 +2,7 @@ import type { UserPayload } from '~/types'
 import { UsersEndpoints } from '~/features/users'
 import { toast } from 'vue-sonner'
 import { refreshNuxtData } from 'nuxt/app'
+import { usersKey } from './key'
 
 export const useUser = () => {
   const { $api } = useNuxtApp()
@@ -18,7 +19,7 @@ export const useUser = () => {
       duration: 1500,
     })
 
-    await refreshNuxtData(`users`)
+    await refreshNuxtData(usersKey)
   }
 
   async function addUser(payload: UserPayload) {
@@ -32,7 +33,7 @@ export const useUser = () => {
       duration: 1500,
     })
 
-    await refreshNuxtData(`users`)
+    await refreshNuxtData(usersKey)
   }
 
   async function editUser(uuid: string, payload: UserPayload) {
@@ -46,7 +47,7 @@ export const useUser = () => {
       duration: 1500,
     })
 
-    await refreshNuxtData(`users`)
+    await refreshNuxtData(usersKey)
   }
 
   return {

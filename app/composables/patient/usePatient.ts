@@ -3,7 +3,7 @@ import { refreshNuxtData } from 'nuxt/app'
 import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
 import { PatientsEndpoints } from '~/features/patients'
 import type { PatientType } from '~/types'
-import { PatientTable } from '~/symbols'
+import { patientsKey, patientDetailKey } from './key'
 
 export const usePatient = () => {
   const { $api } = useNuxtApp()
@@ -14,7 +14,7 @@ export const usePatient = () => {
       api(PatientsEndpoints().TABLE, {
         method: 'POST',
         body: payload,
-      }).then(() => refreshNuxtData(PatientTable.toString())),
+      }).then(() => refreshNuxtData(patientsKey)),
       {
         success: { message: 'Dodany nowy rekord', style: toastSuccessStyle },
         error: { message: 'Błąd podczas dodawania rekordu', style: toastErrorStyle },
@@ -27,7 +27,7 @@ export const usePatient = () => {
       api(PatientsEndpoints(uuid).PATIENT_DETAILS, {
         method: 'PUT',
         body: payload,
-      }).then(() => refreshNuxtData(PatientTable.toString())),
+      }).then(() => refreshNuxtData([patientsKey, patientDetailKey(uuid)])),
       {
         success: { message: 'Zmiany zostały zapisane', style: toastSuccessStyle },
         error: { message: 'Błąd podczas zapisywania zmian', style: toastErrorStyle },
@@ -39,7 +39,7 @@ export const usePatient = () => {
     return toast.promise(
       api(PatientsEndpoints(uuid).PATIENT_DETAILS, {
         method: 'DELETE',
-      }).then(() => refreshNuxtData(PatientTable.toString())),
+      }).then(() => refreshNuxtData(patientsKey)),
       {
         success: { message: 'Rekord został usunięty', style: toastSuccessStyle },
         error: { message: 'Błąd podczas usuwania rekordu', style: toastErrorStyle },
