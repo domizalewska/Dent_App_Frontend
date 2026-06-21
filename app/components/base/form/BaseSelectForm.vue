@@ -5,7 +5,8 @@ interface Props {
   name: string
   label: string
   placeholder?: string
-  api: string
+  api?: string
+  options?: T[]
   optionValue: (option: T) => string
   optionLabel: (option: T) => string
 }
@@ -16,14 +17,20 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { value, errorMessage, handleChange } = useField<string>(() => props.name)
 
-const { data } = useAPI<{ data: T[] }>(props.api)
+const { data } = props.api ? useAPI<{ data: T[] }>(props.api) : { data: ref(null) }
 
-const mappedOptions = computed(() =>
-  (data.value?.data ?? []).map((e) => ({
+const mappedOptions = computed(() => {
+  if (props.options) {
+    return props.options.map((e) => ({
+      uuid: props.optionValue(e),
+      name: props.optionLabel(e),
+    }))
+  }
+  return (data.value?.data ?? []).map((e) => ({
     uuid: props.optionValue(e),
     name: props.optionLabel(e),
-  })),
-)
+  }))
+})
 </script>
 
 <template>

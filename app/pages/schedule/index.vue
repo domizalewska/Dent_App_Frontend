@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -8,6 +8,9 @@ import { useBreadcrumbs } from '~/composables/useBreadcrumbs.ts'
 import { useHeader } from '~/composables/useHeader.ts'
 import showAddEventDialog from '~/components/schedule/dialog/showAddEventDialog.vue'
 import { useDialog } from '~/composables/useDialog.ts'
+import { ScheduleEndpoints } from '~/features/schedule/index.ts'
+import { eventsKey } from '~/composables/schedule/key.ts'
+import { type EventTypes } from '~/types/event/event.types'
 
 definePageMeta({
   layout: 'dashboard',
@@ -22,7 +25,25 @@ const { setHeader, resetHeader } = useHeader()
 resetHeader()
 setHeader('Kalendarz')
 
-const options = {
+const { paramsData } = usePagination({
+  stateKey: eventsKey,
+})
+
+const { data: calendarData } = await usePaginatedAPI<EventTypes>(ScheduleEndpoints().EVENTS, {
+  key: eventsKey,
+  paramsData,
+})
+
+const calendarEvents = computed(() =>
+  (calendarData.value?.data ?? []).map((e) => ({
+    id: e.uuid,
+    title: e.name,
+    start: new Date(e.start_date * 1000).toISOString(),
+    end: new Date(e.end_date * 1000).toISOString(),
+  })),
+)
+
+const baseOptions = {
   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
   initialView: 'timeGridWeek',
   locale: plLocale,
@@ -52,18 +73,21 @@ const options = {
     },
   },
   select: (selectInfo) => {
-    const date = selectInfo.startStr.slice(0, 10)
-    const start = selectInfo.startStr.slice(11, 16)
-    const end = selectInfo.endStr.slice(11, 16)
-    open(showAddEventDialog, { prefill: { date, start, end } })
+    open(showAddEventDialog, {
+      prefill: { start_date: selectInfo.startStr, end_date: selectInfo.endStr },
+    })
   },
   buttonText: {
     today: 'Dziś',
     week: 'Tydzień',
     month: 'Miesiąc',
   },
-  events: [{ title: 'Jan Kowalski', start: '2025-01-20T08:00:00', end: '2025-01-20T16:00:00' }],
 }
+
+const options = computed(() => ({
+  ...baseOptions,
+  events: calendarEvents.value,
+}))
 </script>
 
 <template>
