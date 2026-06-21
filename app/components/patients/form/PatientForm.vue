@@ -22,7 +22,7 @@ const formSchema = toTypedSchema(
       .string()
       .length(11, 'PESEL musi mieć 11 cyfr')
       .regex(/^\d{11}$/, 'PESEL może zawierać tylko cyfry')
-      .optional()
+      .nonempty()
       .or(z.literal('')),
     address: z.string().optional().or(z.literal('')),
     phone: z
@@ -47,8 +47,14 @@ function onSubmit(values: PatientPayload) {
     @submit="onSubmit"
   >
     <div class="grid grid-cols-2 gap-4">
-      <BaseInputForm name="first_name" label="Imię" placeholder="Wpisz imię" type="text" />
-      <BaseInputForm name="last_name" label="Nazwisko" placeholder="Wpisz nazwisko" type="text" />
+      <BaseInputForm name="first_name" label="Imię" placeholder="Wpisz imię" type="text" required />
+      <BaseInputForm
+        name="last_name"
+        label="Nazwisko"
+        placeholder="Wpisz nazwisko"
+        type="text"
+        required
+      />
     </div>
 
     <div class="mt-4">
@@ -65,7 +71,13 @@ function onSubmit(values: PatientPayload) {
     </div>
 
     <div class="mt-4">
-      <BaseInputForm name="pesel" label="PESEL" placeholder="Wpisz numer PESEL" type="text" />
+      <BaseInputForm
+        name="pesel"
+        label="PESEL"
+        placeholder="Wpisz numer PESEL"
+        type="text"
+        required
+      />
     </div>
 
     <div class="mt-4">
