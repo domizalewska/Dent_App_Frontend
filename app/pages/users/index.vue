@@ -11,6 +11,7 @@ import DataTable from '~/components/ui/data-table/data-table.vue'
 import { Icon } from '@iconify/vue'
 import { useDialog } from '~/composables/useDialog'
 import UsersDialog from '~/components/users/dialog/UsersDialog.vue'
+import { usersKey } from '~/composables/users/key'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -45,7 +46,7 @@ const query = computed(() => ({
 }))
 
 const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoints().LIST}`, {
-  key: 'users',
+  key: usersKey,
   query,
 })
 </script>

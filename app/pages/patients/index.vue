@@ -14,6 +14,7 @@ import { Icon } from '@iconify/vue'
 import PatientDialog from '~/components/patients/dialog/PatientDialog.vue'
 import { PatientRoutes } from '~/types/routes'
 import { useRouter } from '#vue-router'
+import { patientsKey } from '~/composables/patient/key'
 
 definePageMeta({
   layout: 'dashboard',
@@ -40,7 +41,7 @@ const {
   data: patientsData,
   pending,
   error,
-} = await usePaginatedAPI<PatientType>(`${PatientsEndpoints().TABLE}`)
+} = await usePaginatedAPI<PatientType>(`${PatientsEndpoints().TABLE}`, { key: patientsKey })
 
 async function addOpenDialog() {
   open(PatientDialog)

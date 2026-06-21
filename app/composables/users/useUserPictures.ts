@@ -1,17 +1,12 @@
 import { toast } from 'vue-sonner'
+import { refreshNuxtData } from 'nuxt/app'
 import { UsersEndpoints } from '~/features/users/users.endpoints'
 import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
-import type { User } from '~/types'
+import { userInfoKey } from './key'
 
 export const useUserPictures = (uuid: string) => {
   const { $api } = useNuxtApp()
   const api = $api as typeof $fetch
-  const { user } = useAuth()
-
-  async function refreshUser() {
-    const updated = await api<User>('/user/user-info')
-    user.value = updated
-  }
 
   async function uploadAvatar(file: File) {
     const formData = new FormData()
@@ -23,7 +18,7 @@ export const useUserPictures = (uuid: string) => {
       error: { message: 'Błąd podczas przesyłania zdjęcia', style: toastErrorStyle },
     })
     await promise
-    await refreshUser()
+    await refreshNuxtData(userInfoKey)
   }
 
   async function deleteAvatar() {
@@ -33,7 +28,7 @@ export const useUserPictures = (uuid: string) => {
       error: { message: 'Błąd podczas usuwania zdjęcia', style: toastErrorStyle },
     })
     await promise
-    await refreshUser()
+    await refreshNuxtData(userInfoKey)
   }
 
   async function uploadBackground(file: File) {
@@ -46,7 +41,7 @@ export const useUserPictures = (uuid: string) => {
       error: { message: 'Błąd podczas przesyłania zdjęcia', style: toastErrorStyle },
     })
     await promise
-    await refreshUser()
+    await refreshNuxtData(userInfoKey)
   }
 
   async function deleteBackground() {
@@ -56,7 +51,7 @@ export const useUserPictures = (uuid: string) => {
       error: { message: 'Błąd podczas usuwania zdjęcia', style: toastErrorStyle },
     })
     await promise
-    await refreshUser()
+    await refreshNuxtData(userInfoKey)
   }
 
   return {

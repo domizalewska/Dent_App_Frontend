@@ -9,7 +9,7 @@ import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import { Icon } from '@iconify/vue'
 import JobPositionAddDialog from '~/components/job-positions/dialog/JobPositionAddDialog.vue'
 import JobPositionEditDialog from '~/components/job-positions/dialog/JobPositionEditDialog.vue'
-import { JobPositionTable } from '~/symbols'
+import { jobPositionsKey } from '~/composables/job-positions/key'
 import { useDialog } from '~/composables/useDialog'
 
 definePageMeta({
@@ -29,7 +29,7 @@ const {
   pending,
   error,
 } = await usePaginatedAPI<JobPosition>(`${JobPositionsEndpoints().TABLE}`, {
-  key: JobPositionTable.toString(),
+  key: jobPositionsKey,
 })
 
 function addDialogOpen() {
