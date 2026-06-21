@@ -1,4 +1,4 @@
 export const ScheduleEndpoints = (uuid?: string) => ({
-  TABLE: '/event',
-  EVENT_DETAIL: `/event/${uuid}`,
+  EVENTS: '/calendar',
+  EVENT_DETAILS: `/calendar/${uuid}`,
 })
