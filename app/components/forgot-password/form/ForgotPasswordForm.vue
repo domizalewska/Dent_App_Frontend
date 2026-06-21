@@ -27,7 +27,7 @@ const initialValues = {
 }
 
 async function onSubmit(values: FormData) {
-  await useAPI(`${UsersEndpoints().LIST}/forgot-password`, {
+  await useAPI(`${UsersEndpoints().TABLE}/forgot-password`, {
     method: 'POST',
     body: values,
   })

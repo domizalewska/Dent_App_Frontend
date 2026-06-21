@@ -26,7 +26,7 @@ const {
   data: patientData,
   pending,
   error,
-} = await useAPI<PatientType>(PatientsEndpoints(id).PATIENT_DETAILS, { key: patientDetailKey(id) })
+} = await useAPI<PatientType>(PatientsEndpoints(id).DETAIL, { key: patientDetailKey(id) })
 </script>
 
 <template>

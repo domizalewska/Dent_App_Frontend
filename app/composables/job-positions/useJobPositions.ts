@@ -24,7 +24,7 @@ export const useJobPositions = () => {
 
   async function editRecord(uuid: string, payload: Partial<JobPosition>) {
     return toast.promise(
-      api(JobPositionsEndpoints(uuid).JOB_POSITION_DETAIL, {
+      api(JobPositionsEndpoints(uuid).DETAIL, {
         method: 'PUT',
         body: payload,
       }).then(() => refreshNuxtData(jobPositionsKey)),
@@ -37,7 +37,7 @@ export const useJobPositions = () => {
 
   async function deleteRecord(uuid: string) {
     return toast.promise(
-      api(JobPositionsEndpoints(uuid).JOB_POSITION_DETAIL, {
+      api(JobPositionsEndpoints(uuid).DETAIL, {
         method: 'DELETE',
       }).then(() => refreshNuxtData(jobPositionsKey)),
       {

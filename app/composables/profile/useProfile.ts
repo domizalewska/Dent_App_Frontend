@@ -8,7 +8,7 @@ export const useProfile = (uuid: string) => {
   async function editProfile(payload: UserPayload) {
     const { $api } = useNuxtApp()
     const api = $api as typeof $fetch
-    await api(UsersEndpoints(uuid).USER_DETAILS, {
+    await api(UsersEndpoints(uuid).DETAIL, {
       method: 'PUT',
       body: payload,
     })

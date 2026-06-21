@@ -45,7 +45,7 @@ const query = computed(() => ({
   'user[is_active]': isActive.value ? undefined : true,
 }))
 
-const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoints().LIST}`, {
+const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoints().TABLE}`, {
   key: usersKey,
   query,
 })

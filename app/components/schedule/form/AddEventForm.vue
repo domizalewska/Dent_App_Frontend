@@ -74,7 +74,7 @@ function onSubmit(values: EventPayload) {
           name="patient_uuid"
           label="Pacjent"
           placeholder="Wybierz pacjenta"
-          :api="UsersEndpoints().LIST_SELECT"
+          :api="UsersEndpoints().SELECT"
           :option-value="(e: User) => e.uuid"
           :option-label="(e: User) => `${e.first_name} ${e.last_name}`"
         />
@@ -82,7 +82,7 @@ function onSubmit(values: EventPayload) {
           name="doctor_uuid"
           label="Lekarz"
           placeholder="Wybierz lekarza"
-          :api="UsersEndpoints().LIST_SELECT"
+          :api="UsersEndpoints().SELECT"
           :option-value="(e: User) => e.uuid"
           :option-label="(e: User) => `${e.first_name} ${e.last_name}`"
         />

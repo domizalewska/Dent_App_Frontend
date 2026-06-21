@@ -9,7 +9,7 @@ export const useUser = () => {
   const api = $api as typeof $fetch
 
   async function deactivateUser(uuid: string) {
-    await api(UsersEndpoints(uuid).USER_DETAILS, {
+    await api(UsersEndpoints(uuid).DETAIL, {
       method: 'PUT',
       body: { is_active: false },
     })
@@ -23,7 +23,7 @@ export const useUser = () => {
   }
 
   async function addUser(payload: UserPayload) {
-    await api(UsersEndpoints().LIST, {
+    await api(UsersEndpoints().TABLE, {
       method: 'POST',
       body: payload,
     })
@@ -37,7 +37,7 @@ export const useUser = () => {
   }
 
   async function editUser(uuid: string, payload: UserPayload) {
-    await api(UsersEndpoints(uuid).USER_DETAILS, {
+    await api(UsersEndpoints(uuid).DETAIL, {
       method: 'PUT',
       body: payload,
     })
