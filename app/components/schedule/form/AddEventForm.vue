@@ -7,7 +7,9 @@ import { UsersEndpoints } from '~/features/users'
 import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import BaseSelectForm from '~/components/base/form/BaseSelectForm.vue'
 import BaseAcceptDeclineButtons from '~/components/base/buttons/BaseAcceptDeclineButtons.vue'
-import type { EventPayload } from '~/types/event/event.types'
+import type { EventPayload, EventTypes } from '~/types/event/event.types'
+import BaseDateTimePickerForm from '~/components/base/form/BaseDateTimePickerForm.vue'
+import { ScheduleEndpoints } from '~/features/schedule'
 
 interface Props {
   prefill?: EventPayload
@@ -23,6 +25,7 @@ const formSchema = toTypedSchema(
   z
     .object({
       title: z.string().nonempty('Nazwa zdarzenia jest wymagana'),
+      type: z.string().nonempty('Typ zdarzenia jest wymagany'),
       patient_uuid: z.string().nonempty('Pacjent jest wymagany'),
       doctor_uuid: z.string().nonempty('Lekarz jest wymagany'),
       date: z.string().nonempty('Data jest wymagana'),
@@ -38,6 +41,7 @@ const formSchema = toTypedSchema(
 
 const initialValues = computed(() => ({
   title: props.prefill?.title ?? '',
+  type: props.prefill?.type ?? '',
   patient_uuid: props.prefill?.patient_uuid ?? '',
   doctor_uuid: props.prefill?.doctor_uuid ?? '',
   date: props.prefill?.date ?? '',
@@ -63,6 +67,14 @@ function onSubmit(values: EventPayload) {
         Zdarzenie
       </p>
       <BaseInputForm name="title" label="Nazwa zdarzenia" placeholder="Wpisz nazwę zdarzenia" />
+      <BaseSelectForm
+        name="type"
+        label="Typ zdarzenia"
+        placeholder="Wybierz zdarzenie"
+        :api="ScheduleEndpoints().SELECT"
+        :option-value="(e: EventTypes) => e.type"
+        :option-label="(e: EventTypes) => e.type"
+      />
     </div>
 
     <div class="px-4 py-4">
@@ -91,11 +103,21 @@ function onSubmit(values: EventPayload) {
 
     <div class="px-4 py-4">
       <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Termin</p>
-      <div class="space-y-4">
-        <BaseInputForm name="date" label="Data" placeholder="" type="date" />
+      <div class="space-y-4 w-full">
+        <BaseDatePickerForm name="date" label="Data" placeholder="Wybierz date" />
         <div class="grid grid-cols-2 gap-4">
-          <BaseInputForm name="start" label="Godzina rozpoczęcia" placeholder="" type="time" />
-          <BaseInputForm name="end" label="Godzina zakończenia" placeholder="" type="time" />
+          <BaseDateTimePickerForm
+            name="start"
+            label="Godzina rozpoczęcia"
+            placeholder=""
+            type="time"
+          />
+          <BaseDateTimePickerForm
+            name="end"
+            label="Godzina zakończenia"
+            placeholder=""
+            type="time"
+          />
         </div>
       </div>
     </div>
