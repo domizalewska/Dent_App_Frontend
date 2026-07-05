@@ -4,7 +4,7 @@ import { header } from '~/composables/useHeader'
 import { breadcrumbs } from '~/composables/useBreadcrumbs'
 import { useAPI } from '~/composables/useAPI'
 import type { User } from '~/types'
-import { userInfoKey } from '~/composables/users/key'
+import { userInfoKey } from '~/features/users'
 
 const { user } = useAuth()
 

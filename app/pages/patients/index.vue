@@ -14,7 +14,7 @@ import { Icon } from '@iconify/vue'
 import PatientDialog from '~/components/patients/dialog/PatientDialog.vue'
 import { PatientRoutes } from '~/types/routes'
 import { useRouter } from '#vue-router'
-import { patientsKey } from '~/composables/patient/key'
+import { patientsKey } from '~/features/patients'
 
 definePageMeta({
   layout: 'dashboard',

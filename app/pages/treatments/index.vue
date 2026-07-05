@@ -1,32 +1,22 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
-import { useHeader } from '~/composables/useHeader'
 import { getUsersColumns, UsersEndpoints } from '~/features/users'
-import type { User } from '~/types'
+import { Icon } from '@iconify/vue'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
-import BaseSwitch from '~/components/base/buttons/BaseSwitch.vue'
 import BaseSkeletonHeader from '~/components/base/skeleton/header/BaseSkeletonHeader.vue'
 import DataTable from '~/components/ui/data-table/data-table.vue'
-import { Icon } from '@iconify/vue'
+import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
+import { useHeader } from '~/composables/useHeader'
 import { useDialog } from '~/composables/useDialog'
 import UsersDialog from '~/components/users/dialog/UsersDialog.vue'
 import { usersKey } from '~/features/users'
+import type { TreatmentType } from '~/types/treatments/treatments.type'
+import { TreatmentsEndpoints } from '~/features/treatments'
 
 definePageMeta({ layout: 'dashboard' })
 
-const isActive = ref(false)
-
-const router = useRouter()
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()
-
 const { open, close, activeComponent, activeProps } = useDialog()
-
-set([{ name: 'Pracownicy', link: '/users' }])
-resetHeader()
-setHeader('Pracownicy')
-
 const { deactivateUser } = useUser()
 const usersColumns = getUsersColumns(deactivateUser)
 
@@ -36,34 +26,29 @@ async function addOpenDialog() {
 
 const { globalSearch, paramsData, setPage, setSort, sortingState, fullFilterList, setSearch } =
   usePagination({
-    stateKey: 'users-table',
+    stateKey: 'treatments-table',
     initialSort: 'created_at,desc',
   })
 
-const query = computed(() => ({
-  ...paramsData.value,
-  'user[is_active]': isActive.value ? undefined : true,
-}))
+const { data: treatmentsData, status } = await usePaginatedAPI<TreatmentType>(
+  `${TreatmentsEndpoints.BASE}`,
+  {
+    key: usersKey,
+    paramsData,
+  },
+)
 
-const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoints().LIST}`, {
-  key: usersKey,
-  query,
-})
+set([{ name: 'Usługi', link: '/treatments' }])
+resetHeader()
+setHeader('Usługi')
 </script>
-
 <template>
   <Card class="h-full">
     <BaseSkeletonHeader v-if="status === 'pending'" />
     <BaseTableSkeleton v-if="status === 'pending'" :columns="4" />
 
-    <ClientOnly>
-      <Teleport to="#header-page-buttons">
-        <BaseSwitch v-model="isActive" label="Pokaż też nieaktywnych" />
-      </Teleport>
-    </ClientOnly>
-
     <div class="flex flex-col px-4">
-      <BaseHeader v-if="usersData?.data">
+      <BaseHeader v-if="treatmentsData?.data">
         <template #right>
           <div class="flex gap-2">
             <BaseTableSearch :model-value="globalSearch" @search="setSearch" />
@@ -76,7 +61,7 @@ const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoint
             <Button @click="addOpenDialog()">
               <template #default>
                 <span class="text-color font-normal">
-                  {{ 'Dodaj pracownika' }}
+                  {{ 'Dodaj usługę' }}
                 </span>
                 <Icon icon="lucide:plus" />
               </template>
@@ -89,15 +74,14 @@ const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoint
 
     <div class="h-full flex flex-col min-h-0 px-4">
       <DataTable
-        v-if="usersData"
+        v-if="treatmentsData"
         :columns="usersColumns"
-        :data="usersData.data"
-        :total-items="usersData.pagination.total"
-        :current-page="usersData.pagination.current_page"
-        :per-page="usersData.pagination.per_page"
+        :data="treatmentsData.data"
+        :total-items="treatmentsData.pagination.total"
+        :current-page="treatmentsData.pagination.current_page"
+        :per-page="treatmentsData.pagination.per_page"
         :sorting="sortingState"
         :on-sorting-change="setSort"
-        :on-row-click="(row) => router.push(`/users/${row.uuid}`)"
         @update:page="setPage"
       />
     </div>

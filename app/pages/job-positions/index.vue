@@ -9,7 +9,7 @@ import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import { Icon } from '@iconify/vue'
 import JobPositionAddDialog from '~/components/job-positions/dialog/JobPositionAddDialog.vue'
 import JobPositionEditDialog from '~/components/job-positions/dialog/JobPositionEditDialog.vue'
-import { jobPositionsKey } from '~/composables/job-positions/key'
+import { jobPositionsKey } from '~/features/job-positions'
 import { useDialog } from '~/composables/useDialog'
 
 definePageMeta({

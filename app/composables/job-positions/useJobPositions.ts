@@ -3,7 +3,7 @@ import { JobPositionsEndpoints } from '~/features/job-positions'
 import type { JobPosition } from '~/types/job-position/job-position.type'
 import { refreshNuxtData } from 'nuxt/app'
 import { toastSuccessStyle, toastErrorStyle } from '~/utils/toast'
-import { jobPositionsKey } from './key'
+import { jobPositionsKey } from '~/features/job-positions'
 
 export const useJobPositions = () => {
   const { $api } = useNuxtApp()

@@ -3,7 +3,7 @@ import { refreshNuxtData } from 'nuxt/app'
 import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
 import { PatientsEndpoints } from '~/features/patients'
 import type { PatientType } from '~/types'
-import { patientsKey, patientDetailKey } from './key'
+import { patientsKey, patientDetailKey } from '~/features/patients'
 
 export const usePatient = () => {
   const { $api } = useNuxtApp()

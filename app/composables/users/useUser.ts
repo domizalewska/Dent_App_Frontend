@@ -2,7 +2,7 @@ import type { UserPayload } from '~/types'
 import { UsersEndpoints } from '~/features/users'
 import { toast } from 'vue-sonner'
 import { refreshNuxtData } from 'nuxt/app'
-import { usersKey } from './key'
+import { usersKey } from '~/features/users'
 
 export const useUser = () => {
   const { $api } = useNuxtApp()

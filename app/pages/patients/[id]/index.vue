@@ -4,7 +4,7 @@ import { useHeader } from '~/composables/useHeader'
 import type { PatientType } from '~/types'
 import { useAPI } from '~/composables/useAPI'
 import { PatientsEndpoints } from '~/features/patients'
-import { patientDetailKey } from '~/composables/patient/key'
+import { patientDetailKey } from '~/features/patients'
 
 definePageMeta({
   layout: 'dashboard',

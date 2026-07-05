@@ -2,7 +2,7 @@ import { toast } from 'vue-sonner'
 import { refreshNuxtData } from 'nuxt/app'
 import { UsersEndpoints } from '~/features/users/users.endpoints'
 import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
-import { userInfoKey } from './key'
+import { userInfoKey } from '~/features/users'
 
 export const useUserPictures = (uuid: string) => {
   const { $api } = useNuxtApp()

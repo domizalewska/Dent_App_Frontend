@@ -13,6 +13,7 @@ import {
 import {
   Briefcase,
   CalendarDays,
+  ClipboardList,
   LayoutDashboard,
   Settings2,
   Stethoscope,
@@ -51,6 +52,11 @@ const data = {
       title: 'Stanowiska',
       url: '/job-positions',
       icon: Briefcase,
+    },
+    {
+      title: 'Usługi',
+      url: '/treatments',
+      icon: ClipboardList,
     },
   ],
 }
