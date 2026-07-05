@@ -47,9 +47,9 @@ function handleAvatarAction() {
       <div class="flex items-center justify-between gap-2">
         <h1 class="text-2xl font-bold">{{ user.first_name }} {{ user.last_name }}</h1>
         <Button
-          v-if="user.phone_numbers?.length"
+          v-if="user.phone_number?.length"
           as="a"
-          :href="`tel:${user.phone_numbers[0]}`"
+          :href="`tel:${user.phone_number}`"
           variant="outline"
           size="sm"
           class="shrink-0 gap-1.5 text-xs"
@@ -74,9 +74,9 @@ function handleAvatarAction() {
           <Mail class="size-3.5" />
           {{ user.email }}
         </span>
-        <span v-if="user.phone_numbers?.length" class="flex items-center gap-1.5">
+        <span v-if="user.private_phone_number?.length" class="flex items-center gap-1.5">
           <Phone class="size-3.5" />
-          {{ user.phone_numbers[0] }}
+          {{ user.private_phone_number }}
         </span>
         <span class="flex items-center gap-1.5">
           <Calendar class="size-3.5" />
