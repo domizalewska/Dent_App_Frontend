@@ -7,4 +7,4 @@ export type TreatmentType = {
   created_at: string
 }
 
-export type TreatmentPayload = Omit<TreatmentType, 'uuid'>
+export type TreatmentPayload = Omit<TreatmentType, 'uuid' | 'created_at'>

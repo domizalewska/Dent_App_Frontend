@@ -1,1 +1,1 @@
-export const treatmentsKey = 'treatments'
+export const treatmentsKey = 'treatments-table'

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { getUsersColumns, UsersEndpoints } from '~/features/users'
 import { Icon } from '@iconify/vue'
 import BaseTableSearch from '~/components/base/search/BaseTableSearch.vue'
 import BaseSkeletonHeader from '~/components/base/skeleton/header/BaseSkeletonHeader.vue'
@@ -7,33 +6,37 @@ import DataTable from '~/components/ui/data-table/data-table.vue'
 import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
 import { useDialog } from '~/composables/useDialog'
-import UsersDialog from '~/components/users/dialog/UsersDialog.vue'
-import { usersKey } from '~/features/users'
 import type { TreatmentType } from '~/types/treatments/treatments.type'
-import { TreatmentsEndpoints } from '~/features/treatments'
+import { getTreatmentsColumns, TreatmentsEndpoints, treatmentsKey } from '~/features/treatments'
+import { useTreatments } from '~/composables/treatments/useTreatmetns'
+import TreatmentsDialog from '~/components/treatments/dialog/TreatmentsDialog.vue'
 
 definePageMeta({ layout: 'dashboard' })
 
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()
 const { open, close, activeComponent, activeProps } = useDialog()
-const { deactivateUser } = useUser()
-const usersColumns = getUsersColumns(deactivateUser)
+const { deleteRecord } = useTreatments()
+const treatmentsColumns = getTreatmentsColumns(deleteRecord)
 
-async function addOpenDialog() {
-  open(UsersDialog)
+function addOpenDialog() {
+  open(TreatmentsDialog)
+}
+
+function onEdit(record: TreatmentType) {
+  open(TreatmentsDialog, { isEdit: true, initialValues: record })
 }
 
 const { globalSearch, paramsData, setPage, setSort, sortingState, fullFilterList, setSearch } =
   usePagination({
-    stateKey: 'treatments-table',
+    stateKey: treatmentsKey,
     initialSort: 'created_at,desc',
   })
 
 const { data: treatmentsData, status } = await usePaginatedAPI<TreatmentType>(
   `${TreatmentsEndpoints.BASE}`,
   {
-    key: usersKey,
+    key: treatmentsKey,
     paramsData,
   },
 )
@@ -55,7 +58,7 @@ setHeader('Usługi')
             <BaseExportFile
               :params="fullFilterList"
               :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="UsersEndpoints.EXPORT"
+              :endpoint="TreatmentsEndpoints.EXPORT"
               file-name="Tabela użytkowników"
             />
             <Button @click="addOpenDialog()">
@@ -75,13 +78,14 @@ setHeader('Usługi')
     <div class="h-full flex flex-col min-h-0 px-4">
       <DataTable
         v-if="treatmentsData"
-        :columns="usersColumns"
+        :columns="treatmentsColumns"
         :data="treatmentsData.data"
         :total-items="treatmentsData.pagination.total"
         :current-page="treatmentsData.pagination.current_page"
         :per-page="treatmentsData.pagination.per_page"
         :sorting="sortingState"
         :on-sorting-change="setSort"
+        :on-row-click="(row) => onEdit(row)"
         @update:page="setPage"
       />
     </div>

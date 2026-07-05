@@ -1,6 +1,6 @@
 export const TreatmentsEndpoints = {
-  BASE: '/api/treatment',
-  LIST_SELECT: '/api/treatment/selectlist',
-  DETAILS: (uuid: string) => `/api/treatment/${uuid}`,
-  EXPORT: '/api/treatment/export',
+  BASE: '/dental-examination',
+  LIST_SELECT: '/dental-examination/selectlist',
+  DETAILS: (uuid: string) => `/dental-examination/${uuid}`,
+  EXPORT: '/dental-examination/export',
 }

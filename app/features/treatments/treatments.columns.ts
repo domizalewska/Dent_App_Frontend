@@ -7,7 +7,7 @@ import { Button } from '~/components/ui/button'
 import { sortableHeader } from '~/utils/sortingHelper'
 
 export const getTreatmentsColumns = (
-  deactivateUser: (uuid: string) => void,
+  deleteRecord: (uuid: string) => void,
 ): ColumnDef<TreatmentType>[] => [
   {
     accessorKey: 'name',
@@ -78,7 +78,7 @@ export const getTreatmentsColumns = (
             'aria-label': 'Usuń usługę',
             onClick: (e: MouseEvent) => {
               e.stopPropagation()
-              deactivateUser(row.original.uuid)
+              deleteRecord(row.original.uuid)
             },
           },
           { default: () => h(Trash2, { class: 'size-4' }) },
