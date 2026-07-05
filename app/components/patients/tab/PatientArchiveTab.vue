@@ -12,7 +12,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const { data, pending, error } = usePaginatedAPI<AppointmentType>(
-  () => PatientsEndpoints(props.patientUuid).APPOINTMENTS,
+  () => PatientsEndpoints.APPOINTMENTS(props.patientUuid),
 )
 </script>
 

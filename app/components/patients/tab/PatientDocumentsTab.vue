@@ -27,8 +27,8 @@ const isOpen = ref(false)
     </CardHeader>
     <CardContent class="px-6 pt-3 pb-4 flex flex-col gap-3">
       <BaseFileList
-        :endpoint="PatientsEndpoints(patient.uuid).FILE_UPLOADS"
-        :download-url="PatientsEndpoints(patient.uuid).FILE_DOWNLOAD"
+        :endpoint="PatientsEndpoints.FILE_UPLOADS(patient.uuid)"
+        :download-url="PatientsEndpoints.FILE_DOWNLOAD(patient.uuid)"
       />
     </CardContent>
   </Card>
@@ -39,7 +39,7 @@ const isOpen = ref(false)
         <DialogTitle>Dodaj dokumenty</DialogTitle>
       </DialogHeader>
       <BaseFileUpload
-        :endpoint="PatientsEndpoints(patient.uuid).FILE_UPLOADS"
+        :endpoint="PatientsEndpoints.FILE_UPLOADS(patient.uuid)"
         :on-success="() => (isOpen = false)"
       />
     </DialogContent>

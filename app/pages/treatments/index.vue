@@ -55,7 +55,7 @@ setHeader('Usługi')
             <BaseExportFile
               :params="fullFilterList"
               :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="`${UsersEndpoints().EXPORT}`"
+              :endpoint="UsersEndpoints.EXPORT"
               file-name="Tabela użytkowników"
             />
             <Button @click="addOpenDialog()">

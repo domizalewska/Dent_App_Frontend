@@ -12,7 +12,7 @@ export const useUserPictures = (uuid: string) => {
     const formData = new FormData()
     formData.append('file', file)
 
-    const promise = api(UsersEndpoints(uuid).AVATAR, { method: 'POST', body: formData })
+    const promise = api(UsersEndpoints.AVATAR(uuid), { method: 'POST', body: formData })
     toast.promise(promise, {
       success: { message: 'Zdjęcie profilowe zostało zaktualizowane', style: toastSuccessStyle },
       error: { message: 'Błąd podczas przesyłania zdjęcia', style: toastErrorStyle },
@@ -22,7 +22,7 @@ export const useUserPictures = (uuid: string) => {
   }
 
   async function deleteAvatar() {
-    const promise = api(UsersEndpoints(uuid).AVATAR, { method: 'DELETE' })
+    const promise = api(UsersEndpoints.AVATAR(uuid), { method: 'DELETE' })
     toast.promise(promise, {
       success: { message: 'Zdjęcie profilowe zostało usunięte', style: toastSuccessStyle },
       error: { message: 'Błąd podczas usuwania zdjęcia', style: toastErrorStyle },
@@ -35,7 +35,7 @@ export const useUserPictures = (uuid: string) => {
     const formData = new FormData()
     formData.append('file', file)
 
-    const promise = api(UsersEndpoints(uuid).BACKGROUND, { method: 'POST', body: formData })
+    const promise = api(UsersEndpoints.BACKGROUND(uuid), { method: 'POST', body: formData })
     toast.promise(promise, {
       success: { message: 'Zdjęcie w tle zostało zaktualizowane', style: toastSuccessStyle },
       error: { message: 'Błąd podczas przesyłania zdjęcia', style: toastErrorStyle },
@@ -45,7 +45,7 @@ export const useUserPictures = (uuid: string) => {
   }
 
   async function deleteBackground() {
-    const promise = api(UsersEndpoints(uuid).BACKGROUND, { method: 'DELETE' })
+    const promise = api(UsersEndpoints.BACKGROUND(uuid), { method: 'DELETE' })
     toast.promise(promise, {
       success: { message: 'Zdjęcie w tle zostało usunięte', style: toastSuccessStyle },
       error: { message: 'Błąd podczas usuwania zdjęcia', style: toastErrorStyle },

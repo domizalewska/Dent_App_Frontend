@@ -28,7 +28,7 @@ const {
   data: jobPositionsData,
   pending,
   error,
-} = await usePaginatedAPI<JobPosition>(`${JobPositionsEndpoints().TABLE}`, {
+} = await usePaginatedAPI<JobPosition>(JobPositionsEndpoints.BASE, {
   key: jobPositionsKey,
 })
 
@@ -49,7 +49,7 @@ function onEdit(record: JobPosition) {
           <div class="flex gap-2">
             <BaseExportFile
               :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="`${JobPositionsEndpoints().EXPORT}`"
+              :endpoint="JobPositionsEndpoints.EXPORT"
               file-name="Tabela stanowisk"
             />
           </div>
