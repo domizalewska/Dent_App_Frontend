@@ -17,6 +17,7 @@ const { value, errorMessage } = useField<string>(() => props.name)
   <div class="space-y-1.5">
     <Label :for="name" class="px-2 text-xs font-medium text-muted-foreground">{{ label }}</Label>
     <Textarea
+      v-bind="$attrs"
       :id="name"
       v-model="value"
       :name="name"

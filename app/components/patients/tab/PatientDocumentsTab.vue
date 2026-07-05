@@ -28,7 +28,7 @@ const isOpen = ref(false)
     <CardContent class="px-6 pt-3 pb-4 flex flex-col gap-3">
       <BaseFileList
         :endpoint="PatientsEndpoints.FILE_UPLOADS(patient.uuid)"
-        :download-url="PatientsEndpoints.FILE_DOWNLOAD(patient.uuid)"
+        :download-url="(fileUuid) => PatientsEndpoints.FILE_DOWNLOAD(patient.uuid, fileUuid)"
       />
     </CardContent>
   </Card>

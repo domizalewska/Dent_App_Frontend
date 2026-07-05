@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TreatmentPayload, TreatmentType } from '~/types'
-import { useTreatments } from '~/composables/treatments/useTreatmetns'
+import { useTreatments } from '~/composables/treatments/useTreatments'
 
 const props = defineProps<{
   isEdit?: boolean

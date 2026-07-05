@@ -20,7 +20,7 @@ const formSchema = toTypedSchema(
     name: z.string().nonempty('Nazwa jest wymagana'),
     description: z.string().optional(),
     short_description: z.string().optional(),
-    price: z.coerce.number(),
+    price: z.coerce.number().positive('Cena musi być większa od 0'),
   }),
 )
 
@@ -28,7 +28,7 @@ const initialFormValues = {
   name: props.initialValues?.name ?? '',
   description: props.initialValues?.description ?? '',
   short_description: props.initialValues?.short_description ?? '',
-  price: props.initialValues?.price,
+  price: props.initialValues?.price ?? 0,
 }
 
 function onSubmit(values: TreatmentPayload) {

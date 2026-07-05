@@ -8,7 +8,7 @@ import { useHeader } from '~/composables/useHeader'
 import { useDialog } from '~/composables/useDialog'
 import type { TreatmentType } from '~/types/treatments/treatments.type'
 import { getTreatmentsColumns, TreatmentsEndpoints, treatmentsKey } from '~/features/treatments'
-import { useTreatments } from '~/composables/treatments/useTreatmetns'
+import { useTreatments } from '~/composables/treatments/useTreatments'
 import TreatmentsDialog from '~/components/treatments/dialog/TreatmentsDialog.vue'
 
 definePageMeta({ layout: 'dashboard' })
@@ -34,7 +34,7 @@ const { globalSearch, paramsData, setPage, setSort, sortingState, fullFilterList
   })
 
 const { data: treatmentsData, status } = await usePaginatedAPI<TreatmentType>(
-  `${TreatmentsEndpoints.BASE}`,
+  TreatmentsEndpoints.BASE,
   {
     key: treatmentsKey,
     paramsData,
