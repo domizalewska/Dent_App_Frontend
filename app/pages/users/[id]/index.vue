@@ -4,7 +4,7 @@ import { useHeader } from '~/composables/useHeader'
 import type { User } from '~/types'
 import { UsersEndpoints } from '~/features/users'
 import { useAPI } from '~/composables/useAPI'
-import { profileKey } from '~/composables/profile/key'
+import { profileKey } from '~/features/users'
 
 definePageMeta({
   layout: 'dashboard',
@@ -26,7 +26,7 @@ const {
   data: userData,
   pending,
   error,
-} = await useAPI<User>(`${UsersEndpoints(id).USER_DETAILS}`, { key: profileKey(id) })
+} = await useAPI<User>(UsersEndpoints.DETAILS(id), { key: profileKey(id) })
 </script>
 
 <template>

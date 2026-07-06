@@ -11,7 +11,7 @@ import DataTable from '~/components/ui/data-table/data-table.vue'
 import { Icon } from '@iconify/vue'
 import { useDialog } from '~/composables/useDialog'
 import UsersDialog from '~/components/users/dialog/UsersDialog.vue'
-import { usersKey } from '~/composables/users/key'
+import { usersKey } from '~/features/users'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -45,7 +45,7 @@ const query = computed(() => ({
   'user[is_active]': isActive.value ? undefined : true,
 }))
 
-const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoints().LIST}`, {
+const { data: usersData, status } = await usePaginatedAPI<User>(UsersEndpoints.BASE, {
   key: usersKey,
   query,
 })
@@ -70,7 +70,7 @@ const { data: usersData, status } = await usePaginatedAPI<User>(`${UsersEndpoint
             <BaseExportFile
               :params="fullFilterList"
               :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="`${UsersEndpoints().EXPORT}`"
+              :endpoint="UsersEndpoints.EXPORT"
               file-name="Tabela użytkowników"
             />
             <Button @click="addOpenDialog()">
