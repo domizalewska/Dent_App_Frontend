@@ -1,8 +1,7 @@
 import type { UserPayload } from '~/types'
-import { UsersEndpoints } from '~/features/users'
+import { profileKey, UsersEndpoints } from '~/features/users'
 import { toast } from 'vue-sonner'
 import { refreshNuxtData } from '#app'
-import { profileKey } from '~/features/users'
 
 export const useProfile = (uuid: string) => {
   async function editProfile(payload: UserPayload) {
@@ -20,7 +19,23 @@ export const useProfile = (uuid: string) => {
 
     await refreshNuxtData(profileKey(uuid))
   }
+  async function editCompetencies(competencies: string[]) {
+    const { $api } = useNuxtApp()
+    const api = $api as typeof $fetch
+    await api(UsersEndpoints.DETAILS(uuid), {
+      method: 'PUT',
+      body: { competencies },
+    })
+    toast('Sukces!', {
+      description: 'Kompetencje zostały zaktualizowane',
+      style: toastSuccessStyle,
+      duration: 1500,
+    })
+    await refreshNuxtData(profileKey(uuid))
+  }
+
   return {
     editProfile,
+    editCompetencies,
   }
 }

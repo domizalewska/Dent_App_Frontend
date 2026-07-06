@@ -1,4 +1,4 @@
-import type { JobPosition } from '~/types/job-position/job-position.type'
+import type { JobPosition, TreatmentType } from '~/types'
 
 export type User = {
   uuid: string
@@ -18,7 +18,7 @@ export type User = {
   background_picture?: string
   job_position?: JobPosition
   pwz_number?: string
-  competencies: string[]
+  competencies: TreatmentType[]
 }
 
 export type UserPayload = {
@@ -31,4 +31,5 @@ export type UserPayload = {
   job_position_uuid?: string
   pwz_number?: string
   is_active: boolean
+  competencies?: TreatmentType[]
 }
