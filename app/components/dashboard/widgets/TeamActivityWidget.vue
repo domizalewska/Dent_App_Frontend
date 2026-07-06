@@ -43,12 +43,10 @@ defineProps<{
     </div>
 
     <div v-else class="divide-y divide-border">
-      <div
-        v-for="user in users"
-        :key="user.uuid"
-        class="flex items-center gap-3 px-6 py-4"
-      >
-        <div class="size-9 rounded-full bg-muted overflow-hidden shrink-0 flex items-center justify-center">
+      <div v-for="user in users" :key="user.uuid" class="flex items-center gap-3 px-6 py-4">
+        <div
+          class="size-9 rounded-full bg-muted overflow-hidden shrink-0 flex items-center justify-center"
+        >
           <img
             v-if="user.profile_picture"
             :src="user.profile_picture"
