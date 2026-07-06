@@ -3,8 +3,9 @@ import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
 import { ActivityIcon, CalendarIcon, StethoscopeIcon } from 'lucide-vue-next'
 import { useAPI } from '~/composables/useAPI'
-import type { AppointmentType } from '~/types'
+import type { AppointmentType, User } from '~/types'
 import { AppointmentsEndpoints, appointmentsTodayKey } from '~/features/appointments'
+import { TeamActivityEndpoints, teamActivityKey } from '~/features/team-activity'
 
 definePageMeta({
   layout: 'dashboard',
@@ -32,6 +33,11 @@ const appointments = computed(() =>
     room: appt.room ?? '',
   })),
 )
+
+const { data: teamData, status: teamStatus } = await useAPI<User[]>(TeamActivityEndpoints.TODAY, {
+  key: teamActivityKey,
+  server: false,
+})
 </script>
 
 <template>
@@ -57,8 +63,11 @@ const appointments = computed(() =>
           :trend="{ value: '+5% wzg. tygodnia', direction: 'up' }"
         />
       </div>
-      <div class="flex items-center justify-center gap-2 text-sm w-full">
+      <div class="flex gap-6 w-full">
         <ScheduleWidgets :appointments="appointments" :loading="status === 'pending'" />
+      </div>
+      <div class="flex gap-6 w-full">
+        <TeamActivityWidget :users="teamData ?? []" :loading="teamStatus === 'pending'" />
       </div>
     </div>
   </div>
