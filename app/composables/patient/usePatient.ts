@@ -3,7 +3,7 @@ import { refreshNuxtData } from 'nuxt/app'
 import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
 import { PatientsEndpoints } from '~/features/patients'
 import type { PatientType } from '~/types'
-import { patientsKey, patientDetailKey } from './key'
+import { patientsKey, patientDetailKey } from '~/features/patients'
 
 export const usePatient = () => {
   const { $api } = useNuxtApp()
@@ -11,7 +11,7 @@ export const usePatient = () => {
 
   async function addRecord(payload: PatientType) {
     return toast.promise(
-      api(PatientsEndpoints().TABLE, {
+      api(PatientsEndpoints.BASE, {
         method: 'POST',
         body: payload,
       }).then(() => refreshNuxtData(patientsKey)),
@@ -24,7 +24,7 @@ export const usePatient = () => {
 
   async function editRecord(uuid: string, payload: Partial<PatientType>) {
     return toast.promise(
-      api(PatientsEndpoints(uuid).PATIENT_DETAILS, {
+      api(PatientsEndpoints.DETAILS(uuid), {
         method: 'PUT',
         body: payload,
       }).then(() => refreshNuxtData([patientsKey, patientDetailKey(uuid)])),
@@ -37,7 +37,7 @@ export const usePatient = () => {
 
   async function deleteRecord(uuid: string) {
     return toast.promise(
-      api(PatientsEndpoints(uuid).PATIENT_DETAILS, {
+      api(PatientsEndpoints.DETAILS(uuid), {
         method: 'DELETE',
       }).then(() => refreshNuxtData(patientsKey)),
       {

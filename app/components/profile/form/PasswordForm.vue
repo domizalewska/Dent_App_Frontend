@@ -26,7 +26,7 @@ const formSchema = toTypedSchema(
 
 async function onSubmit(values: PasswordPayload) {
   try {
-    await $api(`${UsersEndpoints().USER_EDIT_PASSWORD}`, {
+    await $api(UsersEndpoints.USER_EDIT_PASSWORD, {
       method: 'PATCH',
       body: values,
     })

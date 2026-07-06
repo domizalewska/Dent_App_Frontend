@@ -9,7 +9,7 @@ export const useEvents = () => {
 
   async function addEvent(payload: EventPayload) {
     return toast.promise(
-      api(ScheduleEndpoints().TABLE, {
+      api(ScheduleEndpoints.BASE, {
         method: 'POST',
         body: payload,
       }),

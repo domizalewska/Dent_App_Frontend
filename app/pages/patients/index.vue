@@ -14,7 +14,7 @@ import { Icon } from '@iconify/vue'
 import PatientDialog from '~/components/patients/dialog/PatientDialog.vue'
 import { PatientRoutes } from '~/types/routes'
 import { useRouter } from '#vue-router'
-import { patientsKey } from '~/composables/patient/key'
+import { patientsKey } from '~/features/patients'
 
 definePageMeta({
   layout: 'dashboard',
@@ -41,7 +41,7 @@ const {
   data: patientsData,
   pending,
   error,
-} = await usePaginatedAPI<PatientType>(`${PatientsEndpoints().TABLE}`, { key: patientsKey })
+} = await usePaginatedAPI<PatientType>(PatientsEndpoints.BASE, { key: patientsKey })
 
 async function addOpenDialog() {
   open(PatientDialog)
@@ -61,7 +61,7 @@ async function addOpenDialog() {
             <BaseTableSearch :model-value="globalSearch" @search="setSearch" />
             <BaseExportFile
               :extensions="['xlsx', 'csv', 'pdf']"
-              :endpoint="`${PatientsEndpoints().EXPORT}`"
+              :endpoint="PatientsEndpoints.EXPORT"
               file-name="Tabela pacjentów"
             />
             <Button @click="addOpenDialog()">

@@ -1,9 +1,9 @@
-export const PatientsEndpoints = (uuid?: string) => ({
-  LIST: '/patient/selectlist',
-  TABLE: '/patient',
+export const PatientsEndpoints = {
+  BASE: '/patient',
+  LIST_SELECT: '/patient/selectlist',
   EXPORT: '/patient/export',
-  PATIENT_DETAILS: `/patient/${uuid}`,
-  APPOINTMENTS: `/patient/${uuid}/appointments`,
-  FILE_UPLOADS: `/patient/${uuid}/file`,
-  FILE_DOWNLOAD: (fileUuid: string) => `/patient/${uuid}/file-download/${fileUuid}`,
-})
+  DETAILS: (uuid: string) => `/patient/${uuid}`,
+  APPOINTMENTS: (uuid: string) => `/patient/${uuid}/appointments`,
+  FILE_UPLOADS: (uuid: string) => `/patient/${uuid}/file`,
+  FILE_DOWNLOAD: (uuid: string, fileUuid: string) => `/patient/${uuid}/file-download/${fileUuid}`,
+}
