@@ -6,6 +6,7 @@ import BaseHeader from '~/components/base/header/BaseHeader.vue'
 import DataTable from '~/components/ui/data-table/data-table.vue'
 import type { StatisticUser } from '~/types'
 import { StatisticsEndpoints, statisticsKey, statisticsUsersColumns } from '~/features/statistics'
+import { mockStatisticsUsers } from '~/mock/statistics/mockStatistics'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -28,6 +29,7 @@ const { data: statisticsData, status } = await usePaginatedAPI<StatisticUser>(
   StatisticsEndpoints.USERS,
   { key: statisticsKey, query },
 )
+
 </script>
 <template>
   <Card class="h-full">
@@ -45,7 +47,7 @@ const { data: statisticsData, status } = await usePaginatedAPI<StatisticUser>(
     <div class="h-full flex flex-col min-h-0 px-4">
       <DataTable
         :columns="statisticsUsersColumns"
-        :data="statisticsData?.data ?? []"
+        :data="statisticsData?.data ?? mockStatisticsUsers"
         :total-items="statisticsData?.pagination.total"
         :current-page="statisticsData?.pagination.current_page"
         :per-page="statisticsData?.pagination.per_page"

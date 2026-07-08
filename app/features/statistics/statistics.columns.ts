@@ -57,7 +57,7 @@ export const statisticsUsersColumns: ColumnDef<StatisticUser>[] = [
   },
   {
     accessorKey: 'action',
-    header: () => h('div', {}),
+    header: () => h('div', { class: 'flex item-center' }),
     cell: ({ row }) => h(StatisticsUserColumnAction, { uuid: row.original.user.uuid }),
   },
 ]

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ExternalLink } from 'lucide-vue-next'
-import { ProfileRoutes } from '~/types/routes'
+import { ChevronsRight } from 'lucide-vue-next'
+import { StatisticsRoutes } from '~/types/routes'
 
 const props = defineProps<{ uuid: string }>()
 
@@ -9,11 +9,11 @@ const router = useRouter()
 
 <template>
   <Button
-    variant="outline"
+    variant="ghost"
     size="icon"
     class="rounded-full cursor-pointer"
-    @click.stop="router.push(ProfileRoutes.PROFILE(props.uuid))"
+    @click.stop="router.push(StatisticsRoutes.DETAILS(props.uuid))"
   >
-    <ExternalLink class="size-4" />
+    <ChevronsRight class="size-4" />
   </Button>
 </template>
