@@ -13,6 +13,7 @@ import {
 import {
   Briefcase,
   CalendarDays,
+  ChartColumnBig,
   ClipboardList,
   LayoutDashboard,
   Settings2,
@@ -52,6 +53,11 @@ const data = {
       title: 'Stanowiska',
       url: '/job-positions',
       icon: Briefcase,
+    },
+    {
+      title: 'Statystyki',
+      url: '/statistics',
+      icon: ChartColumnBig,
     },
     {
       title: 'Usługi',
