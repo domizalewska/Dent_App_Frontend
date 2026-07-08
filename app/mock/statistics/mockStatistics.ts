@@ -1,4 +1,4 @@
-import type { HoursDistributionItem, StatisticUser } from '~/types'
+import type { DailyDetailEntry, HoursDistributionItem, StatisticUser } from '~/types'
 import { HoursType } from '~/types'
 import { faker } from '@faker-js/faker/locale/pl'
 
@@ -41,3 +41,10 @@ export const mockDistribution: HoursDistributionItem[] = (() => {
     { type: HoursType.L4, hours: l4, percent: Math.round((l4 / total) * 100) },
   ].filter((i) => i.hours > 0)
 })()
+
+export const mockDailyDetails: DailyDetailEntry[] = Array.from({ length: 10 }, () => ({
+  date: faker.date.recent({ days: 30 }).toISOString(),
+  type: faker.helpers.arrayElement(Object.values(HoursType)),
+  source: faker.helpers.arrayElement(['Grafik', 'Urlop wypoczynkowy', 'Zwolnienie lekarskie']),
+  hours: faker.number.int({ min: 1, max: 8 }),
+}))
