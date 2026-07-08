@@ -24,11 +24,7 @@ function onSubmit(values: { title: string; content: string }) {
 </script>
 
 <template>
-  <Form
-    class="px-4 py-4"
-    :validation-schema="formSchema"
-    @submit="onSubmit"
-  >
+  <Form class="px-4 py-4" :validation-schema="formSchema" @submit="onSubmit">
     <div class="mb-4 flex flex-col gap-4">
       <BaseInputForm name="title" label="Tytuł" placeholder="Wpisz tytuł ogłoszenia" />
       <BaseTextareaForm name="content" label="Treść" placeholder="Wpisz treść ogłoszenia" />

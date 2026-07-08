@@ -19,7 +19,12 @@ function generateMockAnnouncement(): Announcement {
       created_at: faker.date.past().toISOString(),
       updated_at: faker.date.recent().toISOString(),
       competencies: [],
-      job_position: { uuid: faker.string.uuid(), name: 'Lekarz', f_name: 'Lekarka', m_name: 'Lekarz' },
+      job_position: {
+        uuid: faker.string.uuid(),
+        name: 'Lekarz',
+        f_name: 'Lekarka',
+        m_name: 'Lekarz',
+      },
     },
   }
 }

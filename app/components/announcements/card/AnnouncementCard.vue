@@ -27,7 +27,9 @@ const publishedLabel = computed(() =>
         <div>
           <div class="text-sm font-medium text-foreground">{{ fullName }}</div>
           <div class="text-xs text-muted-foreground">
-            <template v-if="props.author.job_position">{{ props.author.job_position.name }} · </template>
+            <template v-if="props.author.job_position"
+              >{{ props.author.job_position.name }} ·
+            </template>
             opublikowano {{ publishedLabel }}
           </div>
         </div>
