@@ -1,4 +1,5 @@
-import type { StatisticUser } from '~/types'
+import type { HoursDistributionItem, StatisticUser } from '~/types'
+import { HoursType } from '~/types'
 import { faker } from '@faker-js/faker/locale/pl'
 
 const jobPositions = [
@@ -28,3 +29,15 @@ function generateMockStatisticUser(): StatisticUser {
 }
 
 export const mockStatisticsUsers: StatisticUser[] = Array.from({ length: 5 }, generateMockStatisticUser)
+
+export const mockDistribution: HoursDistributionItem[] = (() => {
+  const praca = faker.number.int({ min: 100, max: 160 })
+  const urlop = faker.number.int({ min: 0, max: 40 })
+  const l4 = faker.number.int({ min: 0, max: 24 })
+  const total = praca + urlop + l4
+  return [
+    { type: HoursType.PRACA, hours: praca, percent: Math.round((praca / total) * 100) },
+    { type: HoursType.URLOP, hours: urlop, percent: Math.round((urlop / total) * 100) },
+    { type: HoursType.L4, hours: l4, percent: Math.round((l4 / total) * 100) },
+  ].filter((i) => i.hours > 0)
+})()
