@@ -7,7 +7,7 @@ import { profileKey, UsersEndpoints } from '~/features/users'
 import { statisticsDailyColumns } from '~/features/statistics/[id]'
 import { useAPI, usePaginatedAPI } from '~/composables/useAPI'
 import DataTable from '~/components/ui/data-table/data-table.vue'
-import { mockDailyDetails, mockDistribution } from '~/mock/statistics/mockStatistics'
+import { mockDailyDetails, mockDistribution, mockStatisticUser } from '~/mock/statistics/mockStatistics'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -19,10 +19,11 @@ const { id } = params as { id: string }
 
 const { data: userData } = await useAPI<User>(UsersEndpoints.DETAILS(id), { key: profileKey(id) })
 
-const fullName = userData.value ? `${userData.value.first_name} ${userData.value.last_name}` : ''
+const user = userData.value ?? mockStatisticUser.user
+const fullName = `${user.first_name} ${user.last_name}`
 resetHeader()
-setHeader('Statystyki', ...(fullName ? [fullName] : []))
-set([{ name: 'Statystyki', link: '/statistics' }, ...(fullName ? [{ name: fullName }] : [])])
+setHeader(fullName)
+set([{ name: 'Statystyki', link: '/statistics' }, { name: fullName }])
 
 const { period } = useStatisticsPeriod()
 

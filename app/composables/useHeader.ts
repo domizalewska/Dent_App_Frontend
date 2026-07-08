@@ -1,14 +1,14 @@
 import { ref } from 'vue'
 
-export const header = ref<string[]>([])
+export const header = ref('')
 
 export function useHeader() {
-  function setHeader(...parts: string[]) {
-    header.value = parts
+  function setHeader(title: string) {
+    header.value = title
   }
 
   function resetHeader() {
-    header.value = []
+    header.value = ''
   }
   return { header, setHeader, resetHeader }
 }

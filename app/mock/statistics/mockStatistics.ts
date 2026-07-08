@@ -30,6 +30,8 @@ function generateMockStatisticUser(): StatisticUser {
 
 export const mockStatisticsUsers: StatisticUser[] = Array.from({ length: 5 }, generateMockStatisticUser)
 
+export const mockStatisticUser = mockStatisticsUsers[0]
+
 export const mockDistribution: HoursDistributionItem[] = (() => {
   const praca = faker.number.int({ min: 100, max: 160 })
   const urlop = faker.number.int({ min: 0, max: 40 })
