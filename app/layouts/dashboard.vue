@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import SidebarComponent from '~/components/main/SidebarComponent.vue'
-import { header } from '~/composables/useHeader'
-import { breadcrumbs } from '~/composables/useBreadcrumbs'
 import { useAPI } from '~/composables/useAPI'
 import type { User } from '~/types'
 import { userInfoKey } from '~/features/users'
 
+const { header } = useHeader()
+const { breadcrumbs } = useBreadcrumbs()
 const { user } = useAuth()
 
 const { data } = useAPI<User>('/user/user-info', { key: userInfoKey, server: false })

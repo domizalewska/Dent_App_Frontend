@@ -15,6 +15,7 @@ import {
   CalendarDays,
   ClipboardList,
   LayoutDashboard,
+  Megaphone,
   Settings2,
   Stethoscope,
   UserRoundSearch,
@@ -32,6 +33,11 @@ const data = {
       title: 'Pulpit',
       url: '/dashboard',
       icon: LayoutDashboard,
+    },
+    {
+      title: 'Ogłoszenia',
+      url: '/announcements',
+      icon: Megaphone,
     },
     {
       title: 'Pracownicy',
