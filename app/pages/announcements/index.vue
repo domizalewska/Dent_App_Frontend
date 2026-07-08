@@ -9,7 +9,6 @@ import { useHeader } from '~/composables/useHeader'
 import { useDialog } from '~/composables/useDialog'
 import type { Announcement } from '~/types'
 import { AnnouncementsEndpoints, announcementsKey } from '~/features/announcements'
-import { mockAnnouncements } from '~/mock/announcements/mockAnnouncements'
 import AnnouncementsDialog from '~/components/announcements/dialog/AnnouncementsDialog.vue'
 
 definePageMeta({ layout: 'dashboard' })
@@ -32,13 +31,9 @@ const { globalSearch, paramsData, setPage, setSearch } = usePagination({
   initialSort: 'published_at,desc',
 })
 
-const { data: announcementsData, status } = await usePaginatedAPI<Announcement>(
+const { data: announcementsData } = await usePaginatedAPI<Announcement>(
   AnnouncementsEndpoints.BASE,
   { key: announcementsKey, query: paramsData },
-)
-
-const displayData = computed(() =>
-  status.value === 'success' ? (announcementsData.value?.data ?? []) : mockAnnouncements,
 )
 </script>
 <template>
@@ -59,7 +54,7 @@ const displayData = computed(() =>
 
     <div class="flex flex-col gap-3">
       <AnnouncementCard
-        v-for="announcement in displayData"
+        v-for="announcement in announcementsData?.data"
         :key="announcement.uuid"
         :announcement="announcement"
         :author="announcement.author"
