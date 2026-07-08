@@ -10,6 +10,7 @@ import { useDialog } from '~/composables/useDialog'
 import type { Announcement } from '~/types'
 import { AnnouncementsEndpoints, announcementsKey } from '~/features/announcements'
 import { mockAnnouncements } from '~/mock/announcements/mockAnnouncements'
+import AnnouncementsDialog from '~/components/announcements/dialog/AnnouncementsDialog.vue'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -23,7 +24,7 @@ setHeader('Ogłoszenia')
 const { open, close, activeComponent, activeProps } = useDialog()
 
 function addOpenDialog() {
-  // open(AnnouncementsDialog)
+  open(AnnouncementsDialog)
 }
 
 const { globalSearch, paramsData, setPage, setSearch } = usePagination({

@@ -7,3 +7,9 @@ export type Announcement = {
   published_at: string
   author: User
 }
+
+export type AnnouncementPayload = {
+  title: string
+  content: string
+  published_at: string
+}
