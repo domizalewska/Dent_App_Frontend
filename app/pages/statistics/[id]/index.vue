@@ -7,7 +7,11 @@ import { profileKey, UsersEndpoints } from '~/features/users'
 import { statisticsDailyColumns } from '~/features/statistics/[id]'
 import { useAPI, usePaginatedAPI } from '~/composables/useAPI'
 import DataTable from '~/components/ui/data-table/data-table.vue'
-import { mockDailyDetails, mockDistribution, mockStatisticUser } from '~/mock/statistics/mockStatistics'
+import {
+  mockDailyDetails,
+  mockDistribution,
+  mockStatisticUser,
+} from '~/mock/statistics/mockStatistics'
 
 definePageMeta({ layout: 'dashboard' })
 

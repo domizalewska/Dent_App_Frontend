@@ -29,7 +29,6 @@ const { data: statisticsData, status } = await usePaginatedAPI<StatisticUser>(
   StatisticsEndpoints.USERS,
   { key: statisticsKey, query },
 )
-
 </script>
 <template>
   <Card class="h-full">

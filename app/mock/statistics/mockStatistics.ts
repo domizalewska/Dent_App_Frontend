@@ -28,7 +28,10 @@ function generateMockStatisticUser(): StatisticUser {
   }
 }
 
-export const mockStatisticsUsers: StatisticUser[] = Array.from({ length: 5 }, generateMockStatisticUser)
+export const mockStatisticsUsers: StatisticUser[] = Array.from(
+  { length: 5 },
+  generateMockStatisticUser,
+)
 
 export const mockStatisticUser = mockStatisticsUsers[0]
 
