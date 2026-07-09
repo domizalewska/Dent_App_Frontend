@@ -1,0 +1,73 @@
+import { AppointmentStatus } from '~/types'
+import type { AppointmentType, RoomType } from '~/types'
+
+export const mockRooms: RoomType[] = [
+  { uuid: 'room-001', name: 'Gabinet 1' },
+  { uuid: 'room-002', name: 'Gabinet 2' },
+  { uuid: 'room-003', name: 'Gabinet 3' },
+]
+
+const today = new Date().toISOString().slice(0, 10)
+
+export const mockScheduleAppointments: AppointmentType[] = [
+  {
+    uuid: 'appt-001',
+    room: mockRooms[0],
+    patient: { uuid: 'pat-001', first_name: 'Jan', last_name: 'Kowalski', is_active: true, created_at: new Date(), updated_at: new Date() },
+    doctor: { uuid: 'doc-001', first_name: 'Anna', last_name: 'Nowak', email: 'anna@clinic.pl', is_active: true, is_admin: false, created_at: '', updated_at: '', competencies: [] },
+    name: 'Przegląd stomatologiczny',
+    treatment: { uuid: 'tr-001', name: 'Przegląd', description: '', short_description: '', price: 150, created_at: '' },
+    description: '',
+    start_date: `${today}T09:00:00`,
+    end_date: `${today}T09:30:00`,
+    status: AppointmentStatus.CONFIRMED,
+  },
+  {
+    uuid: 'appt-002',
+    room: mockRooms[0],
+    patient: { uuid: 'pat-002', first_name: 'Maria', last_name: 'Wiśniewska', is_active: true, created_at: new Date(), updated_at: new Date() },
+    doctor: { uuid: 'doc-001', first_name: 'Anna', last_name: 'Nowak', email: 'anna@clinic.pl', is_active: true, is_admin: false, created_at: '', updated_at: '', competencies: [] },
+    name: 'Leczenie kanałowe',
+    treatment: { uuid: 'tr-002', name: 'Leczenie kanałowe', description: '', short_description: '', price: 600, created_at: '' },
+    description: '',
+    start_date: `${today}T10:00:00`,
+    end_date: `${today}T11:30:00`,
+    status: AppointmentStatus.IN_PROGRESS,
+  },
+  {
+    uuid: 'appt-003',
+    room: mockRooms[1],
+    patient: { uuid: 'pat-003', first_name: 'Piotr', last_name: 'Zając', is_active: true, created_at: new Date(), updated_at: new Date() },
+    doctor: { uuid: 'doc-002', first_name: 'Marek', last_name: 'Kowal', email: 'marek@clinic.pl', is_active: true, is_admin: false, created_at: '', updated_at: '', competencies: [] },
+    name: 'Wybielanie zębów',
+    treatment: { uuid: 'tr-003', name: 'Wybielanie', description: '', short_description: '', price: 800, created_at: '' },
+    description: '',
+    start_date: `${today}T09:30:00`,
+    end_date: `${today}T10:30:00`,
+    status: AppointmentStatus.PENDING,
+  },
+  {
+    uuid: 'appt-004',
+    room: mockRooms[1],
+    patient: { uuid: 'pat-004', first_name: 'Ewa', last_name: 'Dąbrowska', is_active: true, created_at: new Date(), updated_at: new Date() },
+    doctor: { uuid: 'doc-002', first_name: 'Marek', last_name: 'Kowal', email: 'marek@clinic.pl', is_active: true, is_admin: false, created_at: '', updated_at: '', competencies: [] },
+    name: 'Ekstrakcja zęba',
+    treatment: { uuid: 'tr-004', name: 'Ekstrakcja', description: '', short_description: '', price: 250, created_at: '' },
+    description: '',
+    start_date: `${today}T11:00:00`,
+    end_date: `${today}T11:45:00`,
+    status: AppointmentStatus.CONFIRMED,
+  },
+  {
+    uuid: 'appt-005',
+    room: mockRooms[2],
+    patient: { uuid: 'pat-005', first_name: 'Tomasz', last_name: 'Lewandowski', is_active: true, created_at: new Date(), updated_at: new Date() },
+    doctor: { uuid: 'doc-003', first_name: 'Katarzyna', last_name: 'Mazur', email: 'kasia@clinic.pl', is_active: true, is_admin: false, created_at: '', updated_at: '', competencies: [] },
+    name: 'Zakładanie korony',
+    treatment: { uuid: 'tr-005', name: 'Korona ceramiczna', description: '', short_description: '', price: 1200, created_at: '' },
+    description: '',
+    start_date: `${today}T10:00:00`,
+    end_date: `${today}T11:00:00`,
+    status: AppointmentStatus.PENDING,
+  },
+]

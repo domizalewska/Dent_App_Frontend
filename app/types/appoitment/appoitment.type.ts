@@ -1,19 +1,21 @@
-export type AppointmentDoctor = {
-  uuid: string
-  first_name: string
-  last_name: string
-  specialization: string
-}
+import type { RoomType } from '~/types/schedule-room/room.type'
+import type { PatientType, TreatmentType, User } from '~/types'
 
-export type AppointmentStatus = 'scheduled' | 'completed' | 'cancelled'
+export enum AppointmentStatus {
+  CONFIRMED = 'confirmed',
+  IN_PROGRESS = 'in_progress',
+  PENDING = 'pending',
+}
 
 export type AppointmentType = {
   uuid: string
-  patient_uuid: string
-  doctor: AppointmentDoctor
+  room: RoomType
+  patient: PatientType
+  doctor: User
   name: string
+  treatment: TreatmentType
   description: string
-  date: Date
-  duration_minutes: number
+  start_date: string
+  end_date: string
   status: AppointmentStatus
 }
