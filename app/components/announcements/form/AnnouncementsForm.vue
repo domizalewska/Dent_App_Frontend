@@ -2,9 +2,15 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { Form } from 'vee-validate'
-import type { AnnouncementPayload } from '~/types'
+import type { Announcement, AnnouncementPayload } from '~/types'
 import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import BaseTextareaForm from '~/components/base/form/BaseTextareaForm.vue'
+
+interface Props {
+  initialValues?: Announcement
+}
+
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
   submit: [values: AnnouncementPayload]
@@ -18,13 +24,23 @@ const formSchema = toTypedSchema(
   }),
 )
 
+const initialFormValues = {
+  title: props.initialValues?.title ?? '',
+  content: props.initialValues?.content ?? '',
+}
+
 function onSubmit(values: { title: string; content: string }) {
   emit('submit', { ...values, published_at: new Date().toISOString().slice(0, 10) })
 }
 </script>
 
 <template>
-  <Form class="px-4 py-4" :validation-schema="formSchema" @submit="onSubmit">
+  <Form
+    class="px-4 py-4"
+    :validation-schema="formSchema"
+    :initial-values="initialFormValues"
+    @submit="onSubmit"
+  >
     <div class="mb-4 flex flex-col gap-4">
       <BaseInputForm name="title" label="Tytuł" placeholder="Wpisz tytuł ogłoszenia" />
       <BaseTextareaForm name="content" label="Treść" placeholder="Wpisz treść ogłoszenia" />

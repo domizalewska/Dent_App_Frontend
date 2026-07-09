@@ -5,6 +5,7 @@ export type Announcement = {
   title: string
   content: string
   published_at: string
+  updated_at?: string
   author: User
 }
 

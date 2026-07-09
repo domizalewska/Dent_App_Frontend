@@ -3,6 +3,8 @@ import { Icon } from '@iconify/vue'
 import type { Announcement, User } from '~/types'
 import { formatDateToString } from '~/utils/formatDate'
 import BaseUserAvatar from '~/components/base/avatar/BaseUserAvatar.vue'
+import AnnouncementsDialog from '~/components/announcements/dialog/AnnouncementsDialog.vue'
+import { useDialog } from '~/composables/useDialog'
 
 interface Props {
   announcement: Announcement
@@ -11,11 +13,17 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const { open } = useDialog()
+
 const fullName = computed(() => `${props.author.first_name} ${props.author.last_name}`)
 
 const publishedLabel = computed(() =>
   formatDateToString(props.announcement.published_at, 'd MMMM yyyy'),
 )
+
+function openEditDialog() {
+  open(AnnouncementsDialog, { isEdit: true, initialValues: props.announcement })
+}
 </script>
 
 <template>
@@ -27,15 +35,13 @@ const publishedLabel = computed(() =>
         <div>
           <div class="text-sm font-medium text-foreground">{{ fullName }}</div>
           <div class="text-xs text-muted-foreground">
-            <template v-if="props.author.job_position"
-              >{{ props.author.job_position.name }} ·
-            </template>
+            <template v-if="props.author.job_position">{{ props.author.job_position.name }} · </template>
             opublikowano {{ publishedLabel }}
           </div>
         </div>
       </div>
 
-      <Button variant="ghost" size="icon" class="size-7" aria-label="Więcej opcji">
+      <Button variant="ghost" size="icon" class="size-7" aria-label="Więcej opcji" @click="openEditDialog">
         <Icon icon="lucide:more-horizontal" class="size-4" />
       </Button>
     </div>

@@ -21,5 +21,18 @@ export function useAnnouncements() {
     )
   }
 
-  return { addRecord }
+  async function editRecord(uuid: string, payload: AnnouncementPayload) {
+    return toast.promise(
+      api(AnnouncementsEndpoints.DETAILS(uuid), {
+        method: 'PUT',
+        body: payload,
+      }).then(() => refreshNuxtData(announcementsKey)),
+      {
+        success: { message: 'Ogłoszenie zostało zaktualizowane', style: toastSuccessStyle },
+        error: { message: 'Błąd podczas aktualizacji ogłoszenia', style: toastErrorStyle },
+      },
+    )
+  }
+
+  return { addRecord, editRecord }
 }
