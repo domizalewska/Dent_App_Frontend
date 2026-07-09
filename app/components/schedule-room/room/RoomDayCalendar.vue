@@ -156,4 +156,3 @@ const calendarOptions = computed(() => ({
   color: hsl(var(--muted-foreground));
 }
 </style>
-

@@ -15,11 +15,7 @@ const emit = defineEmits<{ eventClick: [uuid: string] }>()
 <template>
   <div class="rooms-day-plan-wrapper">
     <div class="rooms-day-plan">
-      <div
-        v-for="(room, i) in rooms"
-        :key="room.uuid"
-        class="rooms-day-plan__col"
-      >
+      <div v-for="(room, i) in rooms" :key="room.uuid" class="rooms-day-plan__col">
         <RoomDayCalendar
           :room="room"
           :appointments="appointments"

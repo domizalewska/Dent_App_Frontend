@@ -42,13 +42,14 @@ function goToday() {
 const dateParam = computed(() => currentDate.value.toISOString().slice(0, 10))
 
 const { data: rooms } = useAPI<RoomType[]>(RoomsEndpoints.BASE, { key: roomsKey })
-const { data: appointments, pending } = useAPI<AppointmentType[]>(
-  '/appointment',
-  { query: computed(() => ({ date: dateParam.value })) },
-)
+const { data: appointments, pending } = useAPI<AppointmentType[]>('/appointment', {
+  query: computed(() => ({ date: dateParam.value })),
+})
 
-const displayRooms = computed(() => rooms.value?.length ? rooms.value : mockRooms)
-const displayAppointments = computed(() => appointments.value?.length ? appointments.value : mockScheduleAppointments)
+const displayRooms = computed(() => (rooms.value?.length ? rooms.value : mockRooms))
+const displayAppointments = computed(() =>
+  appointments.value?.length ? appointments.value : mockScheduleAppointments,
+)
 
 const { open, close, activeComponent, activeProps } = useDialog()
 

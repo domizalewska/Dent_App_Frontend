@@ -56,7 +56,12 @@ function onSubmit(values: Omit<AppointmentPayload, 'date'>) {
 </script>
 
 <template>
-  <Form class="divide-y" :validation-schema="formSchema" :initial-values="formInitialValues" @submit="onSubmit">
+  <Form
+    class="divide-y"
+    :validation-schema="formSchema"
+    :initial-values="formInitialValues"
+    @submit="onSubmit"
+  >
     <div class="px-4 py-4 flex flex-col gap-4">
       <BaseSelectForm
         name="room_uuid"
