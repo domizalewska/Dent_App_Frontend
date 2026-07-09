@@ -9,6 +9,7 @@ import { RoomsEndpoints, roomsKey } from '~/features/rooms'
 import RoomPlanCalendar from '~/components/schedule-room/calendar/RoomPlanCalendar.vue'
 import { mockRooms, mockScheduleAppointments } from '~/mock/schedule-room/mockScheduleRoom'
 import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
+import AppointmentLegend from '~/components/schedule-room/legend/AppointmentLegend.vue'
 
 definePageMeta({
   layout: 'dashboard',
@@ -66,6 +67,7 @@ function openEditDialog(uuid: string) {
 <template>
   <Card class="h-full overflow-hidden">
     <div class="flex items-center justify-between px-4 py-3 border-b border-border">
+      <div class="flex items-center gap-4">
       <div class="flex items-center gap-2">
         <Button variant="outline" size="icon" aria-label="Poprzedni dzień" @click="goPrevDay">
           <Icon icon="lucide:chevron-left" class="size-4" />
@@ -80,6 +82,9 @@ function openEditDialog(uuid: string) {
         <Button variant="outline" size="icon" aria-label="Następny dzień" @click="goNextDay">
           <Icon icon="lucide:chevron-right" class="size-4" />
         </Button>
+      </div>
+
+      <AppointmentLegend />
       </div>
 
       <Button @click="openAddDialog">
