@@ -14,6 +14,7 @@ import {
   Briefcase,
   CalendarDays,
   ClipboardList,
+  FileText,
   LayoutDashboard,
   Settings2,
   Stethoscope,
@@ -32,6 +33,11 @@ const data = {
       title: 'Pulpit',
       url: '/dashboard',
       icon: LayoutDashboard,
+    },
+    {
+      title: 'Dokumenty',
+      url: '/documents',
+      icon: FileText,
     },
     {
       title: 'Pracownicy',
