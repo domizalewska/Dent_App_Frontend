@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { BadgeCheck, Calendar, Mail, Pencil, Phone, Trash2 } from 'lucide-vue-next'
 import type { User } from '~/types'
+import { formatDateToString } from '~/utils/formatDate'
+import { useFileSelect } from '~/composables/useFileSelect'
 
 interface Props {
   user: User
@@ -81,12 +83,7 @@ function handleAvatarAction() {
         <span class="flex items-center gap-1.5">
           <Calendar class="size-3.5" />
           Z nami od
-          {{
-            new Date(user.created_at).toLocaleDateString('pl-PL', {
-              month: 'long',
-              year: 'numeric',
-            })
-          }}
+          {{ formatDateToString(user.created_at, 'LLLL yyyy') }}
         </span>
       </div>
     </div>

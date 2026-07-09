@@ -24,8 +24,10 @@ const isOpen = ref(false)
     </CardHeader>
     <CardContent class="px-6 pt-3 pb-4 flex flex-col gap-3">
       <BaseFileList
-        :endpoint="UsersEndpoints(user.uuid).FILE_UPLOAD"
+        :endpoint="UsersEndpoints(user.uuid).FILE_LIST"
         :download-url="UsersEndpoints(user.uuid).FILE_DOWNLOAD"
+        :item-url="UsersEndpoints(user.uuid).FILE_ITEM"
+        :new-version-url="UsersEndpoints(user.uuid).FILE_NEW_VERSION"
       />
     </CardContent>
   </Card>

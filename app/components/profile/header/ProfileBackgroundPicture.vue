@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Pencil, Trash2 } from 'lucide-vue-next'
 import type { User } from '~/types'
+import { useFileSelect } from '~/composables/useFileSelect'
 
 interface Props {
   user: User
