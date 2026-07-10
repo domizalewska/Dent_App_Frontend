@@ -2,6 +2,7 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { Form } from 'vee-validate'
+import { formatDateToString } from '~/utils/formatDate'
 import type { Announcement, AnnouncementPayload } from '~/types'
 import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import BaseTextareaForm from '~/components/base/form/BaseTextareaForm.vue'
@@ -19,8 +20,8 @@ const emit = defineEmits<{
 
 const formSchema = toTypedSchema(
   z.object({
-    title: z.string().nonempty('Tytuł jest wymagany'),
-    content: z.string().nonempty('Treść jest wymagana'),
+    title: z.string().min(1, 'Tytuł jest wymagany'),
+    content: z.string().min(1, 'Treść jest wymagana'),
   }),
 )
 
@@ -30,7 +31,7 @@ const initialFormValues = {
 }
 
 function onSubmit(values: { title: string; content: string }) {
-  emit('submit', { ...values, published_at: new Date().toISOString().slice(0, 10) })
+  emit('submit', { ...values, published_at: formatDateToString(new Date(), 'yyyy-MM-dd') })
 }
 </script>
 

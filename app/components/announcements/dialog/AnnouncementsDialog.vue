@@ -16,9 +16,9 @@ const { addRecord, editRecord } = useAnnouncements()
 
 async function onSubmit(values: AnnouncementPayload) {
   if (props.isEdit && props.initialValues?.uuid) {
-    await editRecord(props.initialValues.uuid, values).finally(() => emit('close'))
+    await editRecord(props.initialValues.uuid, values).then(() => emit('close'))
   } else {
-    await addRecord(values).finally(() => emit('close'))
+    await addRecord(values).then(() => emit('close'))
   }
 }
 </script>

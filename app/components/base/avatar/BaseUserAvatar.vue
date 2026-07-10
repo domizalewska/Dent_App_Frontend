@@ -9,7 +9,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const initials = computed(() =>
-  `${props.user.first_name?.[0] ?? ''}${props.user.last_name?.[0] ?? ''}`.toUpperCase(),
+  `${props.user.first_name[0]}${props.user.last_name[0]}`.toUpperCase(),
 )
 </script>
 
