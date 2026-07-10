@@ -1,14 +1,14 @@
 import { toast } from 'vue-sonner'
 import { refreshNuxtData } from 'nuxt/app'
 import { AppointmentsEndpoints, appointmentsKey } from '~/features/appointments'
-import type { AppointmentType, AppointmentPayload } from '~/types'
+import type { AppointmentPayload } from '~/types'
 import { toastSuccessStyle, toastErrorStyle } from '~/utils/toast'
 
-export const useAppointments = () => {
+export function useAppointments() {
   const { $api } = useNuxtApp()
   const api = $api as typeof $fetch
 
-  async function addRecord(payload: AppointmentPayload) {
+  async function addAppointment(payload: AppointmentPayload) {
     return toast.promise(
       api(AppointmentsEndpoints.BASE, {
         method: 'POST',
@@ -21,7 +21,7 @@ export const useAppointments = () => {
     )
   }
 
-  async function editRecord(uuid: string, payload: Partial<AppointmentType>) {
+  async function editAppointment(uuid: string, payload: AppointmentPayload) {
     return toast.promise(
       api(AppointmentsEndpoints.DETAILS(uuid), {
         method: 'PUT',
@@ -47,8 +47,8 @@ export const useAppointments = () => {
   }
 
   return {
-    addRecord,
-    editRecord,
-    deleteRecord,
+    addAppointment,
+    editAppointment,
+    deleteRecord
   }
 }
