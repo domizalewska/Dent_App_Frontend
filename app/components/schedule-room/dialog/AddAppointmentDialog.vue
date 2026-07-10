@@ -13,7 +13,7 @@ const emit = defineEmits<{ close: [] }>()
 const { addAppointment } = useAppointments()
 
 async function onSubmit(values: AppointmentPayload) {
-  await addAppointment(values).finally(() => emit('close'))
+  await addAppointment(values).then(() => emit('close'))
 }
 </script>
 

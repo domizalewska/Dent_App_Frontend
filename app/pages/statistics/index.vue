@@ -35,7 +35,7 @@ const { data: statisticsData, status } = await usePaginatedAPI<StatisticUser>(
     <div class="flex flex-col px-4">
       <BaseHeader>
         <template #left>
-          <StatisticsMonthPicker />
+          <StatisticsMonthPicker v-model="period" />
         </template>
         <template #right>
           <BaseTableSearch :model-value="globalSearch" @search="setSearch" />

@@ -18,9 +18,9 @@ const date = computed(() => props.appointment?.start_date.slice(0, 10) ?? props.
 
 async function onSubmit(values: AppointmentPayload) {
   if (isEdit.value && props.appointment) {
-    await editAppointment(props.appointment.uuid, values).finally(() => emit('close'))
+    await editAppointment(props.appointment.uuid, values).then(() => emit('close'))
   } else {
-    await addAppointment(values).finally(() => emit('close'))
+    await addAppointment(values).then(() => emit('close'))
   }
 }
 </script>
