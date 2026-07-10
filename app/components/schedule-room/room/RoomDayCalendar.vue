@@ -3,7 +3,12 @@ import FullCalendar from '@fullcalendar/vue3'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import type { AppointmentType, RoomType } from '~/types'
-import { useAppointmentStatusMeta } from '~/composables/appoitment/useAppointmentStatusMeta'
+import {
+  getLabelFromAppointmentStatus,
+  getBadgeClassFromAppointmentStatus,
+  getBorderClassFromAppointmentStatus,
+  getBgClassFromAppointmentStatus,
+} from '~/composables/appointments/useAppointmentStatusMeta'
 
 interface Props {
   room: RoomType
@@ -15,7 +20,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { showAxis: false })
 const emit = defineEmits<{ eventClick: [uuid: string] }>()
 
-const { labels, badgeStyles, borderColor, bgClass } = useAppointmentStatusMeta()
 
 const events = computed(() =>
   props.appointments
@@ -49,12 +53,11 @@ const calendarOptions = computed(() => ({
     const patientName = `${appt.patient.first_name} ${appt.patient.last_name}`
     const doctorName = `${appt.doctor.first_name} ${appt.doctor.last_name}`
     const el = document.createElement('div')
-    el.className = `room-event-card ${bgClass[appt.status]}`
-    el.style.borderLeftColor = borderColor[appt.status]
+    el.className = `room-event-card ${getBgClassFromAppointmentStatus(appt.status)} ${getBorderClassFromAppointmentStatus(appt.status)}`
     el.innerHTML = `
       <div class="room-event-card__top">
         <span class="room-event-card__time">${arg.timeText}</span>
-        <span class="room-event-card__badge ${badgeStyles[appt.status]}">${labels[appt.status]}</span>
+        <span class="room-event-card__badge ${getBadgeClassFromAppointmentStatus(appt.status)}">${getLabelFromAppointmentStatus(appt.status)}</span>
       </div>
       <div class="room-event-card__patient">${patientName}</div>
       <div class="room-event-card__treatment">${appt.treatment.name}</div>
@@ -120,7 +123,8 @@ const calendarOptions = computed(() => ({
 }
 
 .room-day-calendar :deep(.room-event-card) {
-  border-left: 3px solid;
+  border-left-width: 3px;
+  border-left-style: solid;
   border-radius: 6px;
   padding: 4px 6px;
   height: 100%;

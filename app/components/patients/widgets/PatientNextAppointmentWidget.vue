@@ -2,7 +2,7 @@
 import type { AppointmentType, PatientType } from '~/types'
 import { ref } from 'vue'
 import { generateMockAppointments } from '~/mock/appointments/mockAppointments'
-import { getLabelFormStatus } from '~/composables/appoitment/useAppoitmentStatusLabel'
+import { getLabelFromAppointmentStatus } from '~/composables/appointments/useAppointmentStatusMeta'
 
 interface Props {
   patient: PatientType
@@ -39,7 +39,7 @@ const appointmentData = ref<AppointmentType[]>(generateMockAppointments(props.pa
             <div class="flex items-center gap-2 flex-wrap">
               <span class="text-sm font-medium truncate">{{ single.name }}</span>
               <Badge variant="default" class="shrink-0 text-xs">
-                {{ getLabelFormStatus(single.status) }}
+                {{ getLabelFromAppointmentStatus(single.status) }}
               </Badge>
             </div>
             <span class="text-xs text-muted-foreground">
