@@ -5,7 +5,7 @@ import { Toaster } from '@/components/ui/sonner'
 
 <template>
   <div id="app">
-    <Toaster position="top-right" />
+    <Toaster position="top-right" close-button />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

@@ -10,10 +10,14 @@ export type AppointmentStatus = 'scheduled' | 'completed' | 'cancelled'
 export type AppointmentType = {
   uuid: string
   patient_uuid: string
+  patient_name?: string
   doctor: AppointmentDoctor
   name: string
   description: string
-  date: Date
+  date: Date | string
   duration_minutes: number
   status: AppointmentStatus
+  room?: string
 }
+
+export type AppointmentPayload = Omit<AppointmentType, 'uuid' | 'doctor' | 'patient_name' | 'room'>
