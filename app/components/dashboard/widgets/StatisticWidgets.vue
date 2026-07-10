@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
+import { TrendingUpIcon, TrendingDownIcon } from 'lucide-vue-next'
 
 interface Props {
   label: string

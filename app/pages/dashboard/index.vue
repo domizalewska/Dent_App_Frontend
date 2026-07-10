@@ -2,6 +2,7 @@
 import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
 import { ActivityIcon, CalendarIcon, StethoscopeIcon } from 'lucide-vue-next'
+import { formatDateToString } from '~/utils/formatDate'
 import { useAPI } from '~/composables/useAPI'
 import type { AppointmentType, User } from '~/types'
 import { AppointmentsEndpoints, appointmentsTodayKey } from '~/features/appointments'
@@ -26,11 +27,11 @@ const { data: todayData, status } = await useAPI<AppointmentType[]>(Appointments
 const appointments = computed(() =>
   (todayData.value ?? []).map((appt) => ({
     id: appt.uuid,
-    time: new Date(appt.date).toLocaleTimeString('pl', { hour: '2-digit', minute: '2-digit' }),
-    patientName: appt.patient_name ?? '',
-    procedure: appt.name,
+    time: formatDateToString(appt.start_date, 'HH:mm'),
+    patientName: `${appt.patient.first_name} ${appt.patient.last_name}`,
+    procedure: appt.treatment.name,
     doctorName: `${appt.doctor.first_name} ${appt.doctor.last_name}`,
-    room: appt.room ?? '',
+    room: appt.room.name,
   })),
 )
 
