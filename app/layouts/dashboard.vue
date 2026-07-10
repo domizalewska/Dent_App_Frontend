@@ -27,12 +27,7 @@ watch(
         <div class="flex items-center gap-2">
           <SidebarTrigger class="-ml-1" />
           <Separator orientation="vertical" class="data-[orientation=vertical]:h-4" />
-          <BaseBreadcrumb
-            v-for="(item, index) in breadcrumbs"
-            :key="index"
-            :name="item.name"
-            :link="item.link"
-          />
+          <BaseBreadcrumb :items="breadcrumbs" />
         </div>
         <HeaderComponent />
       </header>

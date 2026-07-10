@@ -98,8 +98,8 @@ function handleRowClick(row: TData, event: MouseEvent) {
           </template>
           <template v-else>
             <TableRow>
-              <TableCell :colspan="columns.length" class="h-24 text-center">
-                No results.
+              <TableCell :colspan="columns.length" class="h-24 text-center text-muted-foreground">
+                <slot name="empty">Brak danych</slot>
               </TableCell>
             </TableRow>
           </template>

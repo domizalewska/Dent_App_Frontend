@@ -1,20 +1,26 @@
 <script setup lang="ts">
-interface Props {
+interface Crumb {
   name: string
   link?: string
 }
 
-defineProps<Props>()
+interface Props {
+  items: Crumb[]
+}
+
+const props = defineProps<Props>()
 </script>
 
 <template>
   <Breadcrumb>
     <BreadcrumbList>
-      <BreadcrumbItem class="hidden md:block">
-        <BreadcrumbLink :href="link">
-          {{ name }}
-        </BreadcrumbLink>
-      </BreadcrumbItem>
+      <template v-for="(crumb, i) in props.items" :key="crumb.name">
+        <BreadcrumbSeparator v-if="i > 0" />
+        <BreadcrumbItem>
+          <BreadcrumbLink v-if="crumb.link" :href="crumb.link">{{ crumb.name }}</BreadcrumbLink>
+          <BreadcrumbPage v-else>{{ crumb.name }}</BreadcrumbPage>
+        </BreadcrumbItem>
+      </template>
     </BreadcrumbList>
   </Breadcrumb>
 </template>
