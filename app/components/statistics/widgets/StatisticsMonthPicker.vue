@@ -64,7 +64,7 @@ function setYear(year: string) {
 
     <div class="mx-1 h-6 w-px bg-border" />
 
-    <Select :model-value="String(period.year)" @update:model-value="setYear">
+    <Select :model-value="String(period.value.year)" @update:model-value="setYear">
       <SelectTrigger class="h-[34px] w-[84px]">
         <SelectValue />
       </SelectTrigger>

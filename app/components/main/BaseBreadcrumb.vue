@@ -14,7 +14,7 @@ const props = defineProps<Props>()
 <template>
   <Breadcrumb>
     <BreadcrumbList>
-      <template v-for="(crumb, i) in props.items" :key="i">
+      <template v-for="(crumb, i) in props.items" :key="crumb.name">
         <BreadcrumbSeparator v-if="i > 0" />
         <BreadcrumbItem>
           <BreadcrumbLink v-if="crumb.link" :href="crumb.link">{{ crumb.name }}</BreadcrumbLink>
