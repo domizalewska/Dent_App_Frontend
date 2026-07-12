@@ -32,7 +32,11 @@ async function onSubmit(values: AnnouncementPayload) {
           <Badge v-if="isEdit" variant="secondary" class="text-xs">Edycja</Badge>
         </div>
       </DialogHeader>
-      <AnnouncementsForm :initial-values="initialValues" @submit="onSubmit" @cancel="emit('close')" />
+      <AnnouncementsForm
+        :initial-values="initialValues"
+        @submit="onSubmit"
+        @cancel="emit('close')"
+      />
     </DialogContent>
   </Dialog>
 </template>

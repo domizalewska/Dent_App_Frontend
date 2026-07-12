@@ -20,7 +20,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { showAxis: false })
 const emit = defineEmits<{ eventClick: [uuid: string] }>()
 
-
 const events = computed(() =>
   props.appointments
     .filter((a) => a.room.uuid === props.room.uuid)

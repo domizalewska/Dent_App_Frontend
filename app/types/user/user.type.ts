@@ -5,6 +5,7 @@ export type User = {
   first_name: string
   last_name: string
   email: string
+  pesel: string
   private_email?: string
   private_email_verified_at?: string
   email_verified_at?: string
@@ -25,6 +26,7 @@ export type UserPayload = {
   first_name: string
   last_name: string
   email: string
+  pesel: string
   private_email?: string
   phone_number?: string
   private_phone_number?: string

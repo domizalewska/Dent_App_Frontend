@@ -6,21 +6,19 @@ import { useAPI } from '~/composables/useAPI'
 import { formatDateToString } from '~/utils/formatDate'
 import type { AppointmentType, RoomType } from '~/types'
 import { RoomsEndpoints, roomsKey } from '~/features/rooms'
-import RoomPlanCalendar from '~/components/schedule-room/calendar/RoomPlanCalendar.vue'
 import { mockRooms, mockScheduleAppointments } from '~/mock/schedule-room/mockScheduleRoom'
 import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
-import AppointmentLegend from '~/components/schedule-room/legend/AppointmentLegend.vue'
 
 definePageMeta({
   layout: 'dashboard',
 })
 
 const { set } = useBreadcrumbs()
-set([{ name: 'Grafik wizyt', link: '/schedule-room' }])
+set([{ name: 'Grafik lekarzy', link: '/schedule-doctors' }])
 
 const { setHeader, resetHeader } = useHeader()
 resetHeader()
-setHeader('Grafik wizyt')
+setHeader('Grafik lekarzy')
 
 const currentDate = ref(new Date())
 
@@ -83,8 +81,6 @@ function openEditDialog(uuid: string) {
             <Icon icon="lucide:chevron-right" class="size-4" />
           </Button>
         </div>
-
-        <AppointmentLegend />
       </div>
 
       <Button @click="openAddDialog">
@@ -94,23 +90,5 @@ function openEditDialog(uuid: string) {
     </div>
 
     <component :is="activeComponent" v-bind="activeProps" @close="close" />
-
-    <div class="p-4">
-      <div v-if="pending" class="flex h-[400px] items-center justify-center text-muted-foreground">
-        Wczytywanie planu dnia...
-      </div>
-
-      <RoomPlanCalendar
-        v-else-if="displayRooms.length"
-        :rooms="displayRooms"
-        :appointments="displayAppointments"
-        :date="currentDate"
-        @event-click="openEditDialog"
-      />
-
-      <div v-else class="flex h-[400px] items-center justify-center text-muted-foreground">
-        Brak skonfigurowanych gabinetów
-      </div>
-    </div>
   </Card>
 </template>

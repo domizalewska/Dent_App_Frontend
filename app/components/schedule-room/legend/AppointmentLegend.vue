@@ -5,7 +5,11 @@ import {
 } from '~/composables/appointments/useAppointmentStatusMeta'
 import { AppointmentStatus } from '~/types'
 
-const statuses = [AppointmentStatus.CONFIRMED, AppointmentStatus.IN_PROGRESS, AppointmentStatus.PENDING]
+const statuses = [
+  AppointmentStatus.CONFIRMED,
+  AppointmentStatus.IN_PROGRESS,
+  AppointmentStatus.PENDING,
+]
 </script>
 
 <template>

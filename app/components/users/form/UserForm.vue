@@ -23,6 +23,7 @@ const formSchema = toTypedSchema(
     first_name: z.string().nonempty('Imię jest wymagane'),
     last_name: z.string().nonempty('Nazwisko jest wymagane'),
     email: z.string().email('Nieprawidłowy adres email'),
+    pesel: z.string().nonempty('Pesel jest wymagane'),
     private_email: z.string().email('Nieprawidłowy adres email').or(z.literal('')).optional(),
     phone_number: z.string().optional(),
     private_phone_number: z.string().optional(),
@@ -36,6 +37,7 @@ const initialFormValues = {
   first_name: props.initialValues?.first_name ?? '',
   last_name: props.initialValues?.last_name ?? '',
   email: props.initialValues?.email ?? '',
+  pesel: props.initialValues?.pesel ?? '',
   private_email: props.initialValues?.private_email ?? '',
   phone_number: props.initialValues?.phone_number ?? '',
   private_phone_number: props.initialValues?.private_phone_number ?? '',
@@ -104,6 +106,7 @@ function onSubmit(values: UserPayload) {
     </div>
 
     <div class="mt-4">
+      <BaseInputForm name="pesel" label="Pesel" placeholder="Wpisz numer pesel" />
       <BaseSwitchForm name="is_active" label="Aktywny pracownik" />
     </div>
 
