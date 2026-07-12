@@ -4,10 +4,11 @@ import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
 import { useAPI } from '~/composables/useAPI'
 import { formatDateToString } from '~/utils/formatDate'
-import type { AppointmentType, RoomType } from '~/types'
-import { RoomsEndpoints, roomsKey } from '~/features/rooms'
-import { mockRooms, mockScheduleAppointments } from '~/mock/schedule-room/mockScheduleRoom'
+import type { DoctorsScheduleResponse } from '~/types'
 import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
+import DoctorsDayPlan from '~/components/schedule-doctors/widgets/DoctorsDayPlan.vue'
+import { appointmentsByDoctorKey, AppointmentsEndpoints } from '~/features/appointments'
+import { mockScheduleDoctors } from '~/mock/schedule-doctors/mockScheduleDoctors'
 
 definePageMeta({
   layout: 'dashboard',
@@ -40,55 +41,58 @@ function goToday() {
 
 const dateParam = computed(() => currentDate.value.toISOString().slice(0, 10))
 
-const { data: rooms } = useAPI<RoomType[]>(RoomsEndpoints.BASE, { key: roomsKey })
-const { data: appointments, pending } = useAPI<AppointmentType[]>('/appointment', {
-  query: computed(() => ({ date: dateParam.value })),
-})
-
-const displayRooms = computed(() => (rooms.value?.length ? rooms.value : mockRooms))
-const displayAppointments = computed(() =>
-  appointments.value?.length ? appointments.value : mockScheduleAppointments,
+const { data: schedule, pending } = useAPI<DoctorsScheduleResponse>(
+  AppointmentsEndpoints.BY_DOCTORS,
+  {
+    key: appointmentsByDoctorKey,
+    query: computed(() => ({ date_from: dateParam.value, date_to: dateParam.value })),
+  },
 )
+
+const displaySchedule = computed<DoctorsScheduleResponse>(() => schedule.value ?? mockScheduleDoctors)
 
 const { open, close, activeComponent, activeProps } = useDialog()
 
 function openAddDialog() {
   open(AppointmentDialog, { date: dateParam.value })
 }
-
-function openEditDialog(uuid: string) {
-  const appointment = displayAppointments.value.find((a) => a.uuid === uuid)
-  if (appointment) open(AppointmentDialog, { appointment })
-}
 </script>
 
 <template>
   <Card class="h-full overflow-hidden">
-    <div class="flex items-center justify-between px-4 py-3 border-b border-border">
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2">
-          <Button variant="outline" size="icon" aria-label="Poprzedni dzień" @click="goPrevDay">
-            <Icon icon="lucide:chevron-left" class="size-4" />
-          </Button>
+    <div>
+      <div class="flex items-center justify-between px-4 py-3 border-b border-border">
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2">
+            <Button variant="outline" size="icon" aria-label="Poprzedni dzień" @click="goPrevDay">
+              <Icon icon="lucide:chevron-left" class="size-4" />
+            </Button>
 
-          <Button variant="outline" @click="goToday">Dziś</Button>
+            <Button variant="outline" @click="goToday">Dziś</Button>
 
-          <span class="min-w-[130px] text-center text-sm font-medium">
-            {{ formatDateToString(currentDate, 'd MMMM yyyy') }}
-          </span>
+            <span class="min-w-[130px] text-center text-sm font-medium">
+              {{ formatDateToString(currentDate, 'd MMMM yyyy') }}
+            </span>
 
-          <Button variant="outline" size="icon" aria-label="Następny dzień" @click="goNextDay">
-            <Icon icon="lucide:chevron-right" class="size-4" />
-          </Button>
+            <Button variant="outline" size="icon" aria-label="Następny dzień" @click="goNextDay">
+              <Icon icon="lucide:chevron-right" class="size-4" />
+            </Button>
+          </div>
         </div>
+
+        <Button @click="openAddDialog">
+          <Icon icon="lucide:plus" class="size-4" />
+          Dodaj wizytę
+        </Button>
       </div>
 
-      <Button @click="openAddDialog">
-        <Icon icon="lucide:plus" class="size-4" />
-        Dodaj wizytę
-      </Button>
-    </div>
+      <component :is="activeComponent" v-bind="activeProps" @close="close" />
 
-    <component :is="activeComponent" v-bind="activeProps" @close="close" />
+      <div v-if="pending" class="flex h-[400px] items-center justify-center text-muted-foreground">
+        Wczytywanie terminarza...
+      </div>
+
+      <DoctorsDayPlan v-else :schedule="displaySchedule" :date="currentDate" />
+    </div>
   </Card>
 </template>

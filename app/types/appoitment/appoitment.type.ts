@@ -20,6 +20,11 @@ export type AppointmentType = {
   status: AppointmentStatus
 }
 
+export type DoctorsScheduleResponse = {
+  doctors: User[]
+  appointments_by_doctor: Record<string, AppointmentType[]>
+}
+
 export type AppointmentPayload = {
   room_uuid: string
   patient_uuid: string
