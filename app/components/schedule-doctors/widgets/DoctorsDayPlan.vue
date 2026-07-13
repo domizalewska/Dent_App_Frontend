@@ -25,6 +25,7 @@ const emit = defineEmits<{ appointmentClick: [uuid: string] }>()
           :appointments="schedule.appointments_by_doctor[doctor.uuid] ?? []"
           :date="date"
           :show-axis="i === 0"
+          color-by="patient"
           @appointment-click="(uuid) => emit('appointmentClick', uuid)"
         />
       </div>

@@ -9,6 +9,7 @@ import {
   getBorderClassFromAppointmentStatus,
   getBgClassFromAppointmentStatus,
 } from '~/composables/appointments/useAppointmentStatusMeta'
+import { useColors } from '~/composables/colors/useColors'
 
 interface Props {
   title: string
@@ -16,10 +17,13 @@ interface Props {
   appointments: AppointmentType[]
   date: Date
   showAxis?: boolean
+  colorBy?: 'status' | 'patient'
 }
 
-const props = withDefaults(defineProps<Props>(), { showAxis: false })
+const props = withDefaults(defineProps<Props>(), { showAxis: false, colorBy: 'status' })
 const emit = defineEmits<{ appointmentClick: [uuid: string] }>()
+
+const { getColorFromString, getColorWithAlpha } = useColors()
 
 const events = computed(() =>
   props.appointments.map((a) => ({
@@ -51,7 +55,13 @@ const calendarOptions = computed(() => ({
     const patientName = `${appt.patient.first_name} ${appt.patient.last_name}`
     const doctorName = `${appt.doctor.first_name} ${appt.doctor.last_name}`
     const el = document.createElement('div')
-    el.className = `appt-event-card ${getBgClassFromAppointmentStatus(appt.status)} ${getBorderClassFromAppointmentStatus(appt.status)}`
+    if (props.colorBy === 'patient') {
+      el.className = 'appt-event-card appt-event-card--patient'
+      el.style.setProperty('--patient-color', getColorFromString(appt.patient.uuid))
+      el.style.setProperty('--patient-color-bg', getColorWithAlpha(appt.patient.uuid, 0.1))
+    } else {
+      el.className = `appt-event-card ${getBgClassFromAppointmentStatus(appt.status)} ${getBorderClassFromAppointmentStatus(appt.status)}`
+    }
     el.innerHTML = `
       <div class="appt-event-card__top">
         <span class="appt-event-card__time">${arg.timeText}</span>
@@ -164,5 +174,10 @@ const calendarOptions = computed(() => ({
 .appt-day-cal :deep(.appt-event-card__doctor) {
   font-size: 11px;
   color: hsl(var(--muted-foreground));
+}
+
+.appt-day-cal :deep(.appt-event-card--patient) {
+  background: var(--patient-color-bg);
+  border-left-color: var(--patient-color);
 }
 </style>

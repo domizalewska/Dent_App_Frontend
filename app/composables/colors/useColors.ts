@@ -10,5 +10,10 @@ export function useColors() {
     return colorHash.hex(value)
   }
 
-  return { getColorFromString }
+  function getColorWithAlpha(value: string, alpha: number): string {
+    const [r, g, b] = colorHash.rgb(value)
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
+  }
+
+  return { getColorFromString, getColorWithAlpha }
 }
