@@ -46,11 +46,8 @@ const { data: schedule, pending } = useAPI<DoctorsScheduleResponse>(
   {
     key: appointmentsByDoctorKey,
     query: computed(() => ({ date_from: dateParam.value, date_to: dateParam.value })),
+    default: () => mockScheduleDoctors,
   },
-)
-
-const displaySchedule = computed<DoctorsScheduleResponse>(() =>
-  schedule.value?.doctors?.length ? schedule.value : mockScheduleDoctors,
 )
 
 const { open, close, activeComponent, activeProps } = useDialog()
@@ -94,7 +91,7 @@ function openAddDialog() {
         Wczytywanie terminarza...
       </div>
 
-      <DoctorsDayPlan v-else :schedule="displaySchedule" :date="currentDate" />
+      <DoctorsDayPlan v-else :schedule="schedule" :date="currentDate" />
     </div>
   </Card>
 </template>

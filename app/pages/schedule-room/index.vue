@@ -42,15 +42,14 @@ function goToday() {
 
 const dateParam = computed(() => currentDate.value.toISOString().slice(0, 10))
 
-const { data: rooms } = useAPI<RoomType[]>(RoomsEndpoints.BASE, { key: roomsKey })
+const { data: rooms } = useAPI<RoomType[]>(RoomsEndpoints.BASE, {
+  key: roomsKey,
+  default: () => mockRooms,
+})
 const { data: appointments, pending } = useAPI<AppointmentType[]>('/appointment', {
   query: computed(() => ({ date: dateParam.value })),
+  default: () => mockScheduleAppointments,
 })
-
-const displayRooms = computed(() => (rooms.value?.length ? rooms.value : mockRooms))
-const displayAppointments = computed(() =>
-  appointments.value?.length ? appointments.value : mockScheduleAppointments,
-)
 
 const { open, close, activeComponent, activeProps } = useDialog()
 
@@ -101,9 +100,9 @@ function openEditDialog(uuid: string) {
       </div>
 
       <RoomPlanCalendar
-        v-else-if="displayRooms.length"
-        :rooms="displayRooms"
-        :appointments="displayAppointments"
+        v-else-if="rooms.length"
+        :rooms="rooms"
+        :appointments="appointments"
         :date="currentDate"
         @event-click="openEditDialog"
       />
