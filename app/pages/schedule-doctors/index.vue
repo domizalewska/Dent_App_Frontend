@@ -100,7 +100,12 @@ function openEditDialog(uuid: string) {
       <div class="flex items-center justify-between px-4 py-3 border-b border-border">
         <div class="flex items-center gap-4">
           <div class="flex items-center gap-2">
-            <Button variant="outline" size="icon" :aria-label="currentView === 'week' ? 'Poprzedni tydzień' : 'Poprzedni dzień'" @click="goPrev">
+            <Button
+              variant="outline"
+              size="icon"
+              :aria-label="currentView === 'week' ? 'Poprzedni tydzień' : 'Poprzedni dzień'"
+              @click="goPrev"
+            >
               <Icon icon="lucide:chevron-left" class="size-4" />
             </Button>
 
@@ -110,7 +115,12 @@ function openEditDialog(uuid: string) {
               {{ dateLabel }}
             </span>
 
-            <Button variant="outline" size="icon" :aria-label="currentView === 'week' ? 'Następny tydzień' : 'Następny dzień'" @click="goNext">
+            <Button
+              variant="outline"
+              size="icon"
+              :aria-label="currentView === 'week' ? 'Następny tydzień' : 'Następny dzień'"
+              @click="goNext"
+            >
               <Icon icon="lucide:chevron-right" class="size-4" />
             </Button>
           </div>

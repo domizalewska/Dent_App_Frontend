@@ -16,10 +16,7 @@ const colMinWidth = computed(() => (props.view === 'week' ? '900px' : '200px'))
 
 <template>
   <div class="max-h-[600px] overflow-y-auto overflow-x-auto border border-border rounded-xl">
-    <div
-      class="grid"
-      :style="{ gridTemplateColumns: `repeat(${schedule.doctors.length}, 1fr)` }"
-    >
+    <div class="grid" :style="{ gridTemplateColumns: `repeat(${schedule.doctors.length}, 1fr)` }">
       <div
         v-for="(doctor, i) in schedule.doctors"
         :key="doctor.uuid"
