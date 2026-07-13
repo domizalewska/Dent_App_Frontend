@@ -19,11 +19,14 @@ set([{ name: 'Pulpit', link: '/dashboard' }])
 resetHeader()
 setHeader('Pulpit')
 
-const { data: appointments, status } = await useAPI<AppointmentType[]>(AppointmentsEndpoints.TODAY, {
-  key: appointmentsTodayKey,
-  server: false,
-  default: () => mockTodayAppointments,
-})
+const { data: appointments, status } = await useAPI<AppointmentType[]>(
+  AppointmentsEndpoints.TODAY,
+  {
+    key: appointmentsTodayKey,
+    server: false,
+    default: () => mockTodayAppointments,
+  },
+)
 
 const { data: teamData, status: teamStatus } = await useAPI<User[]>(TeamActivityEndpoints.TODAY, {
   key: teamActivityKey,
