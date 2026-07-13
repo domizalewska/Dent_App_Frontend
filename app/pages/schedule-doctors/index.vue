@@ -49,7 +49,9 @@ const { data: schedule, pending } = useAPI<DoctorsScheduleResponse>(
   },
 )
 
-const displaySchedule = computed<DoctorsScheduleResponse>(() => schedule.value ?? mockScheduleDoctors)
+const displaySchedule = computed<DoctorsScheduleResponse>(() =>
+  schedule.value?.doctors?.length ? schedule.value : mockScheduleDoctors,
+)
 
 const { open, close, activeComponent, activeProps } = useDialog()
 

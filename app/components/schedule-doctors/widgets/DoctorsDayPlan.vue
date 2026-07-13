@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DoctorsScheduleResponse } from '~/types'
-import DoctorDayCalendar from '~/components/schedule-doctors/widgets/DoctorDayCalendar.vue'
+import AppointmentDayCalendar from '~/components/base/AppointmentDayCalendar.vue'
 
 interface Props {
   schedule: DoctorsScheduleResponse
@@ -13,17 +13,15 @@ const emit = defineEmits<{ appointmentClick: [uuid: string] }>()
 
 <template>
   <div class="max-h-[600px] overflow-y-auto overflow-x-auto border border-border rounded-xl">
-    <div
-      class="grid"
-      :style="{ gridTemplateColumns: `repeat(${schedule.doctors.length}, 1fr)` }"
-    >
+    <div class="grid" :style="{ gridTemplateColumns: `repeat(${schedule.doctors.length}, 1fr)` }">
       <div
         v-for="(doctor, i) in schedule.doctors"
         :key="doctor.uuid"
         class="border-r border-border last:border-r-0"
       >
-        <DoctorDayCalendar
-          :doctor="doctor"
+        <AppointmentDayCalendar
+          :title="`${doctor.first_name} ${doctor.last_name}`"
+          :subtitle="doctor.job_position?.name"
           :appointments="schedule.appointments_by_doctor[doctor.uuid] ?? []"
           :date="date"
           :show-axis="i === 0"

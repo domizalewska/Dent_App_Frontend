@@ -1,17 +1,9 @@
 <script setup lang="ts">
 import { ArrowRightIcon, ClockIcon } from 'lucide-vue-next'
-
-interface Appointment {
-  id: string | number
-  time: string
-  patientName: string
-  procedure: string
-  doctorName: string
-  room: string
-}
+import type { AppointmentType } from '~/types'
 
 defineProps<{
-  appointments: Appointment[]
+  appointments: AppointmentType[]
   loading?: boolean
 }>()
 </script>
@@ -44,15 +36,7 @@ defineProps<{
     </div>
 
     <div v-else>
-      <ScheduleItems
-        v-for="appt in appointments"
-        :key="appt.id"
-        :time="appt.time"
-        :patient-name="appt.patientName"
-        :procedure="appt.procedure"
-        :doctor-name="appt.doctorName"
-        :room="appt.room"
-      />
+      <ScheduleItems v-for="appt in appointments" :key="appt.uuid" :appointment="appt" />
     </div>
   </div>
 </template>

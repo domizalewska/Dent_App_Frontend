@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import type { AppointmentType, PatientType } from '~/types'
-import { ref } from 'vue'
-import { generateMockAppointments } from '~/mock/appointments/mockAppointments'
+import { formatDateToString } from '~/utils/formatDate'
 import { getLabelFromAppointmentStatus } from '~/composables/appointments/useAppointmentStatusMeta'
 
 interface Props {
   patient: PatientType
+  appointments?: AppointmentType[]
 }
 
-const props = defineProps<Props>()
-
-const appointmentData = ref<AppointmentType[]>(generateMockAppointments(props.patient.uuid, 3))
+const props = withDefaults(defineProps<Props>(), { appointments: () => [] })
 </script>
+
 <template>
   <Card class="overflow-hidden rounded-lg">
     <CardHeader class="px-6 pb-2 pt-4">
@@ -20,35 +19,36 @@ const appointmentData = ref<AppointmentType[]>(generateMockAppointments(props.pa
       </CardTitle>
     </CardHeader>
     <CardContent class="px-6 pt-4">
-      <div class="flex flex-col gap-3">
+      <div v-if="props.appointments.length" class="flex flex-col gap-3">
         <div
-          v-for="single in appointmentData"
-          :key="single.uuid"
+          v-for="appt in props.appointments"
+          :key="appt.uuid"
           class="flex items-center gap-3 rounded-lg border p-3"
         >
           <div class="flex flex-col items-center min-w-[28px]">
             <span class="text-sm font-semibold leading-none">
-              {{ formatDateToString(single.date, 'dd') }}
+              {{ formatDateToString(appt.start_date, 'dd') }}
             </span>
             <span class="text-xs text-muted-foreground uppercase">
-              {{ formatDateToString(single.date, 'LLL') }}
+              {{ formatDateToString(appt.start_date, 'LLL') }}
             </span>
           </div>
           <div class="w-px h-8 bg-border shrink-0" />
           <div class="flex flex-col gap-1 flex-1 min-w-0">
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-sm font-medium truncate">{{ single.name }}</span>
+              <span class="text-sm font-medium truncate">{{ appt.name }}</span>
               <Badge variant="default" class="shrink-0 text-xs">
-                {{ getLabelFromAppointmentStatus(single.status) }}
+                {{ getLabelFromAppointmentStatus(appt.status) }}
               </Badge>
             </div>
             <span class="text-xs text-muted-foreground">
-              {{ formatDateToString(single.date, 'HH:mm') }} ·
-              {{ single.doctor.last_name ?? 'Brak danych' }}
+              {{ formatDateToString(appt.start_date, 'HH:mm') }} ·
+              {{ appt.doctor.last_name }}
             </span>
           </div>
         </div>
       </div>
+      <p v-else class="text-xs text-muted-foreground">Brak nadchodzących wizyt</p>
     </CardContent>
   </Card>
 </template>
