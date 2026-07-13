@@ -2,6 +2,7 @@
 import FullCalendar from '@fullcalendar/vue3'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import plLocale from '@fullcalendar/core/locales/pl'
 import type { AppointmentType } from '~/types'
 import {
   getLabelFromAppointmentStatus,
@@ -18,9 +19,10 @@ interface Props {
   date: Date
   showAxis?: boolean
   colorBy?: 'status' | 'patient'
+  view?: 'day' | 'week'
 }
 
-const props = withDefaults(defineProps<Props>(), { showAxis: false, colorBy: 'status' })
+const props = withDefaults(defineProps<Props>(), { showAxis: false, colorBy: 'status', view: 'day' })
 const emit = defineEmits<{ appointmentClick: [uuid: string] }>()
 
 const { getColorFromString, getColorWithAlpha } = useColors()
@@ -36,7 +38,7 @@ const events = computed(() =>
 
 const calendarOptions = computed(() => ({
   plugins: [timeGridPlugin, interactionPlugin],
-  initialView: 'timeGridDay',
+  initialView: props.view === 'week' ? 'timeGridWeek' : 'timeGridDay',
   initialDate: props.date,
   headerToolbar: false,
   allDaySlot: false,
@@ -45,6 +47,7 @@ const calendarOptions = computed(() => ({
   slotDuration: '00:15:00',
   slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
   height: 'auto',
+  locale: plLocale,
   nowIndicator: true,
   eventBackgroundColor: 'transparent',
   eventBorderColor: 'transparent',
@@ -77,12 +80,15 @@ const calendarOptions = computed(() => ({
 </script>
 
 <template>
-  <div class="appt-day-cal" :class="{ 'appt-day-cal--no-axis': !showAxis }">
+  <div class="appt-day-cal" :class="{ 'appt-day-cal--no-axis': !showAxis, 'appt-day-cal--week': view === 'week' }">
     <div class="appt-day-cal__header">
       <div class="appt-day-cal__title">{{ title }}</div>
       <div v-if="subtitle" class="appt-day-cal__subtitle">{{ subtitle }}</div>
     </div>
-    <FullCalendar :key="date.toISOString()" :options="calendarOptions" />
+    <FullCalendar
+      :key="`${date.toISOString()}-${view}`"
+      :options="calendarOptions"
+    />
   </div>
 </template>
 
@@ -112,9 +118,26 @@ const calendarOptions = computed(() => ({
   display: none !important;
 }
 
-.appt-day-cal :deep(.fc-col-header),
-.appt-day-cal :deep(.fc-scrollgrid-section-header) {
+.appt-day-cal:not(.appt-day-cal--week) :deep(.fc-col-header),
+.appt-day-cal:not(.appt-day-cal--week) :deep(.fc-scrollgrid-section-header) {
   display: none;
+}
+
+.appt-day-cal--week :deep(.fc-col-header-cell) {
+  background: hsl(var(--secondary));
+}
+
+.appt-day-cal--week :deep(.fc-col-header-cell-cushion) {
+  color: hsl(var(--foreground));
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 4px;
+}
+
+.appt-day-cal :deep(.fc-theme-standard) {
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: transparent;
 }
 
 .appt-day-cal :deep(.fc-theme-standard td),
@@ -179,5 +202,9 @@ const calendarOptions = computed(() => ({
 .appt-day-cal :deep(.appt-event-card--patient) {
   background: var(--patient-color-bg);
   border-left-color: var(--patient-color);
+}
+
+.appt-day-cal--week :deep(.fc-timegrid-slot-lane) {
+  height: 2rem;
 }
 </style>
