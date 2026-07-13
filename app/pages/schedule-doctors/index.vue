@@ -57,7 +57,9 @@ function openAddDialog() {
 }
 
 function openEditDialog(uuid: string) {
-  const appointment = Object.values(schedule.value.appointments_by_doctor).flat().find((a) => a.uuid === uuid)
+  const appointment = Object.values(schedule.value.appointments_by_doctor)
+    .flat()
+    .find((a) => a.uuid === uuid)
   if (appointment) open(AppointmentDialog, { appointment })
 }
 </script>
@@ -96,7 +98,12 @@ function openEditDialog(uuid: string) {
         Wczytywanie terminarza...
       </div>
 
-      <DoctorsDayPlan v-else :schedule="schedule" :date="currentDate" @appointment-click="openEditDialog" />
+      <DoctorsDayPlan
+        v-else
+        :schedule="schedule"
+        :date="currentDate"
+        @appointment-click="openEditDialog"
+      />
     </div>
   </Card>
 </template>
