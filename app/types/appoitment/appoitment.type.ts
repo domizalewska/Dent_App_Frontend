@@ -20,4 +20,19 @@ export type AppointmentType = {
   status: AppointmentStatus
 }
 
-export type AppointmentPayload = Omit<AppointmentType, 'uuid' | 'doctor' | 'patient_name' | 'room'>
+export type DoctorsScheduleResponse = {
+  doctors: User[]
+  appointments_by_doctor: Record<string, AppointmentType[]>
+}
+
+export type AppointmentPayload = {
+  room_uuid: string
+  patient_uuid: string
+  doctor_uuid: string
+  name: string
+  treatment_uuid: string
+  description: string
+  start_date: string
+  end_date: string
+  status: AppointmentStatus
+}

@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/sidebar'
 import {
   Briefcase,
+  CalendarCheck,
   CalendarClock,
   CalendarDays,
   ChartColumnBig,
@@ -54,12 +55,17 @@ const data = {
     {
       title: 'Grafik pracowników',
       url: '/schedule',
-      icon: CalendarClock,
+      icon: CalendarCheck,
     },
     {
       title: 'Grafik wizyt',
       url: '/schedule-room',
       icon: CalendarDays,
+    },
+    {
+      title: 'Grafik lekarzy',
+      url: '/schedule-doctors',
+      icon: CalendarClock,
     },
     {
       title: 'Stanowiska',

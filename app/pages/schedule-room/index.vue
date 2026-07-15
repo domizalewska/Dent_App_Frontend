@@ -42,15 +42,14 @@ function goToday() {
 
 const dateParam = computed(() => currentDate.value.toISOString().slice(0, 10))
 
-const { data: rooms } = useAPI<RoomType[]>(RoomsEndpoints.BASE, { key: roomsKey })
+const { data: rooms } = useAPI<RoomType[]>(RoomsEndpoints.BASE, {
+  key: roomsKey,
+  default: () => mockRooms,
+})
 const { data: appointments, pending } = useAPI<AppointmentType[]>('/appointment', {
   query: computed(() => ({ date: dateParam.value })),
+  default: () => mockScheduleAppointments,
 })
-
-const displayRooms = computed(() => (rooms.value?.length ? rooms.value : mockRooms))
-const displayAppointments = computed(() =>
-  appointments.value?.length ? appointments.value : mockScheduleAppointments,
-)
 
 const { open, close, activeComponent, activeProps } = useDialog()
 
@@ -68,23 +67,23 @@ function openEditDialog(uuid: string) {
   <Card class="h-full overflow-hidden">
     <div class="flex items-center justify-between px-4 py-3 border-b border-border">
       <div class="flex items-center gap-4">
-      <div class="flex items-center gap-2">
-        <Button variant="outline" size="icon" aria-label="Poprzedni dzień" @click="goPrevDay">
-          <Icon icon="lucide:chevron-left" class="size-4" />
-        </Button>
+        <div class="flex items-center gap-2">
+          <Button variant="outline" size="icon" aria-label="Poprzedni dzień" @click="goPrevDay">
+            <Icon icon="lucide:chevron-left" class="size-4" />
+          </Button>
 
-        <Button variant="outline" @click="goToday">Dziś</Button>
+          <Button variant="outline" @click="goToday">Dziś</Button>
 
-        <span class="min-w-[130px] text-center text-sm font-medium">
-          {{ formatDateToString(currentDate, 'd MMMM yyyy') }}
-        </span>
+          <span class="min-w-[130px] text-center text-sm font-medium">
+            {{ formatDateToString(currentDate, 'd MMMM yyyy') }}
+          </span>
 
-        <Button variant="outline" size="icon" aria-label="Następny dzień" @click="goNextDay">
-          <Icon icon="lucide:chevron-right" class="size-4" />
-        </Button>
-      </div>
+          <Button variant="outline" size="icon" aria-label="Następny dzień" @click="goNextDay">
+            <Icon icon="lucide:chevron-right" class="size-4" />
+          </Button>
+        </div>
 
-      <AppointmentLegend />
+        <AppointmentLegend />
       </div>
 
       <Button @click="openAddDialog">
@@ -101,9 +100,9 @@ function openEditDialog(uuid: string) {
       </div>
 
       <RoomPlanCalendar
-        v-else-if="displayRooms.length"
-        :rooms="displayRooms"
-        :appointments="displayAppointments"
+        v-else-if="rooms.length"
+        :rooms="rooms"
+        :appointments="appointments"
         :date="currentDate"
         @event-click="openEditDialog"
       />

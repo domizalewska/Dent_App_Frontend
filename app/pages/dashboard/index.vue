@@ -2,11 +2,11 @@
 import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
 import { ActivityIcon, CalendarIcon, StethoscopeIcon } from 'lucide-vue-next'
-import { formatDateToString } from '~/utils/formatDate'
 import { useAPI } from '~/composables/useAPI'
 import type { AppointmentType, User } from '~/types'
 import { AppointmentsEndpoints, appointmentsTodayKey } from '~/features/appointments'
 import { TeamActivityEndpoints, teamActivityKey } from '~/features/team-activity'
+import { mockTodayAppointments } from '~/mock/appointments/mockTodayAppointments'
 
 definePageMeta({
   layout: 'dashboard',
@@ -19,20 +19,13 @@ set([{ name: 'Pulpit', link: '/dashboard' }])
 resetHeader()
 setHeader('Pulpit')
 
-const { data: todayData, status } = await useAPI<AppointmentType[]>(AppointmentsEndpoints.TODAY, {
-  key: appointmentsTodayKey,
-  server: false,
-})
-
-const appointments = computed(() =>
-  (todayData.value ?? []).map((appt) => ({
-    id: appt.uuid,
-    time: formatDateToString(appt.start_date, 'HH:mm'),
-    patientName: `${appt.patient.first_name} ${appt.patient.last_name}`,
-    procedure: appt.treatment.name,
-    doctorName: `${appt.doctor.first_name} ${appt.doctor.last_name}`,
-    room: appt.room.name,
-  })),
+const { data: appointments, status } = await useAPI<AppointmentType[]>(
+  AppointmentsEndpoints.TODAY,
+  {
+    key: appointmentsTodayKey,
+    server: false,
+    default: () => mockTodayAppointments,
+  },
 )
 
 const { data: teamData, status: teamStatus } = await useAPI<User[]>(TeamActivityEndpoints.TODAY, {

@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import { Clock } from 'lucide-vue-next'
-import { ref } from 'vue'
 import type { AppointmentType, PatientType } from '~/types'
-import { getLastAppointment } from '~/mock/appointments/mockAppointments'
 import { formatDateToString } from '~/utils/formatDate'
 
 interface Props {
   patient: PatientType
+  lastAppointment?: AppointmentType
 }
 
-const props = defineProps<Props>()
-
-const lastAppointment = ref<AppointmentType | undefined>(getLastAppointment(props.patient.uuid))
+defineProps<Props>()
 </script>
 
 <template>
@@ -27,7 +24,7 @@ const lastAppointment = ref<AppointmentType | undefined>(getLastAppointment(prop
         <div class="flex flex-col gap-0.5">
           <span class="text-sm font-medium">{{ lastAppointment.name }}</span>
           <span class="text-xs text-muted-foreground">
-            {{ formatDateToString(lastAppointment.date, 'dd MMMM yyyy, HH:mm') }}
+            {{ formatDateToString(lastAppointment.start_date, 'dd MMMM yyyy, HH:mm') }}
           </span>
           <span class="text-xs text-muted-foreground">
             {{ lastAppointment.doctor.first_name }} {{ lastAppointment.doctor.last_name }}

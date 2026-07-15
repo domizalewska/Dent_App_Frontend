@@ -35,13 +35,21 @@ function openEditDialog() {
         <div>
           <div class="text-sm font-medium text-foreground">{{ fullName }}</div>
           <div class="text-xs text-muted-foreground">
-            <template v-if="props.author.job_position">{{ props.author.job_position.name }} · </template>
+            <template v-if="props.author.job_position"
+              >{{ props.author.job_position.name }} ·
+            </template>
             opublikowano {{ publishedLabel }}
           </div>
         </div>
       </div>
 
-      <Button variant="ghost" size="icon" class="size-7" aria-label="Więcej opcji" @click="openEditDialog">
+      <Button
+        variant="ghost"
+        size="icon"
+        class="size-7"
+        aria-label="Więcej opcji"
+        @click="openEditDialog"
+      >
         <Icon icon="lucide:more-horizontal" class="size-4" />
       </Button>
     </div>
