@@ -5,10 +5,10 @@ import interactionPlugin from '@fullcalendar/interaction'
 import plLocale from '@fullcalendar/core/locales/pl'
 import type { AppointmentType } from '~/types'
 import {
-  getLabelFromAppointmentStatus,
   getBadgeClassFromAppointmentStatus,
-  getBorderClassFromAppointmentStatus,
   getBgClassFromAppointmentStatus,
+  getBorderClassFromAppointmentStatus,
+  getLabelFromAppointmentStatus,
 } from '~/composables/appointments/useAppointmentStatusMeta'
 import { useColors } from '~/composables/colors/useColors'
 
@@ -42,8 +42,8 @@ const calendarOptions = computed(() => ({
   initialDate: props.date,
   headerToolbar: false,
   allDaySlot: false,
-  slotMinTime: '08:00:00',
-  slotMaxTime: '18:00:00',
+  slotMinTime: '06:00:00',
+  slotMaxTime: '22:00:00',
   slotDuration: '00:15:00',
   slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
   height: 'auto',
