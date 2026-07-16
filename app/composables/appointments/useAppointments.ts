@@ -49,6 +49,6 @@ export function useAppointments() {
   return {
     addAppointment,
     editAppointment,
-    deleteRecord
+    deleteRecord,
   }
 }
