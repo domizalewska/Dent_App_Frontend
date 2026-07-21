@@ -42,60 +42,47 @@ const mockUsers = [
   },
 ]
 
-export const mockGroupMessages: MessageType[] = [
-  {
-    uuid: 'msg-001',
-    user_uuid: 'user-001',
-    recipient_user_uuid: 'user-002',
-    message_group_uuid: 'group-001',
-    message: 'Cześć, mamy problem z gabinetem 2',
-    created_at: '2026-07-21T09:00:00Z',
-    user: mockUsers[0],
-  },
-  {
-    uuid: 'msg-002',
-    user_uuid: 'user-002',
-    recipient_user_uuid: 'user-001',
-    message_group_uuid: 'group-001',
-    message: 'Jaki problem?',
-    created_at: '2026-07-21T09:01:00Z',
-    user: mockUsers[1],
-  },
-  {
-    uuid: 'msg-003',
-    user_uuid: 'user-001',
-    recipient_user_uuid: 'user-002',
-    message_group_uuid: 'group-001',
-    message: 'Freza się zawiesiła, trzeba zrestartować',
-    created_at: '2026-07-21T09:02:00Z',
-    user: mockUsers[0],
-  },
-  {
-    uuid: 'msg-004',
-    user_uuid: 'user-002',
-    recipient_user_uuid: 'user-001',
-    message_group_uuid: 'group-001',
-    message: 'Ok, sprawdzę za chwilę',
-    created_at: '2026-07-21T09:03:00Z',
-    user: mockUsers[1],
-  },
-]
-
-export const mockMessageGroups: MessageGroupType[] = [
-  {
-    uuid: 'group-001',
-    name: 'Gabinet 2 — problem',
-    created_at: '2026-07-21T09:00:00Z',
-    users: [mockUsers[0], mockUsers[1]],
-    last_message: mockGroupMessages[3],
-    unread_count: 2,
-  },
-  {
-    uuid: 'group-002',
-    name: 'Zespół stomatologiczny',
-    created_at: '2026-07-20T14:00:00Z',
-    users: [mockUsers[0], mockUsers[1], mockUsers[2]],
-    last_message: {
+export const mockMessagesByGroup: Record<string, MessageType[]> = {
+  'group-001': [
+    {
+      uuid: 'msg-001',
+      user_uuid: 'user-001',
+      recipient_user_uuid: 'user-002',
+      message_group_uuid: 'group-001',
+      message: 'Cześć, mamy problem z gabinetem 2',
+      created_at: '2026-07-21T09:00:00Z',
+      user: mockUsers[0],
+    },
+    {
+      uuid: 'msg-002',
+      user_uuid: 'user-002',
+      recipient_user_uuid: 'user-001',
+      message_group_uuid: 'group-001',
+      message: 'Jaki problem?',
+      created_at: '2026-07-21T09:01:00Z',
+      user: mockUsers[1],
+    },
+    {
+      uuid: 'msg-003',
+      user_uuid: 'user-001',
+      recipient_user_uuid: 'user-002',
+      message_group_uuid: 'group-001',
+      message: 'Freza się zawiesiła, trzeba zrestartować',
+      created_at: '2026-07-21T09:02:00Z',
+      user: mockUsers[0],
+    },
+    {
+      uuid: 'msg-004',
+      user_uuid: 'user-002',
+      recipient_user_uuid: 'user-001',
+      message_group_uuid: 'group-001',
+      message: 'Ok, sprawdzę za chwilę',
+      created_at: '2026-07-21T09:03:00Z',
+      user: mockUsers[1],
+    },
+  ],
+  'group-002': [
+    {
       uuid: 'msg-010',
       user_uuid: 'user-003',
       recipient_user_uuid: 'user-001',
@@ -104,14 +91,9 @@ export const mockMessageGroups: MessageGroupType[] = [
       created_at: '2026-07-20T14:30:00Z',
       user: mockUsers[2],
     },
-    unread_count: 0,
-  },
-  {
-    uuid: 'group-003',
-    name: 'Marek Nowak',
-    created_at: '2026-07-19T11:00:00Z',
-    users: [mockUsers[1]],
-    last_message: {
+  ],
+  'group-003': [
+    {
       uuid: 'msg-020',
       user_uuid: 'user-002',
       recipient_user_uuid: 'user-001',
@@ -120,6 +102,32 @@ export const mockMessageGroups: MessageGroupType[] = [
       created_at: '2026-07-19T11:45:00Z',
       user: mockUsers[1],
     },
+  ],
+}
+
+export const mockMessageGroups: MessageGroupType[] = [
+  {
+    uuid: 'group-001',
+    name: 'Gabinet 2 — problem',
+    created_at: '2026-07-21T09:00:00Z',
+    users: [mockUsers[0], mockUsers[1]],
+    last_message: mockMessagesByGroup['group-001'][3],
+    unread_count: 2,
+  },
+  {
+    uuid: 'group-002',
+    name: 'Zespół stomatologiczny',
+    created_at: '2026-07-20T14:00:00Z',
+    users: [mockUsers[0], mockUsers[1], mockUsers[2]],
+    last_message: mockMessagesByGroup['group-002'][0],
+    unread_count: 0,
+  },
+  {
+    uuid: 'group-003',
+    name: 'Marek Nowak',
+    created_at: '2026-07-19T11:00:00Z',
+    users: [mockUsers[1]],
+    last_message: mockMessagesByGroup['group-003'][0],
     unread_count: 0,
   },
 ]

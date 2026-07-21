@@ -10,8 +10,8 @@ const props = defineProps<Props>()
 const emit = defineEmits<{ select: [group: MessageGroupType] }>()
 
 const { user: currentUser } = useAuth()
-const otherUser = computed(() =>
-  props.group.users.find((u) => u.uuid !== currentUser.value?.uuid) ?? props.group.users[0],
+const otherUser = computed(
+  () => props.group.users.find((u) => u.uuid !== currentUser.value?.uuid) ?? props.group.users[0],
 )
 </script>
 
@@ -33,7 +33,9 @@ const otherUser = computed(() =>
 
     <div class="flex flex-col min-w-0 flex-1 gap-0.5">
       <div class="flex items-center justify-between gap-2">
-        <span class="text-sm font-medium truncate">{{ otherUser?.first_name }} {{ otherUser?.last_name }}</span>
+        <span class="text-sm font-medium truncate"
+          >{{ otherUser?.first_name }} {{ otherUser?.last_name }}</span
+        >
         <span class="text-[11px] text-muted-foreground shrink-0">
           {{ group.last_message ? formatDateToString(group.last_message.created_at, 'HH:mm') : '' }}
         </span>

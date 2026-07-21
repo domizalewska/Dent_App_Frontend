@@ -1,5 +1,7 @@
 import type { JobPosition, TreatmentType } from '~/types'
 
+export type UserStatus = 'online' | 'away' | 'busy' | 'offline'
+
 export type User = {
   uuid: string
   first_name: string

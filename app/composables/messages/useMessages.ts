@@ -1,67 +1,48 @@
 import type { MessageGroupType, MessageType } from '~/types'
-import { MessageGroupsEndpoints, messageGroupsKey } from '~/features/messages'
+import { mockMessageGroups, mockMessagesByGroup } from '~/mock/messages/mockMessages'
 
-const groups = ref<MessageGroupType[]>([])
+const groups = ref<MessageGroupType[]>([...mockMessageGroups])
 const messages = ref<MessageType[]>([])
 const selectedGroup = ref<MessageGroupType | null>(null)
 const isLoadingMessages = ref(false)
 
 export function useMessages() {
-  const { $api, $echo } = useNuxtApp()
-  const api = $api as typeof $fetch
-
-  async function fetchGroups() {
-    const data = await api<MessageGroupType[]>(MessageGroupsEndpoints.BASE)
-    groups.value = data
+  function fetchGroups() {
+    groups.value = [...mockMessageGroups]
   }
 
-  async function fetchMessages() {
+  function fetchMessages() {
     if (!selectedGroup.value) return
     isLoadingMessages.value = true
-    try {
-      const data = await api<MessageType[]>(
-        MessageGroupsEndpoints.MESSAGES(selectedGroup.value.uuid),
-      )
-      messages.value = data
-    } finally {
-      isLoadingMessages.value = false
-    }
+    messages.value = [...(mockMessagesByGroup[selectedGroup.value.uuid] ?? [])]
+    isLoadingMessages.value = false
   }
 
-  async function sendMessage(text: string) {
+  function sendMessage(text: string) {
     if (!selectedGroup.value) return
-    await api(MessageGroupsEndpoints.MESSAGES(selectedGroup.value.uuid), {
-      method: 'POST',
-      body: { message: text },
-    })
+    const { user: currentUser } = useAuth()
+    if (!currentUser.value) return
+
+    const newMsg: MessageType = {
+      uuid: `msg-${Date.now()}`,
+      user_uuid: currentUser.value.uuid,
+      recipient_user_uuid: '',
+      message_group_uuid: selectedGroup.value.uuid,
+      message: text,
+      created_at: new Date().toISOString(),
+      user: currentUser.value,
+    }
+    messages.value.push(newMsg)
   }
 
-  async function selectGroup(group: MessageGroupType) {
-    if (selectedGroup.value?.uuid === group.uuid) return
-    stopListening()
+  function selectGroup(group: MessageGroupType) {
     selectedGroup.value = group
-    await fetchMessages()
-    startListening()
+    fetchMessages()
   }
 
   function clearGroup() {
-    stopListening()
     selectedGroup.value = null
     messages.value = []
-  }
-
-  function startListening() {
-    if (!selectedGroup.value || !$echo) return
-    $echo
-      .private(`message-group.${selectedGroup.value.uuid}`)
-      .listen('.MessageSent', (e: MessageType) => {
-        messages.value.push(e)
-      })
-  }
-
-  function stopListening() {
-    if (!selectedGroup.value || !$echo) return
-    $echo.leave(`message-group.${selectedGroup.value.uuid}`)
   }
 
   return {
@@ -70,6 +51,7 @@ export function useMessages() {
     selectedGroup,
     isLoadingMessages,
     fetchGroups,
+    fetchMessages,
     sendMessage,
     selectGroup,
     clearGroup,

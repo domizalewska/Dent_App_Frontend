@@ -23,7 +23,7 @@ const emit = defineEmits<{ select: [group: MessageGroupType] }>()
           :key="user.uuid"
           :user="user"
           size="size-7"
-          :class="index > 0 ? '-ml-2 ring-2 ring-background' : ''"
+          :class="index > 0 ? '-ml-2' : ''"
         />
       </div>
       <span
