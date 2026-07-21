@@ -7,14 +7,16 @@ export type MessageType = {
   message_group_uuid: string
   message: string
   created_at: string
-  user?: User
+  user: User
 }
 
 export type MessageGroupType = {
   uuid: string
   name: string
   created_at: string
-  users?: User[]
+  users: User[]
+  last_message?: MessageType
+  unread_count?: number
 }
 
 export type MessageGroupPayload = {

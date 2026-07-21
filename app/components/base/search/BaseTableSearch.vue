@@ -25,7 +25,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <ButtonGroup>
+  <ButtonGroup class="w-full">
     <Input
       v-model="searchText"
       v-bind="$attrs"
