@@ -18,7 +18,7 @@ const filtered = computed(() =>
 
 <template>
   <div class="w-[220px] shrink-0 border-r border-border flex flex-col">
-    <div class="p-3 border-b border-border">
+    <div class="px-3 py-3.5 border-b border-border">
       <Input v-model="search" placeholder="Szukaj..." class="h-8 text-xs" />
     </div>
 

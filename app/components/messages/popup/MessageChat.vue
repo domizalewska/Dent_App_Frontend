@@ -15,7 +15,7 @@ onMounted(() => selectGroup(props.group))
 
 <template>
   <Card
-    class="fixed bottom-4 right-4 w-[620px] h-[480px] flex flex-col shadow-2xl border border-border z-50 rounded-lg overflow-hidden"
+    class="fixed bottom-4 right-4 w-[620px] h-[480px] flex flex-col shadow-2xl border border-border z-50 rounded-lg overflow-hidden p-0 gap-0"
   >
     <div class="flex flex-1 min-h-0">
       <MessageChatUsersList :selected-uuid="selectedGroup?.uuid" @select="selectGroup" />
