@@ -12,6 +12,8 @@ const emit = defineEmits<{ close: [] }>()
 const { messages, privateMessages, isLoadingMessages, selectedGroup, selectGroup, selectUser } =
   useMessages()
 
+const showCreateGroup = ref(false)
+
 const displayMessages = computed(() =>
   selectedGroup.value ? messages.value : privateMessages.value,
 )
@@ -34,9 +36,12 @@ const displayMessages = computed(() =>
           :group="selectedGroup"
           :user="user"
           @close="emit('close')"
+          @create-group="showCreateGroup = true"
         />
         <MessageChatContent :messages="displayMessages" :is-loading="isLoadingMessages" />
       </div>
     </div>
   </Card>
+
+  <MessageCreateGroupDialog v-if="showCreateGroup" @close="showCreateGroup = false" />
 </template>

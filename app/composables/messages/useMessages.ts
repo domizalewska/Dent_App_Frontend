@@ -76,6 +76,19 @@ export function useMessages() {
     }
   }
 
+  async function createGroup(name: string, userUuids: string[]) {
+    try {
+      const response = await api<{ data: MessageGroupType }>(MessageGroupsEndpoints.BASE, {
+        method: 'POST',
+        body: { name, user_uuids: userUuids },
+      })
+      await fetchGroups()
+      await selectGroup(response.data)
+    } catch {
+      toast.error('Błąd tworzenia grupy', { style: toastErrorStyle })
+    }
+  }
+
   async function selectGroup(group: MessageGroupType) {
     selectedGroup.value = group
     selectedUser.value = null
@@ -106,6 +119,7 @@ export function useMessages() {
     fetchMessages,
     fetchPrivateMessages,
     sendMessage,
+    createGroup,
     selectGroup,
     selectUser,
     clearGroup,
