@@ -63,7 +63,8 @@ export default defineNuxtConfig({
       apiBase: process.env.BASE_URL || '/api',
       reverbKey: process.env.REVERB_APP_KEY || '',
       reverbHost: process.env.REVERB_HOST || 'localhost',
-      reverbPort: process.env.REVERB_PORT || '8080',
+      reverbPort: process.env.REVERB_PORT || '6001',
+      reverbScheme: process.env.REVERB_SCHEME || 'http',
     },
   },
 })

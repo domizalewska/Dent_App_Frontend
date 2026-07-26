@@ -6,14 +6,18 @@ export default defineNuxtPlugin(() => {
 
   window.Pusher = Pusher
 
+  const port = Number(config.public.reverbPort)
+  const tls = config.public.reverbScheme === 'https'
+
   const echo = new Echo({
     broadcaster: 'reverb',
     key: config.public.reverbKey,
     wsHost: config.public.reverbHost,
-    wsPort: Number(config.public.reverbPort),
-    wssPort: Number(config.public.reverbPort),
-    forceTLS: false,
-    enabledTransports: ['ws', 'wss'],
+    wsPort: tls ? 443 : port,
+    wssPort: tls ? port : 443,
+    forceTLS: tls,
+    enabledTransports: tls ? ['wss'] : ['ws'],
+    disableStats: true,
   })
 
   return {

@@ -1,13 +1,11 @@
-import { ref } from 'vue'
-
 interface Crumb {
   name: string
   link?: string
 }
 
-export const breadcrumbs = ref<Crumb[]>([])
-
 export function useBreadcrumbs() {
+  const breadcrumbs = useState<Crumb[]>('breadcrumbs', () => [])
+
   function set(items: Crumb[]) {
     breadcrumbs.value = items
   }

@@ -18,7 +18,7 @@ const newMessage = ref('')
 const scrollEl = ref<HTMLElement | null>(null)
 
 function isMine(msg: MessageType) {
-  return msg.user_uuid === currentUser.value?.uuid
+  return msg.sender?.uuid === currentUser.value?.uuid
 }
 
 watch(

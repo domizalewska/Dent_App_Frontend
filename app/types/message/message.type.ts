@@ -5,8 +5,8 @@ export type MessageType = {
   message_group_uuid?: string
   message: string
   created_at: string
-  sender: User
-  recipient: User
+  sender?: User
+  recipient?: User
 }
 
 export type MessageGroupType = {

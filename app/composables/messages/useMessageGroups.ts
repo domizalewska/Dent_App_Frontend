@@ -29,10 +29,10 @@ export function useMessageGroups() {
     if (!selectedGroup.value) return
     try {
       isLoadingMessages.value = true
-      const response = await api<MessageType[]>(
+      const response = await api<{ data: MessageType[] }>(
         MessageGroupsEndpoints.MESSAGES(selectedGroup.value.uuid),
       )
-      messages.value = response
+      messages.value = response.data
     } catch {
       toast.error('Błąd pobierania wiadomości', { style: toastErrorStyle })
     } finally {
