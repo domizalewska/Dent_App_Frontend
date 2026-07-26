@@ -14,6 +14,6 @@ const emit = defineEmits<{ select: [user: User] }>()
     class="w-full flex items-center gap-3 px-4 py-3 hover:bg-accent transition-colors text-left border-b border-border last:border-b-0"
     @click="emit('select', user)"
   >
-    <BaseUserAvatar :user="user" show-name />
+    <BaseUserAvatar :user="user" show-name show-status />
   </button>
 </template>

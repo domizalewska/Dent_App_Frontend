@@ -23,7 +23,7 @@ async function handleSelectUser(user: User) {
         <MessageCircleIcon />
       </Button>
     </PopoverTrigger>
-    <PopoverContent class="p-0 w-[400px]" align="end">
+    <PopoverContent class="p-0 w-[400px] shadow-2xl ring-1 ring-white/10" align="end">
       <MessageNotificationCard @select="handleSelect" @select-user="handleSelectUser" />
     </PopoverContent>
   </Popover>

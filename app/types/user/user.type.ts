@@ -6,6 +6,7 @@ export type User = {
   uuid: string
   first_name: string
   last_name: string
+  status?: UserStatus
   email: string
   pesel: string
   private_email?: string

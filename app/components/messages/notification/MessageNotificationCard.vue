@@ -26,12 +26,12 @@ onMounted(() => fetchGroups())
 
 <template>
   <div class="flex justify-between items-center p-4 border-b border-border">
-    <span class="font-semibold text-sm">Wiadomości</span>
+    <span class="font-semibold text-sm bg-card">Wiadomości</span>
   </div>
-  <div class="px-4 py-3 border-b border-border">
+  <div class="px-4 py-3 border-b border-border bg-background">
     <Input v-model="search" placeholder="Szukaj użytkownika..." class="h-9 text-sm" />
   </div>
-  <ScrollArea class="h-[360px]">
+  <ScrollArea class="h-[360px] bg-background rounded-b-lg">
     <template v-if="search">
       <MessageUserItem
         v-for="user in filteredUsers"

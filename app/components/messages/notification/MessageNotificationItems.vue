@@ -22,12 +22,14 @@ function getOtherUser(group: MessageGroupType) {
 </script>
 
 <template>
-  <MessagePrivateItem
-    v-if="isPrivate(props.group)"
-    :user="getOtherUser(props.group)"
-    :unread-count="props.group.unread_count"
-    :last-message="props.group.last_message"
-    @select="emit('select', props.group)"
-  />
-  <MessageGroupItem v-else :group="props.group" @select="emit('select', $event)" />
+  <div class="bg-background">
+    <MessagePrivateItem
+      v-if="isPrivate(props.group)"
+      :user="getOtherUser(props.group)"
+      :unread-count="props.group.unread_count"
+      :last-message="props.group.last_message"
+      @select="emit('select', props.group)"
+    />
+    <MessageGroupItem v-else :group="props.group" @select="emit('select', $event)" />
+  </div>
 </template>

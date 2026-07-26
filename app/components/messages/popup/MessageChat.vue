@@ -19,7 +19,7 @@ const displayMessages = computed(() =>
 
 <template>
   <Card
-    class="fixed bottom-4 right-4 w-[620px] h-[480px] flex flex-col shadow-2xl border border-border z-50 rounded-lg overflow-hidden p-0 gap-0"
+    class="fixed bottom-4 right-4 w-[620px] h-[480px] flex flex-col shadow-2xl ring-1 ring-white/20 bg-background border border-border z-50 rounded-lg overflow-hidden p-0 gap-0"
   >
     <div class="flex flex-1 min-h-0">
       <MessageChatUsersList

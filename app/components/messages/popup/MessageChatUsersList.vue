@@ -31,7 +31,7 @@ const filteredUsers = computed(() => {
 
 <template>
   <div class="w-[220px] shrink-0 border-r border-border flex flex-col">
-    <div class="px-3 py-3.5 border-b border-border">
+    <div class="px-3 py-3.5 border-b border-border bg-card">
       <Input v-model="search" placeholder="Szukaj..." class="h-8 text-xs" />
     </div>
 
@@ -65,7 +65,8 @@ const filteredUsers = computed(() => {
                 :key="user.uuid"
                 :user="user"
                 size="size-7"
-                :class="index > 0 ? '-ml-2 ring-2 ring-background' : ''"
+                class="ring-1 ring-background ring-offset-0"
+                :class="index > 0 ? '-ml-2' : ''"
               />
             </div>
             <span
