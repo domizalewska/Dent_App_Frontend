@@ -7,14 +7,27 @@ interface Props {
   group: MessageGroupType
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 const emit = defineEmits<{ select: [group: MessageGroupType] }>()
+
+const { user: currentUser } = useAuth()
+
+function isPrivate(group: MessageGroupType) {
+  return group.users.length <= 2
+}
+
+function getOtherUser(group: MessageGroupType) {
+  return group.users.find((u) => u.uuid !== currentUser.value?.uuid) ?? group.users[0]
+}
 </script>
 
 <template>
-  <component
-    :is="group.users.length <= 2 ? MessagePrivateItem : MessageGroupItem"
-    :group="group"
-    @select="emit('select', $event)"
+  <MessagePrivateItem
+    v-if="isPrivate(props.group)"
+    :user="getOtherUser(props.group)"
+    :unread-count="props.group.unread_count"
+    :last-message="props.group.last_message"
+    @select="emit('select', props.group)"
   />
+  <MessageGroupItem v-else :group="props.group" @select="emit('select', $event)" />
 </template>

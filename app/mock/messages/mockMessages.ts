@@ -51,7 +51,7 @@ export const mockMessagesByGroup: Record<string, MessageType[]> = {
       message_group_uuid: 'group-001',
       message: 'Cześć, mamy problem z gabinetem 2',
       created_at: '2026-07-21T09:00:00Z',
-      user: mockUsers[0],
+      sender: mockUsers[0],
     },
     {
       uuid: 'msg-002',
@@ -60,7 +60,7 @@ export const mockMessagesByGroup: Record<string, MessageType[]> = {
       message_group_uuid: 'group-001',
       message: 'Jaki problem?',
       created_at: '2026-07-21T09:01:00Z',
-      user: mockUsers[1],
+      sender: mockUsers[1],
     },
     {
       uuid: 'msg-003',
@@ -69,7 +69,7 @@ export const mockMessagesByGroup: Record<string, MessageType[]> = {
       message_group_uuid: 'group-001',
       message: 'Freza się zawiesiła, trzeba zrestartować',
       created_at: '2026-07-21T09:02:00Z',
-      user: mockUsers[0],
+      sender: mockUsers[0],
     },
     {
       uuid: 'msg-004',
@@ -78,7 +78,7 @@ export const mockMessagesByGroup: Record<string, MessageType[]> = {
       message_group_uuid: 'group-001',
       message: 'Ok, sprawdzę za chwilę',
       created_at: '2026-07-21T09:03:00Z',
-      user: mockUsers[1],
+      sender: mockUsers[1],
     },
   ],
   'group-002': [
@@ -89,7 +89,7 @@ export const mockMessagesByGroup: Record<string, MessageType[]> = {
       message_group_uuid: 'group-002',
       message: 'Jutro mamy naradę o 8:00',
       created_at: '2026-07-20T14:30:00Z',
-      user: mockUsers[2],
+      sender: mockUsers[2],
     },
   ],
   'group-003': [
@@ -100,7 +100,7 @@ export const mockMessagesByGroup: Record<string, MessageType[]> = {
       message_group_uuid: 'group-003',
       message: 'Dzięki za pomoc!',
       created_at: '2026-07-19T11:45:00Z',
-      user: mockUsers[1],
+      sender: mockUsers[1],
     },
   ],
 }

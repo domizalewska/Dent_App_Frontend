@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { XIcon } from 'lucide-vue-next'
-import type { MessageGroupType } from '~/types'
+import type { MessageGroupType, User } from '~/types'
 
 interface Props {
-  group: MessageGroupType
+  group?: MessageGroupType
+  user?: User
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<{ close: [] }>()
 
 const { user: currentUser } = useAuth()
-const isPrivate = computed(() => props.group.users.length <= 2)
+const isPrivate = computed(() => !!props.user || (props.group?.users.length ?? 0) <= 2)
 const otherUser = computed(
-  () => props.group.users.find((u) => u.uuid !== currentUser.value?.uuid) ?? props.group.users[0],
+  () =>
+    props.user ??
+    props.group?.users.find((u) => u.uuid !== currentUser.value?.uuid) ??
+    props.group?.users[0],
 )
 </script>
 
@@ -24,7 +28,7 @@ const otherUser = computed(
       </template>
       <div v-else class="flex items-center">
         <BaseUserAvatar
-          v-for="(user, index) in group.users.slice(0, 3)"
+          v-for="(user, index) in group?.users.slice(0, 3)"
           :key="user.uuid"
           :user="user"
           size="size-7"
@@ -35,10 +39,10 @@ const otherUser = computed(
 
     <div class="flex-1 min-w-0">
       <p class="text-sm font-semibold truncate">
-        {{ isPrivate ? `${otherUser?.first_name} ${otherUser?.last_name}` : group.name }}
+        {{ isPrivate ? `${otherUser?.first_name} ${otherUser?.last_name}` : group?.name }}
       </p>
       <p class="text-xs text-muted-foreground">
-        {{ isPrivate ? otherUser?.job_position?.name : `${group.users.length} uczestników` }}
+        {{ isPrivate ? otherUser?.job_position?.name : `${group?.users.length} uczestników` }}
       </p>
     </div>
 

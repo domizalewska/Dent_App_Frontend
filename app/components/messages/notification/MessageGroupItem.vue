@@ -43,7 +43,7 @@ const emit = defineEmits<{ select: [group: MessageGroupType] }>()
       </div>
       <span class="text-xs text-muted-foreground truncate">
         <span v-if="group.last_message" class="font-medium">
-          {{ group.last_message.user.first_name }}:
+          {{ group.last_message.sender.first_name }}:
         </span>
         {{ group.last_message?.message ?? 'Brak wiadomości' }}
       </span>

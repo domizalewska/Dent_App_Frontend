@@ -11,7 +11,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const { user: currentUser } = useAuth()
-const { sendMessage } = useMessages()
+const { sendMessage, selectedUser } = useMessages()
 
 const newMessage = ref('')
 const scrollEl = ref<HTMLElement | null>(null)
@@ -32,7 +32,7 @@ async function handleSend() {
   const text = newMessage.value.trim()
   if (!text) return
   newMessage.value = ''
-  await sendMessage(text)
+  await sendMessage(text, selectedUser.value?.uuid)
 }
 
 function handleKeyDown(e: KeyboardEvent) {
@@ -55,11 +55,16 @@ function handleKeyDown(e: KeyboardEvent) {
       class="flex items-end gap-2"
       :class="isMine(msg) ? 'flex-row-reverse' : 'flex-row'"
     >
-      <BaseUserAvatar v-if="!isMine(msg)" :user="msg.user" size="size-7" class="shrink-0 mb-0.5" />
+      <BaseUserAvatar
+        v-if="!isMine(msg)"
+        :user="msg.sender"
+        size="size-7"
+        class="shrink-0 mb-0.5"
+      />
 
       <div class="flex flex-col max-w-[70%]" :class="isMine(msg) ? 'items-end' : 'items-start'">
         <span v-if="!isMine(msg)" class="text-[11px] text-muted-foreground mb-0.5 px-1">
-          {{ msg.user.first_name }} {{ msg.user.last_name }}
+          {{ msg.sender.first_name }} {{ msg.sender.last_name }}
         </span>
 
         <div

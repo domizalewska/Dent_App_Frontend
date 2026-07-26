@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { MessageCircleIcon } from 'lucide-vue-next'
-import type { MessageGroupType } from '~/types'
+import type { MessageGroupType, User } from '~/types'
 
-const { selectedGroup, selectGroup, clearGroup } = useMessages()
+const { selectedGroup, selectedUser, selectGroup, selectUser, clearGroup } = useMessages()
 const popoverOpen = ref(false)
 
 async function handleSelect(group: MessageGroupType) {
   await selectGroup(group)
+  popoverOpen.value = false
+}
+
+async function handleSelectUser(user: User) {
+  await selectUser(user)
   popoverOpen.value = false
 }
 </script>
@@ -19,9 +24,14 @@ async function handleSelect(group: MessageGroupType) {
       </Button>
     </PopoverTrigger>
     <PopoverContent class="p-0 w-[400px]" align="end">
-      <MessageNotificationCard @select="handleSelect" />
+      <MessageNotificationCard @select="handleSelect" @select-user="handleSelectUser" />
     </PopoverContent>
   </Popover>
 
-  <MessageChat v-if="selectedGroup" :group="selectedGroup" @close="clearGroup" />
+  <MessageChat
+    v-if="selectedGroup || selectedUser"
+    :group="selectedGroup"
+    :user="selectedUser"
+    @close="clearGroup"
+  />
 </template>

@@ -18,6 +18,7 @@ export type User = {
   created_at: string
   updated_at: string
   profile_picture?: string
+  avatar_path?: string
   background_picture?: string
   job_position?: JobPosition
   pwz_number?: string
