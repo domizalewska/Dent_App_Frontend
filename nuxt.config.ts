@@ -57,6 +57,17 @@ export default defineNuxtConfig({
   css: ['~/assets/css/tailwind.css', '~/assets/css/fullcalendar.css'],
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: [
+        '@fullcalendar/core',
+        '@fullcalendar/vue3',
+        '@fullcalendar/daygrid',
+        '@fullcalendar/timegrid',
+        '@fullcalendar/interaction',
+        '@fullcalendar/resource',
+        '@fullcalendar/resource-timegrid',
+      ],
+    },
   },
   runtimeConfig: {
     public: {
