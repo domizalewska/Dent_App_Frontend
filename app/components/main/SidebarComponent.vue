@@ -57,11 +57,11 @@ const data = {
       url: '/schedule',
       icon: CalendarCheck,
     },
-    {
-      title: 'Grafik wizyt',
-      url: '/schedule-room',
-      icon: CalendarDays,
-    },
+    // {
+    //   title: 'Grafik wizyt',
+    //   url: '/schedule-room',
+    //   icon: CalendarDays,
+    // },
     {
       title: 'Grafik lekarzy',
       url: '/schedule-doctors',
