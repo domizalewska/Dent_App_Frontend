@@ -5,39 +5,16 @@ import { UsersEndpoints } from '~/features/users'
 
 const emit = defineEmits<{ close: [] }>()
 
-const { createGroup } = useMessages()
-const { data } = useAPI<{ data: User[] }>(UsersEndpoints.LIST_SELECT)
+const { createGroup } = useMessageGroups()
 
 const name = ref('')
-const search = ref('')
-const selectedUsers = ref<User[]>([])
+const selectedUuids = ref<string[]>([])
 const isLoading = ref(false)
 
-const filteredUsers = computed(() => {
-  const s = search.value.toLowerCase()
-  return (data.value?.data ?? []).filter(
-    (u) =>
-      `${u.first_name} ${u.last_name}`.toLowerCase().includes(s) &&
-      !selectedUsers.value.some((su) => su.uuid === u.uuid),
-  )
-})
-
-function toggleUser(user: User) {
-  selectedUsers.value.push(user)
-  search.value = ''
-}
-
-function removeUser(uuid: string) {
-  selectedUsers.value = selectedUsers.value.filter((u) => u.uuid !== uuid)
-}
-
 async function submit() {
-  if (!name.value.trim() || selectedUsers.value.length === 0) return
+  if (!name.value.trim() || selectedUuids.value.length === 0) return
   isLoading.value = true
-  await createGroup(
-    name.value.trim(),
-    selectedUsers.value.map((u) => u.uuid),
-  )
+  await createGroup(name.value.trim(), selectedUuids.value)
   isLoading.value = false
   emit('close')
 }
@@ -54,47 +31,23 @@ async function submit() {
       </div>
 
       <div class="p-4 flex flex-col gap-3">
-        <Input v-model="name" placeholder="Nazwa grupy" class="h-8 text-sm" />
+        <Input v-model="name" placeholder="Nazwa grupy" class="h-9 text-sm rounded-xl" />
 
-        <div class="flex flex-col gap-1.5">
-          <Input v-model="search" placeholder="Szukaj uczestników..." class="h-8 text-sm" />
-
-          <div v-if="selectedUsers.length" class="flex flex-wrap gap-1.5 pt-1">
-            <span
-              v-for="user in selectedUsers"
-              :key="user.uuid"
-              class="flex items-center gap-1 bg-accent text-xs px-2 py-0.5 rounded-full"
-            >
-              {{ user.first_name }} {{ user.last_name }}
-              <button type="button" class="text-muted-foreground hover:text-foreground" @click="removeUser(user.uuid)">
-                <XIcon class="size-3" />
-              </button>
-            </span>
-          </div>
-
-          <div v-if="search" class="border border-border rounded-md overflow-hidden max-h-[180px] overflow-y-auto">
-            <button
-              v-for="user in filteredUsers"
-              :key="user.uuid"
-              type="button"
-              class="w-full flex items-center gap-2 px-3 py-2 hover:bg-accent text-left transition-colors"
-              @click="toggleUser(user)"
-            >
-              <BaseUserAvatar :user="user" size="size-6" />
-              <span class="text-sm">{{ user.first_name }} {{ user.last_name }}</span>
-            </button>
-            <p v-if="filteredUsers.length === 0" class="px-3 py-2 text-xs text-muted-foreground">
-              Brak wyników
-            </p>
-          </div>
-        </div>
+        <BaseMultiselect
+          v-model="selectedUuids"
+          :api="UsersEndpoints.LIST_SELECT"
+          :option-value="(u: User) => u.uuid"
+          :option-label="(u: User) => `${u.first_name} ${u.last_name}`"
+          :option-avatar="(u: User) => u.avatar_path ?? u.profile_picture"
+          placeholder="Dodaj uczestników..."
+        />
       </div>
 
       <div class="px-4 pb-4 flex justify-end gap-2">
         <Button variant="outline" size="sm" @click="emit('close')">Anuluj</Button>
         <Button
           size="sm"
-          :disabled="!name.trim() || selectedUsers.length === 0 || isLoading"
+          :disabled="!name.trim() || selectedUuids.length === 0 || isLoading"
           @click="submit"
         >
           Utwórz

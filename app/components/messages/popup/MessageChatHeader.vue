@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { XIcon, UserRoundPlusIcon } from 'lucide-vue-next'
+import { XIcon, UserRoundPlusIcon, Settings2Icon } from 'lucide-vue-next'
 import type { MessageGroupType, User } from '~/types'
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits<{ close: []; 'create-group': [] }>()
+const emit = defineEmits<{ close: []; 'create-group': []; 'group-settings': [] }>()
 
 const { user: currentUser } = useAuth()
 const isPrivate = computed(() => !!props.user || (props.group?.users.length ?? 0) <= 2)
@@ -47,8 +47,23 @@ const otherUser = computed(
       </p>
     </div>
 
-    <Button variant="ghost" size="icon" class="shrink-0 size-8" @click="emit('create-group')">
+    <Button
+      v-if="isPrivate"
+      variant="ghost"
+      size="icon"
+      class="shrink-0 size-8"
+      @click="emit('create-group')"
+    >
       <UserRoundPlusIcon class="size-4" />
+    </Button>
+    <Button
+      v-else
+      variant="ghost"
+      size="icon"
+      class="shrink-0 size-8"
+      @click="emit('group-settings')"
+    >
+      <Settings2Icon class="size-4" />
     </Button>
     <Button variant="ghost" size="icon" class="shrink-0 size-8" @click="emit('close')">
       <XIcon class="size-4" />

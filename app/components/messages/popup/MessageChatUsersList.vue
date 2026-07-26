@@ -13,7 +13,7 @@ const emit = defineEmits<{
   'select-user': [user: User]
 }>()
 
-const { groups } = useMessages()
+const { groups } = useMessageGroups()
 const { data } = useAPI<{ data: User[] }>(UsersEndpoints.LIST_SELECT)
 const search = ref('')
 

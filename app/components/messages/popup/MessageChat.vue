@@ -9,10 +9,11 @@ interface Props {
 defineProps<Props>()
 const emit = defineEmits<{ close: [] }>()
 
-const { messages, privateMessages, isLoadingMessages, selectedGroup, selectGroup, selectUser } =
-  useMessages()
+const { messages, isLoadingMessages, selectedGroup, selectGroup } = useMessageGroups()
+const { privateMessages, selectedUser, selectUser } = useMessages()
 
 const showCreateGroup = ref(false)
+const showGroupSettings = ref(false)
 
 const displayMessages = computed(() =>
   selectedGroup.value ? messages.value : privateMessages.value,
@@ -37,6 +38,7 @@ const displayMessages = computed(() =>
           :user="user"
           @close="emit('close')"
           @create-group="showCreateGroup = true"
+          @group-settings="showGroupSettings = true"
         />
         <MessageChatContent :messages="displayMessages" :is-loading="isLoadingMessages" />
       </div>
@@ -44,4 +46,5 @@ const displayMessages = computed(() =>
   </Card>
 
   <MessageCreateGroupDialog v-if="showCreateGroup" @close="showCreateGroup = false" />
+  <MessageGroupSettingsDialog v-if="showGroupSettings" @close="showGroupSettings = false" />
 </template>

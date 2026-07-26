@@ -11,7 +11,8 @@ interface Props {
 const props = defineProps<Props>()
 
 const { user: currentUser } = useAuth()
-const { sendMessage, selectedUser } = useMessages()
+const { sendGroupMessage, selectedGroup } = useMessageGroups()
+const { sendPrivateMessage, selectedUser } = useMessages()
 
 const newMessage = ref('')
 const scrollEl = ref<HTMLElement | null>(null)
@@ -32,7 +33,11 @@ async function handleSend() {
   const text = newMessage.value.trim()
   if (!text) return
   newMessage.value = ''
-  await sendMessage(text, selectedUser.value?.uuid)
+  if (selectedGroup.value) {
+    await sendGroupMessage(text)
+  } else if (selectedUser.value) {
+    await sendPrivateMessage(text, selectedUser.value.uuid)
+  }
 }
 
 function handleKeyDown(e: KeyboardEvent) {
@@ -56,14 +61,17 @@ function handleKeyDown(e: KeyboardEvent) {
       :class="isMine(msg) ? 'flex-row-reverse' : 'flex-row'"
     >
       <BaseUserAvatar
-        v-if="!isMine(msg)"
+        v-if="!isMine(msg) && msg.sender"
         :user="msg.sender"
         size="size-7"
         class="shrink-0 mb-0.5"
       />
 
       <div class="flex flex-col max-w-[70%]" :class="isMine(msg) ? 'items-end' : 'items-start'">
-        <span v-if="!isMine(msg)" class="text-[11px] text-muted-foreground mb-0.5 px-1">
+        <span
+          v-if="!isMine(msg) && msg.sender"
+          class="text-[11px] text-muted-foreground mb-0.5 px-1"
+        >
           {{ msg.sender.first_name }} {{ msg.sender.last_name }}
         </span>
 

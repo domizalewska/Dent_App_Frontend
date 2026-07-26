@@ -1,46 +1,15 @@
 import { toast } from 'vue-sonner'
-import type { MessageGroupType, MessageType, User } from '~/types'
+import type { MessageType, User } from '~/types'
 import { MessagesEndpoints, MessageGroupsEndpoints } from '~/features/messages/messages.endpoints'
 import { toastErrorStyle } from '~/utils/toast'
 
-const groups = ref<MessageGroupType[]>([])
-const messages = ref<MessageType[]>([])
 const privateMessages = ref<MessageType[]>([])
-const selectedGroup = ref<MessageGroupType | null>(null)
 const selectedUser = ref<User | null>(null)
 const isLoadingMessages = ref(false)
-const isLoadingGroups = ref(false)
 
 export function useMessages() {
   const { $api } = useNuxtApp()
   const api = $api as typeof $fetch
-
-  async function fetchGroups() {
-    try {
-      isLoadingGroups.value = true
-      const response = await api<{ data: MessageGroupType[] }>(MessageGroupsEndpoints.BASE)
-      groups.value = response.data
-    } catch {
-      toast.error('Błąd pobierania grup', { style: toastErrorStyle })
-    } finally {
-      isLoadingGroups.value = false
-    }
-  }
-
-  async function fetchMessages() {
-    if (!selectedGroup.value) return
-    try {
-      isLoadingMessages.value = true
-      const response = await api<MessageType[]>(
-        MessageGroupsEndpoints.MESSAGES(selectedGroup.value.uuid),
-      )
-      messages.value = response
-    } catch {
-      toast.error('Błąd pobierania wiadomości', { style: toastErrorStyle })
-    } finally {
-      isLoadingMessages.value = false
-    }
-  }
 
   async function fetchPrivateMessages() {
     try {
@@ -54,74 +23,35 @@ export function useMessages() {
     }
   }
 
-  async function sendMessage(message: string, recipientUuid?: string) {
-    if (!recipientUuid && !selectedGroup.value) return
+  async function sendPrivateMessage(message: string, recipientUuid: string) {
     try {
       await api(MessagesEndpoints.BASE, {
         method: 'POST',
-        body: {
-          message,
-          ...(recipientUuid
-            ? { recipient_uuid: recipientUuid }
-            : { message_group_uuid: selectedGroup.value!.uuid }),
-        },
+        body: { message, recipient_uuid: recipientUuid },
       })
-      if (recipientUuid) {
-        await fetchPrivateMessages()
-      } else {
-        await fetchMessages()
-      }
+      await fetchPrivateMessages()
     } catch {
       toast.error('Błąd wysyłania wiadomości', { style: toastErrorStyle })
     }
   }
 
-  async function createGroup(name: string, userUuids: string[]) {
-    try {
-      const response = await api<{ data: MessageGroupType }>(MessageGroupsEndpoints.BASE, {
-        method: 'POST',
-        body: { name, user_uuids: userUuids },
-      })
-      await fetchGroups()
-      await selectGroup(response.data)
-    } catch {
-      toast.error('Błąd tworzenia grupy', { style: toastErrorStyle })
-    }
-  }
-
-  async function selectGroup(group: MessageGroupType) {
-    selectedGroup.value = group
-    selectedUser.value = null
-    await fetchMessages()
-  }
-
   async function selectUser(user: User) {
     selectedUser.value = user
-    selectedGroup.value = null
     await fetchPrivateMessages()
   }
 
-  function clearGroup() {
-    selectedGroup.value = null
+  function clearUser() {
     selectedUser.value = null
-    messages.value = []
+    privateMessages.value = []
   }
 
   return {
-    groups,
-    messages,
     privateMessages,
-    selectedGroup,
     selectedUser,
     isLoadingMessages,
-    isLoadingGroups,
-    fetchGroups,
-    fetchMessages,
     fetchPrivateMessages,
-    sendMessage,
-    createGroup,
-    selectGroup,
+    sendPrivateMessage,
     selectUser,
-    clearGroup,
+    clearUser,
   }
 }

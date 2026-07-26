@@ -2,7 +2,8 @@
 import { MessageCircleIcon } from 'lucide-vue-next'
 import type { MessageGroupType, User } from '~/types'
 
-const { selectedGroup, selectedUser, selectGroup, selectUser, clearGroup } = useMessages()
+const { selectedGroup, selectGroup, clearGroup } = useMessageGroups()
+const { selectedUser, selectUser, clearUser } = useMessages()
 const popoverOpen = ref(false)
 
 async function handleSelect(group: MessageGroupType) {
@@ -32,6 +33,11 @@ async function handleSelectUser(user: User) {
     v-if="selectedGroup || selectedUser"
     :group="selectedGroup"
     :user="selectedUser"
-    @close="clearGroup"
+    @close="
+      () => {
+        clearGroup()
+        clearUser()
+      }
+    "
   />
 </template>
