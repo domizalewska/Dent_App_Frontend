@@ -113,7 +113,7 @@ const data = {
     <SidebarFooter>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton :tooltip="'Ustawienia'" @click="navigateTo('/settings')">
+          <SidebarMenuButton :tooltip="'Ustawienia'" @click="navigateTo('/settings/notifications')">
             <Settings2 />
             <span>Ustawienia</span>
           </SidebarMenuButton>
