@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserStatus } from '~/types'
+import { UserStatus } from '~/types'
 
 interface Props {
   status: UserStatus
@@ -8,10 +8,8 @@ interface Props {
 defineProps<Props>()
 
 const statusClass: Record<UserStatus, string> = {
-  online: 'bg-green-500',
-  away: 'bg-yellow-400',
-  busy: 'bg-red-500',
-  offline: 'bg-muted-foreground',
+  ACTIVE: 'bg-green-500',
+  NON_ACTIVE: 'bg-muted-foreground',
 }
 </script>
 

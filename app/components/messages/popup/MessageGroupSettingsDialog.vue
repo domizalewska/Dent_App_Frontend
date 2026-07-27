@@ -84,7 +84,7 @@ async function handleDelete() {
               :key="user.uuid"
               class="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-accent"
             >
-              <BaseUserAvatar :user="user" size="size-7" />
+              <BaseUserAvatar :user="user" size="size-7" show-status />
               <span class="text-sm flex-1 truncate"
                 >{{ user.first_name }} {{ user.last_name }}</span
               >

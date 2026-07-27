@@ -1,6 +1,9 @@
 import type { JobPosition, TreatmentType } from '~/types'
 
-export type UserStatus = 'online' | 'away' | 'busy' | 'offline'
+export enum UserStatus {
+  ACTIVE = 'ACTIVE',
+  NON_ACTIVE = 'NON_ACTIVE',
+}
 
 export type User = {
   uuid: string
