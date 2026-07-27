@@ -55,6 +55,9 @@ export default defineNuxtConfig({
     shim: false,
   },
   css: ['~/assets/css/tailwind.css', '~/assets/css/fullcalendar.css'],
+  build: {
+    transpile: ['@vuepic/vue-datepicker'],
+  },
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
@@ -66,6 +69,7 @@ export default defineNuxtConfig({
         '@fullcalendar/interaction',
         '@fullcalendar/resource',
         '@fullcalendar/resource-timegrid',
+        '@vuepic/vue-datepicker',
       ],
     },
   },

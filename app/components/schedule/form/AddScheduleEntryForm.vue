@@ -56,13 +56,13 @@ const schema = toTypedSchema(
     }),
 )
 
-const { handleSubmit, values, setFieldValue, errors } = useForm<ScheduleEntryFormValues>({
+const { handleSubmit, values, setFieldValue } = useForm<ScheduleEntryFormValues>({
   validationSchema: schema,
   initialValues: {
     kind: props.prefill?.kind ?? 'work',
     date: props.prefill?.date ?? '',
-    start_time: props.prefill?.start_time ?? '',
-    end_time: props.prefill?.end_time ?? '',
+    start_time: props.prefill?.start_time ?? undefined,
+    end_time: props.prefill?.end_time ?? undefined,
     date_from: props.prefill?.date_from ?? '',
     date_to: props.prefill?.date_to ?? '',
     notes: props.prefill?.notes ?? '',
@@ -125,60 +125,18 @@ const onSubmit = handleSubmit((vals) => {
 
     <div v-if="values.kind === 'work'" class="px-4 py-4 space-y-4">
       <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Termin</p>
-      <div class="space-y-1">
-        <Label>Data</Label>
-        <Input
-          type="date"
-          :value="values.date"
-          @change="(e: Event) => setFieldValue('date', (e.target as HTMLInputElement).value)"
-        />
-        <p v-if="errors.date" class="text-xs text-destructive">{{ errors.date }}</p>
-      </div>
+      <BaseDateTimeForm name="date" label="Data" type="date" />
       <div class="grid grid-cols-2 gap-4">
-        <div class="space-y-1">
-          <Label>Godzina rozpoczęcia</Label>
-          <Input
-            type="time"
-            :value="values.start_time"
-            @change="
-              (e: Event) => setFieldValue('start_time', (e.target as HTMLInputElement).value)
-            "
-          />
-          <p v-if="errors.start_time" class="text-xs text-destructive">{{ errors.start_time }}</p>
-        </div>
-        <div class="space-y-1">
-          <Label>Godzina zakończenia</Label>
-          <Input
-            type="time"
-            :value="values.end_time"
-            @change="(e: Event) => setFieldValue('end_time', (e.target as HTMLInputElement).value)"
-          />
-          <p v-if="errors.end_time" class="text-xs text-destructive">{{ errors.end_time }}</p>
-        </div>
+        <BaseTimePickerForm name="start_time" label="Godzina rozpoczęcia" />
+        <BaseTimePickerForm name="end_time" label="Godzina zakończenia" />
       </div>
     </div>
 
     <div v-else class="px-4 py-4 space-y-4">
       <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Okres</p>
       <div class="grid grid-cols-2 gap-4">
-        <div class="space-y-1">
-          <Label>Od</Label>
-          <Input
-            type="date"
-            :value="values.date_from"
-            @change="(e: Event) => setFieldValue('date_from', (e.target as HTMLInputElement).value)"
-          />
-          <p v-if="errors.date_from" class="text-xs text-destructive">{{ errors.date_from }}</p>
-        </div>
-        <div class="space-y-1">
-          <Label>Do</Label>
-          <Input
-            type="date"
-            :value="values.date_to"
-            @change="(e: Event) => setFieldValue('date_to', (e.target as HTMLInputElement).value)"
-          />
-          <p v-if="errors.date_to" class="text-xs text-destructive">{{ errors.date_to }}</p>
-        </div>
+        <BaseDateTimeForm name="date_from" label="Od" type="date" />
+        <BaseDateTimeForm name="date_to" label="Do" type="date" />
       </div>
     </div>
 
