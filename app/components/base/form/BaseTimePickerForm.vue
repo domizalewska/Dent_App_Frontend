@@ -86,7 +86,6 @@ function formatTime(value: TimeModel | null) {
       v-bind="$attrs"
       :model-value="timeModel"
       :format="formatTime"
-      locale="pl"
       auto-apply
       :time-picker="true"
       :time-picker-24-hour="true"
