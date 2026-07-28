@@ -1,45 +1,74 @@
 <script setup lang="ts">
-import { toRefs } from 'vue'
+import { toRefs, computed } from 'vue'
 import { useField } from 'vee-validate'
 import { VueDatePicker } from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+
+interface TimeModel {
+  hours: number
+  minutes: number
+  seconds: number
+  milliseconds: number
+}
 
 interface Props {
   name: string
   label?: string
   placeholder?: string
-  modelValue?: string | string[]
+  modelValue?: string
   requiredMark?: boolean
   hideLabel?: boolean
   rules?: string
   enableSeconds?: boolean
   enableMinutes?: boolean
   range?: boolean
-  modelType?: string
-  format?: string
   inputDisabled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   enableMinutes: true,
   enableSeconds: false,
-  placeholder: undefined,
-  modelValue: undefined,
-  label: undefined,
-  rules: undefined,
   range: false,
-  modelType: 'HH:mm:ss',
-  format: 'HH:mm',
 })
 
 const { rules, label: labelRef } = toRefs(props)
 
-const { value: fieldValue, errorMessage } = useField<string | string[]>(props.name, rules, {
+const { value: fieldValue, errorMessage } = useField<string>(props.name, rules, {
   syncVModel: true,
   validateOnValueUpdate: true,
   keepValueOnUnmount: true,
   label: labelRef,
 })
+
+const timeModel = computed<TimeModel | null>(() => {
+  if (!fieldValue.value) return null
+  const parts = fieldValue.value.split(':')
+  if (parts.length < 2) return null
+  return {
+    hours: parseInt(parts[0]) || 0,
+    minutes: parseInt(parts[1]) || 0,
+    seconds: parts[2] ? parseInt(parts[2]) || 0 : 0,
+    milliseconds: 0,
+  }
+})
+
+function onUpdate(value: TimeModel | null) {
+  if (!value) {
+    fieldValue.value = ''
+    return
+  }
+  const h = String(value.hours).padStart(2, '0')
+  const m = String(value.minutes).padStart(2, '0')
+  const s = String(value.seconds).padStart(2, '0')
+  fieldValue.value = `${h}:${m}:${s}`
+}
+
+function formatTime(value: TimeModel | null) {
+  if (!value || value.hours === undefined) return ''
+  const h = String(value.hours).padStart(2, '0')
+  const m = String(value.minutes).padStart(2, '0')
+  return `${h}:${m}`
+}
 </script>
 
 <template>
@@ -55,23 +84,22 @@ const { value: fieldValue, errorMessage } = useField<string | string[]>(props.na
     </slot>
     <VueDatePicker
       v-bind="$attrs"
-      v-model="fieldValue"
-      :model-type="modelType"
-      :format="format"
+      :model-value="timeModel"
+      :format="formatTime"
       locale="pl"
-      cancel-text="Anuluj"
-      select-text="Wybierz"
+      auto-apply
       :time-picker="true"
       :time-picker-24-hour="true"
       :range="range"
       :enable-seconds="enableSeconds"
       :enable-minutes="enableMinutes"
+      @update:model-value="onUpdate"
     >
       <template #dp-input="{ value: inputValue }">
         <Input
           :id="name"
           :value="inputValue"
-          :placeholder="placeholder"
+          :placeholder="placeholder ?? 'HH:mm'"
           :disabled="inputDisabled"
           :aria-invalid="!!errorMessage"
           class="rounded-xl cursor-pointer"
