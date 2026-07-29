@@ -20,6 +20,11 @@ export type User = {
   job_position?: JobPosition
   pwz_number?: string
   competencies: TreatmentType[]
+  street: string
+  house_number: string
+  apartment_number: string
+  postal_code: string
+  city: string
 }
 
 export type UserPayload = {

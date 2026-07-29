@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { BadgeCheck, Pencil, Phone, SquarePen, Trash2 } from 'lucide-vue-next'
+import ContactDialog from '~/components/profile/dialog/ContactDialog.vue'
 import type { User } from '~/types'
 
 interface Props {
@@ -11,6 +12,8 @@ const props = defineProps<Props>()
 const { uploadAvatar, deleteAvatar } = useUserPictures(props.user.uuid)
 
 const { open } = useFileSelect('image/*', uploadAvatar)
+
+const isEditOpen = ref(false)
 
 function handleAvatarAction() {
   if (props.user.profile_picture) {
@@ -52,7 +55,12 @@ function handleAvatarAction() {
           </p>
           <p v-else class="text-sm text-muted-foreground">Brak stanowiska</p>
         </div>
-        <Button variant="outline" size="sm" class="shrink-0 gap-1.5 text-xs">
+        <Button
+          variant="outline"
+          size="sm"
+          class="shrink-0 gap-1.5 text-xs"
+          @click="isEditOpen = true"
+        >
           <SquarePen class="size-3.5" />
           Edytuj
         </Button>
@@ -63,7 +71,10 @@ function handleAvatarAction() {
         PWZ: {{ user.pwz_number }}
       </div>
 
-      <div v-if="user.private_phone_number?.length" class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+      <div
+        v-if="user.private_phone_number?.length"
+        class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground"
+      >
         <span class="flex items-center gap-1.5">
           <Phone class="size-3.5" />
           {{ user.private_phone_number }}
@@ -71,4 +82,6 @@ function handleAvatarAction() {
       </div>
     </div>
   </div>
+
+  <ContactDialog v-model:open="isEditOpen" :user="user" />
 </template>

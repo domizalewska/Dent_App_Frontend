@@ -15,12 +15,23 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const emit = defineEmits<{
+  submitted: []
+  cancelled: []
+}>()
+
 const { editProfile } = useProfile(props.user.uuid)
 
 const formSchema = toTypedSchema(
   z.object({
     first_name: z.string().nonempty('Imię jest wymagane'),
     last_name: z.string().nonempty('Nazwisko jest wymagane'),
+    pesel: z.string().regex(/^\d{11}$/, 'PESEL musi mieć 11 cyfr'),
+    street: z.string().nonempty('Ulica jest wymagana'),
+    house_number: z.string().nonempty('Numer domu jest wymagany'),
+    apartment_number: z.string().optional(),
+    postal_code: z.string().regex(/^\d{2}-\d{3}$/, 'Format: NN-NNN'),
+    city: z.string().nonempty('Miejscowość jest wymagana'),
     email: z.string().email('Nieprawidłowy adres email'),
     private_email: z.string().email('Nieprawidłowy adres email').or(z.literal('')).optional(),
     phone_number: z.string().optional(),
@@ -34,6 +45,12 @@ const formSchema = toTypedSchema(
 const initialValues = {
   first_name: props.user.first_name,
   last_name: props.user.last_name,
+  pesel: props.user.pesel ?? '',
+  street: props.user.street ?? '',
+  house_number: props.user.house_number ?? '',
+  apartment_number: props.user.apartment_number ?? '',
+  postal_code: props.user.postal_code ?? '',
+  city: props.user.city ?? '',
   email: props.user.email,
   private_email: props.user.private_email ?? '',
   phone_number: props.user.phone_number,
@@ -45,6 +62,7 @@ const initialValues = {
 
 async function onSubmit(values: UserPayload) {
   await editProfile(values)
+  emit('submitted')
 }
 </script>
 
@@ -59,9 +77,22 @@ async function onSubmit(values: UserPayload) {
       <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         Dane podstawowe
       </p>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 mb-4">
         <BaseInputForm name="first_name" label="Imię" placeholder="Wpisz imię" />
         <BaseInputForm name="last_name" label="Nazwisko" placeholder="Wpisz nazwisko" />
+      </div>
+    </div>
+
+    <div class="px-4 py-4">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Adres</p>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-[2fr_1fr_1fr] mb-4">
+        <BaseInputForm name="street" label="Ulica" placeholder="Wpisz ulicę" />
+        <BaseInputForm name="house_number" label="Nr domu" placeholder="Nr domu" />
+        <BaseInputForm name="apartment_number" label="Nr mieszkania" placeholder="Nr mieszkania" />
+      </div>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_2fr]">
+        <BaseInputForm name="postal_code" label="Kod pocztowy" placeholder="NN-NNN" />
+        <BaseInputForm name="city" label="Miejscowość" placeholder="Wpisz miejscowość" />
       </div>
     </div>
 
@@ -124,7 +155,9 @@ async function onSubmit(values: UserPayload) {
     </div>
 
     <div class="flex items-center justify-end gap-3 px-4 py-3">
-      <Button variant="ghost" size="sm" type="reset" class="rounded-lg">Anuluj</Button>
+      <Button variant="ghost" size="sm" type="reset" class="rounded-lg" @click="emit('cancelled')">
+        Anuluj
+      </Button>
       <Button size="sm" type="submit" class="min-w-[140px] rounded-lg">Zapisz zmiany</Button>
     </div>
   </Form>

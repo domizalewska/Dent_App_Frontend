@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
 import type { User } from '~/types'
-import CalendarCard from '~/components/profile/card/CalendarCard.vue'
-import DocumentsCard from '~/components/profile/card/DocumentsCard.vue'
 import CompetenciesCard from '~/components/profile/card/CompetenciesCard.vue'
 import ProfileBackgroundPicture from '~/components/profile/header/ProfileBackgroundPicture.vue'
 
@@ -10,34 +7,13 @@ interface Props {
   user: User
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const tabs = [
-  {
-    name: 'Informacje',
-    value: 'info',
-    icon: 'solar:user-id-line-duotone',
-  },
-  {
-    name: 'Kompetencje',
-    value: 'competencies',
-    icon: 'solar:diploma-line-duotone',
-  },
-  {
-    name: 'Hasło',
-    value: 'password',
-    icon: 'material-symbols:shield-outline',
-  },
-  {
-    name: 'Dostępność',
-    value: 'available',
-    icon: 'solar:user-id-line-duotone',
-  },
-  {
-    name: 'Umowy',
-    value: 'documents',
-    icon: 'material-symbols:shield-outline',
-  },
+  { name: 'Dane podstawowe', value: 'info' },
+  { name: 'Kompetencje', value: 'competencies' },
+  { name: 'Archiwum wizyt', value: 'visits' },
+  { name: 'Hasło', value: 'password' },
 ]
 </script>
 
@@ -52,11 +28,10 @@ const tabs = [
         <TabsList class="w-full">
           <TabsTrigger
             v-for="tab in tabs"
-            :key="tab.name"
+            :key="tab.value"
             :value="tab.value"
-            class="flex items-center gap-1 px-2.5 sm:px-3"
+            class="px-2.5 sm:px-3"
           >
-            <Icon :icon="tab.icon" />
             {{ tab.name }}
           </TabsTrigger>
         </TabsList>
@@ -71,12 +46,6 @@ const tabs = [
     </TabsContent>
     <TabsContent value="password">
       <PasswordCard />
-    </TabsContent>
-    <TabsContent value="available">
-      <CalendarCard />
-    </TabsContent>
-    <TabsContent value="documents">
-      <DocumentsCard :user="user" />
     </TabsContent>
   </Tabs>
 </template>
