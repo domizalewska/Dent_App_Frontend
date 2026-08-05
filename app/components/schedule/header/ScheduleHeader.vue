@@ -17,7 +17,7 @@ const { open, close, activeProps, activeComponent } = useDialog()
 
 <template>
   <div
-    class="flex w-full flex-col gap-2 px-3 pb-5 pt-5 sm:flex-row sm:items-center sm:justify-between"
+    class="flex w-full flex-col gap-2 px-3 pb-4 pt-4 sm:flex-row sm:items-center sm:justify-between border-b"
   >
     <div class="flex items-center gap-1">
       <Button variant="outline" size="icon-xs" @click="emit('prev')">
