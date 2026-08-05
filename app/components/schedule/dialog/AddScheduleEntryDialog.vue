@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AddScheduleEntryForm from '~/components/schedule/form/AddScheduleEntryForm.vue'
+import { ScheduleEntryKind } from '~/types'
 import type { ScheduleEntry, ScheduleEntryFormValues, ScheduleEntryPayload } from '~/types'
 import { useSchedule } from '~/composables/schedule/useSchedule'
 
@@ -18,9 +19,9 @@ const isEdit = computed(() => !!props.entry)
 const prefillFromEntry = computed((): Partial<ScheduleEntryFormValues> | undefined => {
   if (!props.entry) return props.prefill
   const e = props.entry
-  if (e.kind === 'work') {
+  if (e.kind === ScheduleEntryKind.Work) {
     return {
-      kind: 'work',
+      kind: ScheduleEntryKind.Work,
       date: e.start.slice(0, 10),
       start_time: e.start.slice(11, 16),
       end_time: e.end.slice(11, 16),

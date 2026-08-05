@@ -1,4 +1,8 @@
-export type ScheduleEntryKind = 'work' | 'sick_leave' | 'vacation'
+export enum ScheduleEntryKind {
+  Work = 'work',
+  SickLeave = 'sick_leave',
+  Vacation = 'vacation',
+}
 
 export type ScheduleEntry = {
   uuid: string

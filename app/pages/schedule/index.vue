@@ -8,6 +8,7 @@ import type { EventClickArg, EventDropArg } from '@fullcalendar/core'
 import { useDialog } from '~/composables/useDialog.ts'
 import { useSchedule } from '~/composables/schedule/useSchedule'
 import AddScheduleEntryDialog from '~/components/schedule/dialog/AddScheduleEntryDialog.vue'
+import { ScheduleEntryKind } from '~/types'
 import type { ScheduleCalendarEvent, ScheduleEntryFormValues } from '~/types'
 
 definePageMeta({ layout: 'dashboard' })
@@ -30,7 +31,7 @@ const calendarEvents = computed(() =>
     id: e.uuid,
     start: e.start,
     end: e.end,
-    allDay: e.kind !== 'work',
+    allDay: e.kind !== ScheduleEntryKind.Work,
     extendedProps: { kind: e.kind, source: e },
     backgroundColor: 'transparent',
     borderColor: 'transparent',
@@ -98,13 +99,13 @@ const options = computed(() => ({
   select: (info: { startStr: string; endStr: string; allDay: boolean }) => {
     if (info.allDay) {
       openAdd({
-        kind: 'vacation',
+        kind: ScheduleEntryKind.Vacation,
         date_from: info.startStr,
         date_to: info.startStr,
       })
     } else {
       openAdd({
-        kind: 'work',
+        kind: ScheduleEntryKind.Work,
         date: info.startStr.slice(0, 10),
         start_time: info.startStr.slice(11, 16),
         end_time: info.endStr.slice(11, 16),

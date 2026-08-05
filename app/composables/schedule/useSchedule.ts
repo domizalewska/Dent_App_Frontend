@@ -1,33 +1,24 @@
 import { toast } from 'vue-sonner'
 import { ScheduleEndpoints } from '~/features/schedule'
+import { ScheduleEntryKind } from '~/types'
 import type { ScheduleEntry, ScheduleEntryPayload } from '~/types'
 import { toastSuccessStyle, toastErrorStyle } from '~/utils/toast'
 
 const mockEntries: ScheduleEntry[] = [
   {
     uuid: 'mock-1',
-    kind: 'work',
+    kind: ScheduleEntryKind.Work,
     start: '2026-07-28T08:00:00',
     end: '2026-07-28T16:00:00',
   },
   {
     uuid: 'mock-2',
-    kind: 'work',
+    kind: ScheduleEntryKind.Work,
     start: '2026-07-29T09:00:00',
     end: '2026-07-29T17:00:00',
   },
-  {
-    uuid: 'mock-3',
-    kind: 'vacation',
-    start: '2026-07-21',
-    end: '2026-07-26',
-  },
-  {
-    uuid: 'mock-4',
-    kind: 'sick_leave',
-    start: '2026-07-14',
-    end: '2026-07-16',
-  },
+  { uuid: 'mock-3', kind: ScheduleEntryKind.Vacation, start: '2026-07-21', end: '2026-07-26' },
+  { uuid: 'mock-4', kind: ScheduleEntryKind.SickLeave, start: '2026-07-14', end: '2026-07-16' },
 ]
 
 const entries = ref<ScheduleEntry[]>([...mockEntries])

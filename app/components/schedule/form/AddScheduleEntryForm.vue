@@ -3,7 +3,8 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { z } from 'zod'
 import { BriefcaseMedicalIcon, PalmtreeIcon, ThermometerIcon } from 'lucide-vue-next'
-import type { ScheduleEntryFormValues, ScheduleEntryKind, ScheduleEntryPayload } from '~/types'
+import { ScheduleEntryKind } from '~/types'
+import type { ScheduleEntryFormValues, ScheduleEntryPayload } from '~/types'
 
 interface Props {
   prefill?: Partial<ScheduleEntryFormValues>
@@ -13,15 +14,25 @@ const props = defineProps<Props>()
 const emit = defineEmits<{ submit: [payload: ScheduleEntryPayload] }>()
 
 const kindOptions: { value: ScheduleEntryKind; label: string; icon: Component; color: string }[] = [
-  { value: 'work', label: 'Praca', icon: BriefcaseMedicalIcon, color: 'text-indigo-500' },
-  { value: 'vacation', label: 'Urlop', icon: PalmtreeIcon, color: 'text-amber-500' },
-  { value: 'sick_leave', label: 'L4', icon: ThermometerIcon, color: 'text-red-500' },
+  {
+    value: ScheduleEntryKind.Work,
+    label: 'Praca',
+    icon: BriefcaseMedicalIcon,
+    color: 'text-indigo-500',
+  },
+  {
+    value: ScheduleEntryKind.Vacation,
+    label: 'Urlop',
+    icon: PalmtreeIcon,
+    color: 'text-amber-500',
+  },
+  { value: ScheduleEntryKind.SickLeave, label: 'L4', icon: ThermometerIcon, color: 'text-red-500' },
 ]
 
 const schema = toTypedSchema(
   z
     .object({
-      kind: z.enum(['work', 'sick_leave', 'vacation']),
+      kind: z.nativeEnum(ScheduleEntryKind),
       date: z.string().optional(),
       start_time: z.string().optional(),
       end_time: z.string().optional(),
@@ -30,7 +41,7 @@ const schema = toTypedSchema(
       notes: z.string().optional(),
     })
     .superRefine((data, ctx) => {
-      if (data.kind === 'work') {
+      if (data.kind === ScheduleEntryKind.Work) {
         if (!data.date) ctx.addIssue({ code: 'custom', message: 'Wymagane', path: ['date'] })
         if (!data.start_time)
           ctx.addIssue({ code: 'custom', message: 'Wymagane', path: ['start_time'] })
@@ -59,7 +70,7 @@ const schema = toTypedSchema(
 const { handleSubmit, values, setFieldValue } = useForm<ScheduleEntryFormValues>({
   validationSchema: schema,
   initialValues: {
-    kind: props.prefill?.kind ?? 'work',
+    kind: props.prefill?.kind ?? ScheduleEntryKind.Work,
     date: props.prefill?.date ?? '',
     start_time: props.prefill?.start_time ?? undefined,
     end_time: props.prefill?.end_time ?? undefined,
@@ -72,9 +83,9 @@ const { handleSubmit, values, setFieldValue } = useForm<ScheduleEntryFormValues>
 const onSubmit = handleSubmit((vals) => {
   let payload: ScheduleEntryPayload
 
-  if (vals.kind === 'work') {
+  if (vals.kind === ScheduleEntryKind.Work) {
     payload = {
-      kind: 'work',
+      kind: ScheduleEntryKind.Work,
       start: `${vals.date}T${vals.start_time}:00`,
       end: `${vals.date}T${vals.end_time}:00`,
       notes: vals.notes || undefined,
@@ -123,7 +134,7 @@ const onSubmit = handleSubmit((vals) => {
       </div>
     </div>
 
-    <div v-if="values.kind === 'work'" class="px-4 py-4 space-y-4">
+    <div v-if="values.kind === ScheduleEntryKind.Work" class="px-4 py-4 space-y-4">
       <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Termin</p>
       <BaseDateTimeForm name="date" label="Data" type="date" />
       <div class="grid grid-cols-2 gap-4">
