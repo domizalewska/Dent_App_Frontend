@@ -64,6 +64,18 @@ export function useSchedule() {
     }
   }
 
+  async function updateEntry(uuid: string, payload: ScheduleEntryPayload) {
+    const previous = [...entries.value]
+    entries.value = entries.value.map((e) => (e.uuid === uuid ? { ...payload, uuid } : e))
+    try {
+      await api(ScheduleEndpoints.DETAILS(uuid), { method: 'PUT', body: payload })
+      toast.success('Wpis został zaktualizowany', { style: toastSuccessStyle })
+    } catch {
+      entries.value = previous
+      toast.error('Błąd podczas aktualizacji', { style: toastErrorStyle })
+    }
+  }
+
   async function deleteEntry(uuid: string) {
     const previous = [...entries.value]
     entries.value = entries.value.filter((e) => e.uuid !== uuid)
@@ -76,5 +88,5 @@ export function useSchedule() {
     }
   }
 
-  return { entries, isLoading, fetchEntries, addEntry, deleteEntry }
+  return { entries, isLoading, fetchEntries, addEntry, updateEntry, deleteEntry }
 }

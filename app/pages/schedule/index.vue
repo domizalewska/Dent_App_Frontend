@@ -4,10 +4,11 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import plLocale from '@fullcalendar/core/locales/pl'
-import type { EventClickArg } from '@fullcalendar/core'
+import type { EventClickArg, EventDropArg } from '@fullcalendar/core'
 import { useDialog } from '~/composables/useDialog.ts'
 import { useSchedule } from '~/composables/schedule/useSchedule'
-import type { ScheduleEntryKind } from '~/types'
+import AddScheduleEntryDialog from '~/components/schedule/dialog/AddScheduleEntryDialog.vue'
+import type { ScheduleCalendarEvent, ScheduleEntryFormValues } from '~/types'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -19,34 +20,42 @@ resetHeader()
 setHeader('Grafik')
 
 const { open, close, activeProps, activeComponent } = useDialog()
-const { entries, deleteEntry } = useSchedule()
+const { entries, updateEntry } = useSchedule()
 
 const calendarTitle = ref('')
 const currentView = ref('timeGridWeek')
 
-const ENTRY_STYLES: Record<ScheduleEntryKind, { backgroundColor: string; borderColor: string }> = {
-  work: { backgroundColor: '#6366f1', borderColor: '#4f46e5' },
-  vacation: { backgroundColor: '#f59e0b', borderColor: '#d97706' },
-  sick_leave: { backgroundColor: '#ef4444', borderColor: '#dc2626' },
-}
-
 const calendarEvents = computed(() =>
   entries.value.map((e) => ({
     id: e.uuid,
-    title: e.kind === 'work' ? 'Praca' : e.kind === 'vacation' ? 'Urlop' : 'L4',
     start: e.start,
     end: e.end,
     allDay: e.kind !== 'work',
-    extendedProps: { kind: e.kind, notes: e.notes },
-    ...ENTRY_STYLES[e.kind],
+    extendedProps: { kind: e.kind, source: e },
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
   })),
 )
 
+function openAdd(prefill?: Partial<ScheduleEntryFormValues>) {
+  open(AddScheduleEntryDialog, prefill ? { prefill } : {})
+}
+
 function onEventClick(info: EventClickArg) {
-  const kind = info.event.extendedProps.kind as ScheduleEntryKind
-  if (confirm(`Usunąć wpis "${info.event.title}"?`)) {
-    deleteEntry(info.event.id)
-  }
+  const { id, extendedProps } = info.event
+  const { source } = extendedProps as ScheduleCalendarEvent['extendedProps']
+  open(AddScheduleEntryDialog, { entry: source })
+}
+
+function onEventDrop(info: EventDropArg) {
+  const { extendedProps } = info.event
+  const { source } = extendedProps as ScheduleCalendarEvent['extendedProps']
+  updateEntry(source.uuid, {
+    kind: source.kind,
+    start: info.event.startStr,
+    end: info.event.endStr,
+    notes: source.notes,
+  })
 }
 
 const calendarRef = ref()
@@ -72,7 +81,7 @@ const options = computed(() => ({
   initialView: 'timeGridWeek',
   locale: plLocale,
   allDaySlot: true,
-  editable: false,
+  editable: true,
   selectable: true,
   selectMirror: true,
   slotMinTime: '06:00:00',
@@ -103,6 +112,7 @@ const options = computed(() => ({
     }
   },
   eventClick: onEventClick,
+  eventDrop: onEventDrop,
   events: calendarEvents.value,
 }))
 </script>
@@ -124,7 +134,11 @@ const options = computed(() => ({
             @month="handleMonth"
           />
         </div>
-        <FullCalendar ref="calendarRef" :options="options" />
+        <FullCalendar ref="calendarRef" :options="options">
+          <template #eventContent="{ event, timeText }">
+            <ScheduleEventContent :entry="event.extendedProps.source" :time-text="timeText" />
+          </template>
+        </FullCalendar>
       </ClientOnly>
     </div>
   </div>

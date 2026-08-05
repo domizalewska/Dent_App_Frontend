@@ -11,6 +11,13 @@ export type ScheduleEntry = {
 
 export type ScheduleEntryPayload = Omit<ScheduleEntry, 'uuid'>
 
+export interface ScheduleCalendarEvent {
+  extendedProps: {
+    kind: ScheduleEntryKind
+    source: ScheduleEntry
+  }
+}
+
 export type ScheduleEntryFormValues = {
   kind: ScheduleEntryKind
   date?: string
