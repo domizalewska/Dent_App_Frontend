@@ -82,6 +82,7 @@ const options = computed(() => ({
   initialView: 'timeGridWeek',
   locale: plLocale,
   allDaySlot: true,
+  allDayText: '',
   editable: true,
   selectable: true,
   selectMirror: true,
