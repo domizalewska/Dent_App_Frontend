@@ -1,3 +1,19 @@
+export enum DayOfWeek {
+  Monday = 'monday',
+  Tuesday = 'tuesday',
+  Wednesday = 'wednesday',
+  Thursday = 'thursday',
+  Friday = 'friday',
+  Saturday = 'saturday',
+  Sunday = 'sunday',
+}
+
+export interface WorkScheduleRule {
+  day: DayOfWeek
+  start_time: string
+  end_time: string
+}
+
 export enum ScheduleEntryKind {
   Work = 'work',
   SickLeave = 'sick_leave',
