@@ -5,10 +5,9 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import plLocale from '@fullcalendar/core/locales/pl'
 import type { EventClickArg } from '@fullcalendar/core'
-import AddScheduleEntryDialog from '~/components/schedule/dialog/AddScheduleEntryDialog.vue'
 import { useDialog } from '~/composables/useDialog.ts'
 import { useSchedule } from '~/composables/schedule/useSchedule'
-import type { ScheduleEntryFormValues, ScheduleEntryKind } from '~/types'
+import type { ScheduleEntryKind } from '~/types'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -21,6 +20,9 @@ setHeader('Grafik')
 
 const { open, close, activeProps, activeComponent } = useDialog()
 const { entries, deleteEntry } = useSchedule()
+
+const calendarTitle = ref('')
+const currentView = ref('timeGridWeek')
 
 const ENTRY_STYLES: Record<ScheduleEntryKind, { backgroundColor: string; borderColor: string }> = {
   work: { backgroundColor: '#6366f1', borderColor: '#4f46e5' },
@@ -40,15 +42,29 @@ const calendarEvents = computed(() =>
   })),
 )
 
-function openAdd(prefill?: Partial<ScheduleEntryFormValues>) {
-  open(AddScheduleEntryDialog, prefill ? { prefill } : {})
-}
-
 function onEventClick(info: EventClickArg) {
   const kind = info.event.extendedProps.kind as ScheduleEntryKind
   if (confirm(`Usunąć wpis "${info.event.title}"?`)) {
     deleteEntry(info.event.id)
   }
+}
+
+const calendarRef = ref()
+
+function handlePrev() {
+  calendarRef.value.getApi().prev()
+}
+function handleNext() {
+  calendarRef.value.getApi().next()
+}
+function handleToday() {
+  calendarRef.value.getApi().today()
+}
+function handleWeek() {
+  calendarRef.value.getApi().changeView('timeGridWeek')
+}
+function handleMonth() {
+  calendarRef.value.getApi().changeView('dayGridMonth')
 }
 
 const options = computed(() => ({
@@ -65,17 +81,11 @@ const options = computed(() => ({
   slotLabelInterval: '01:00:00',
   dayHeaderFormat: { weekday: 'short', day: 'numeric' },
   slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
-  headerToolbar: {
-    left: 'prev today next',
-    center: 'title',
-    right: 'addEntry timeGridWeek dayGridMonth',
+  datesSet: (info: { view: { title: string; type: string } }) => {
+    calendarTitle.value = info.view.title
+    currentView.value = info.view.type
   },
-  customButtons: {
-    addEntry: {
-      text: '+ Dodaj wpis',
-      click: () => openAdd(),
-    },
-  },
+  headerToolbar: false,
   select: (info: { startStr: string; endStr: string; allDay: boolean }) => {
     if (info.allDay) {
       openAdd({
@@ -100,25 +110,21 @@ const options = computed(() => ({
 <template>
   <div class="flex flex-col gap-4 h-full">
     <component :is="activeComponent" v-bind="activeProps" @close="close" />
-
-    <div class="flex items-center gap-4 text-sm text-muted-foreground">
-      <div class="flex items-center gap-1.5">
-        <span class="size-3 rounded-sm bg-indigo-500 shrink-0" />
-        Praca
-      </div>
-      <div class="flex items-center gap-1.5">
-        <span class="size-3 rounded-sm bg-amber-500 shrink-0" />
-        Urlop
-      </div>
-      <div class="flex items-center gap-1.5">
-        <span class="size-3 rounded-sm bg-red-500 shrink-0" />
-        L4
-      </div>
-    </div>
-
+    <ScheduleLegend />
     <div class="fc-wrapper flex-1">
       <ClientOnly>
-        <FullCalendar :options="options" />
+        <div class="flex">
+          <ScheduleHeader
+            :current-title="calendarTitle"
+            :current-view="currentView"
+            @prev="handlePrev"
+            @next="handleNext"
+            @today="handleToday"
+            @week="handleWeek"
+            @month="handleMonth"
+          />
+        </div>
+        <FullCalendar ref="calendarRef" :options="options" />
       </ClientOnly>
     </div>
   </div>

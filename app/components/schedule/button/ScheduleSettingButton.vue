@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Settings, Repeat, Link2 } from 'lucide-vue-next'
+import { Link2, Repeat, Settings } from 'lucide-vue-next'
 
 const emit = defineEmits<{
   'open-pattern': []
@@ -10,7 +10,7 @@ const emit = defineEmits<{
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button variant="outline" size="icon" aria-label="Ustawienia grafiku">
+      <Button variant="outline" size="icon-xs" aria-label="Ustawienia grafiku">
         <Settings class="size-4" />
       </Button>
     </DropdownMenuTrigger>
