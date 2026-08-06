@@ -12,9 +12,12 @@ interface Props {
   requiredMark?: boolean
   hideLabel?: boolean
   rules?: string
+  size?: 'sm' | 'default'
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  size: 'default',
+})
 const { rules, label: labelRef } = toRefs(props)
 
 const { value, errorMessage } = useField<string>(props.name, rules, {
@@ -62,7 +65,7 @@ const calendarValue = computed<DateValue | undefined>({
           variant="outline"
           :aria-invalid="!!errorMessage"
           class="w-full justify-start rounded-xl font-normal"
-          :class="!calendarValue ? 'text-muted-foreground' : ''"
+          :class="[!calendarValue ? 'text-muted-foreground' : '', size === 'sm' ? 'h-8 text-xs' : '']"
         >
           <CalendarIcon class="size-4 shrink-0" />
           {{ calendarValue ? df.format(calendarValue.toDate('Europe/Warsaw')) : (placeholder ?? 'Wybierz datę') }}

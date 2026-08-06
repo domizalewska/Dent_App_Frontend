@@ -7,10 +7,12 @@ interface Props {
   label: string
   placeholder: string
   type?: string
+  size?: 'sm' | 'default'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'text',
+  size: 'default',
 })
 
 const { value, errorMessage } = useField<string>(() => props.name)
@@ -33,7 +35,7 @@ const inputType = computed(() => {
         :placeholder="placeholder"
         :type="inputType"
         :aria-invalid="!!errorMessage"
-        :class="['rounded-xl', 'placeholder:text-sm',{ 'pr-10': type === 'password' }]"
+        :class="['rounded-xl', 'placeholder:text-sm', { 'pr-10': type === 'password' }, { 'h-8 text-xs': size === 'sm' }]"
       />
       <Button
         v-if="type === 'password'"
