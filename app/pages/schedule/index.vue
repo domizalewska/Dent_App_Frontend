@@ -60,6 +60,15 @@ function onEventDrop(info: EventDropArg) {
 }
 
 const calendarRef = ref()
+const calendarWrapper = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  const observer = new ResizeObserver(() => {
+    calendarRef.value?.getApi()?.updateSize()
+  })
+  if (calendarWrapper.value) observer.observe(calendarWrapper.value)
+  onUnmounted(() => observer.disconnect())
+})
 
 function handlePrev() {
   calendarRef.value.getApi().prev()
@@ -123,7 +132,7 @@ const options = computed(() => ({
   <div class="flex flex-col gap-4 h-full">
     <component :is="activeComponent" v-bind="activeProps" @close="close" />
     <ScheduleLegend />
-    <div class="fc-wrapper flex-1">
+    <div ref="calendarWrapper" class="fc-wrapper flex-1">
       <ClientOnly>
         <div class="flex">
           <ScheduleHeader
