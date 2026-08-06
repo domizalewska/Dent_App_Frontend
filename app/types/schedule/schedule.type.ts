@@ -1,3 +1,24 @@
+import type { CalendarType } from '../calendar/calendar.type'
+
+export type ScheduleEvent = {
+  uuid: string
+  type: CalendarType
+  start: string
+  end: string
+  notes?: string
+  user_uuid?: string
+}
+export type ScheduleEventPayload = Omit<ScheduleEvent, 'uuid'>
+
+export interface ScheduleRule {
+  uuid: string
+  day: DayOfWeek
+  start_time: string
+  end_time: string
+}
+
+export type ScheduleRulePayload = Omit<ScheduleRule, 'uuid'>
+
 export enum DayOfWeek {
   Monday = 'monday',
   Tuesday = 'tuesday',
@@ -6,44 +27,4 @@ export enum DayOfWeek {
   Friday = 'friday',
   Saturday = 'saturday',
   Sunday = 'sunday',
-}
-
-export interface WorkScheduleRule {
-  day: DayOfWeek
-  start_time: string
-  end_time: string
-}
-
-export enum ScheduleEntryKind {
-  Work = 'work',
-  SickLeave = 'sick_leave',
-  Vacation = 'vacation',
-}
-
-export type ScheduleEntry = {
-  uuid: string
-  kind: ScheduleEntryKind
-  start: string
-  end: string
-  notes?: string
-  user_uuid?: string
-}
-
-export type ScheduleEntryPayload = Omit<ScheduleEntry, 'uuid'>
-
-export interface ScheduleCalendarEvent {
-  extendedProps: {
-    kind: ScheduleEntryKind
-    source: ScheduleEntry
-  }
-}
-
-export type ScheduleEntryFormValues = {
-  kind: ScheduleEntryKind
-  date?: string
-  start_time?: string
-  end_time?: string
-  date_from?: string
-  date_to?: string
-  notes?: string
 }
