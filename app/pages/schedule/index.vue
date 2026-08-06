@@ -10,7 +10,7 @@ import { useSchedule } from '~/composables/schedule/useSchedule'
 import { useDayOfWeek } from '~/composables/schedule/useDayOfWeek'
 import ScheduleEventDialog from '~/components/schedule/dialog/ScheduleEventDialog.vue'
 import type { ScheduleEvent, ScheduleRule } from '~/types'
-import { CalendarType } from '~/types'
+import { CalendarType, DayOfWeek } from '~/types'
 import { ScheduleRuleEndpoints, scheduleRulesKey } from '~/features/schedule'
 
 definePageMeta({ layout: 'dashboard' })
@@ -28,6 +28,13 @@ const { getDayNumber } = useDayOfWeek()
 
 const { data: rulesData } = useAPI<{ data: ScheduleRule[] }>(ScheduleRuleEndpoints.BASE, {
   key: scheduleRulesKey,
+  default: () => ({
+    data: [
+      { uuid: 'mock-rule-1', day: DayOfWeek.Monday, start_time: '08:00', end_time: '16:00' },
+      { uuid: 'mock-rule-2', day: DayOfWeek.Wednesday, start_time: '10:00', end_time: '18:00' },
+      { uuid: 'mock-rule-3', day: DayOfWeek.Friday, start_time: '09:00', end_time: '15:00' },
+    ] as ScheduleRule[],
+  }),
 })
 const rules = computed(() => rulesData.value?.data ?? [])
 
