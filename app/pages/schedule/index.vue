@@ -7,9 +7,9 @@ import plLocale from '@fullcalendar/core/locales/pl'
 import type { EventClickArg, EventDropArg } from '@fullcalendar/core'
 import { useDialog } from '~/composables/useDialog.ts'
 import { useSchedule } from '~/composables/schedule/useSchedule'
-import AddScheduleEntryDialog from '~/components/schedule/dialog/AddScheduleEntryDialog.vue'
-import { ScheduleEntryKind } from '~/types'
-import type { ScheduleCalendarEvent, ScheduleEntryFormValues } from '~/types'
+import ScheduleEventDialog from '~/components/schedule/dialog/ScheduleEventDialog.vue'
+import type { ScheduleEvent } from '~/types'
+import { CalendarType } from '~/types'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -21,41 +21,50 @@ resetHeader()
 setHeader('Grafik')
 
 const { open, close, activeProps, activeComponent } = useDialog()
-const { entries, updateEntry } = useSchedule()
+const { events, updateEvent } = useSchedule()
 
 const calendarTitle = ref('')
 const currentView = ref('timeGridWeek')
 
 const calendarEvents = computed(() =>
-  entries.value.map((e) => ({
-    id: e.uuid,
-    start: e.start,
-    end: e.end,
-    allDay: e.kind !== ScheduleEntryKind.Work,
-    extendedProps: { kind: e.kind, source: e },
-    backgroundColor: 'transparent',
-    borderColor: 'transparent',
-  })),
+  events.value.map((e) => {
+    const isWork = e.type === CalendarType.WORK
+    return {
+      id: e.uuid,
+      start: isWork ? `${e.date}T${e.start_time}` : e.date_from,
+      end: isWork ? `${e.date}T${e.end_time}` : e.date_to,
+      allDay: !isWork,
+      extendedProps: { source: e },
+      backgroundColor: 'transparent',
+      borderColor: 'transparent',
+    }
+  }),
 )
 
-function openAdd(prefill?: Partial<ScheduleEntryFormValues>) {
-  open(AddScheduleEntryDialog, prefill ? { prefill } : {})
+function openAdd() {
+  open(ScheduleEventDialog, {})
 }
 
 function onEventClick(info: EventClickArg) {
-  const { id, extendedProps } = info.event
-  const { source } = extendedProps as ScheduleCalendarEvent['extendedProps']
-  open(AddScheduleEntryDialog, { entry: source })
+  const { source } = info.event.extendedProps as { source: ScheduleEvent }
+  open(ScheduleEventDialog, { scheduleEvent: source })
 }
 
 function onEventDrop(info: EventDropArg) {
-  const { extendedProps } = info.event
-  const { source } = extendedProps as ScheduleCalendarEvent['extendedProps']
-  updateEntry(source.uuid, {
-    kind: source.kind,
-    start: info.event.startStr,
-    end: info.event.endStr,
-    notes: source.notes,
+  const { source } = info.event.extendedProps as { source: ScheduleEvent }
+  const isWork = source.type === CalendarType.WORK
+  updateEvent(source.uuid, {
+    ...source,
+    ...(isWork
+      ? {
+          date: info.event.startStr.slice(0, 10),
+          start_time: info.event.startStr.slice(11, 16),
+          end_time: info.event.endStr.slice(11, 16),
+        }
+      : {
+          date_from: info.event.startStr.slice(0, 10),
+          date_to: info.event.endStr.slice(0, 10),
+        }),
   })
 }
 
@@ -106,22 +115,7 @@ const options = computed(() => ({
     currentView.value = info.view.type
   },
   headerToolbar: false,
-  select: (info: { startStr: string; endStr: string; allDay: boolean }) => {
-    if (info.allDay) {
-      openAdd({
-        kind: ScheduleEntryKind.Vacation,
-        date_from: info.startStr,
-        date_to: info.startStr,
-      })
-    } else {
-      openAdd({
-        kind: ScheduleEntryKind.Work,
-        date: info.startStr.slice(0, 10),
-        start_time: info.startStr.slice(11, 16),
-        end_time: info.endStr.slice(11, 16),
-      })
-    }
-  },
+  select: openAdd,
   eventClick: onEventClick,
   eventDrop: onEventDrop,
   events: calendarEvents.value,

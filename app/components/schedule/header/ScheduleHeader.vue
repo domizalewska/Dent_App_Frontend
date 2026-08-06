@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
-import AddScheduleEntryDialog from '~/components/schedule/dialog/AddScheduleEntryDialog.vue'
+import ScheduleEventDialog from '~/components/schedule/dialog/ScheduleEventDialog.vue'
 import { useDialog } from '~/composables/useDialog'
 
 interface Props {
@@ -35,7 +35,7 @@ const { open, close, activeProps, activeComponent } = useDialog()
 
     <div class="flex flex-wrap items-center gap-1">
       <ScheduleSettingButton />
-      <Button size="xs" variant="outline" @click="open(AddScheduleEntryDialog, {})">
+      <Button size="xs" variant="outline" @click="open(ScheduleEventDialog, {})">
         + Dodaj wpis
       </Button>
       <Button

@@ -1,10 +1,13 @@
-import type { CalendarType } from '../calendar/calendar.type'
+import type { CalendarType } from '~/types'
 
 export type ScheduleEvent = {
   uuid: string
   type: CalendarType
-  start: string
-  end: string
+  date: string
+  start_time: string
+  end_time: string
+  date_from: string
+  date_to: string
   notes?: string
   user_uuid?: string
 }

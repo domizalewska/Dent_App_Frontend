@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { ScheduleEntry } from '~/types'
+import type { ScheduleEvent } from '~/types'
 
 interface Props {
-  entry: ScheduleEntry
+  entry: ScheduleEvent
   timeText: string
 }
 
 const props = defineProps<Props>()
-const { icon, label, className } = useScheduleEntryMeta(props.entry.kind)
+const { icon, label, className } = useScheduleEventMeta(props.entry.type)
 </script>
 
 <template>
