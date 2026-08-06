@@ -2,6 +2,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
 import ScheduleEventDialog from '~/components/schedule/dialog/ScheduleEventDialog.vue'
+import ScheduleSettings from '~/components/schedule/dialog/ScheduleSettings.vue'
 import { useDialog } from '~/composables/useDialog'
 
 interface Props {

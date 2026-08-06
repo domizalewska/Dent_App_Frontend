@@ -20,5 +20,18 @@ export function useDayOfWeek() {
     }
   }
 
-  return { getDayLabel }
+  function getDayNumber(day: DayOfWeek): number {
+    const map: Record<DayOfWeek, number> = {
+      [DayOfWeek.Sunday]: 0,
+      [DayOfWeek.Monday]: 1,
+      [DayOfWeek.Tuesday]: 2,
+      [DayOfWeek.Wednesday]: 3,
+      [DayOfWeek.Thursday]: 4,
+      [DayOfWeek.Friday]: 5,
+      [DayOfWeek.Saturday]: 6,
+    }
+    return map[day]
+  }
+
+  return { getDayLabel, getDayNumber }
 }

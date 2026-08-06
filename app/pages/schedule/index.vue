@@ -7,9 +7,11 @@ import plLocale from '@fullcalendar/core/locales/pl'
 import type { EventClickArg, EventDropArg } from '@fullcalendar/core'
 import { useDialog } from '~/composables/useDialog.ts'
 import { useSchedule } from '~/composables/schedule/useSchedule'
+import { useDayOfWeek } from '~/composables/schedule/useDayOfWeek'
 import ScheduleEventDialog from '~/components/schedule/dialog/ScheduleEventDialog.vue'
-import type { ScheduleEvent } from '~/types'
+import type { ScheduleEvent, ScheduleRule } from '~/types'
 import { CalendarType } from '~/types'
+import { ScheduleRuleEndpoints, scheduleRulesKey } from '~/features/schedule'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -22,12 +24,18 @@ setHeader('Grafik')
 
 const { open, close, activeProps, activeComponent } = useDialog()
 const { events, updateEvent } = useSchedule()
+const { getDayNumber } = useDayOfWeek()
+
+const { data: rulesData } = useAPI<{ data: ScheduleRule[] }>(ScheduleRuleEndpoints.BASE, {
+  key: scheduleRulesKey,
+})
+const rules = computed(() => rulesData.value?.data ?? [])
 
 const calendarTitle = ref('')
 const currentView = ref('timeGridWeek')
 
-const calendarEvents = computed(() =>
-  events.value.map((e) => {
+const calendarEvents = computed(() => [
+  ...events.value.map((e) => {
     const isWork = e.type === CalendarType.WORK
     return {
       id: e.uuid,
@@ -39,13 +47,23 @@ const calendarEvents = computed(() =>
       borderColor: 'transparent',
     }
   }),
-)
+  ...rules.value.map((rule) => ({
+    id: `rule-${rule.uuid}`,
+    daysOfWeek: [getDayNumber(rule.day)],
+    startTime: rule.start_time,
+    endTime: rule.end_time,
+    extendedProps: { source: { ...rule, type: CalendarType.WORK } },
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+  })),
+])
 
 function openAdd() {
   open(ScheduleEventDialog, {})
 }
 
 function onEventClick(info: EventClickArg) {
+  if (info.event.id.startsWith('rule-')) return
   const { source } = info.event.extendedProps as { source: ScheduleEvent }
   open(ScheduleEventDialog, { scheduleEvent: source })
 }

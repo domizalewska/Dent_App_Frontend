@@ -28,7 +28,11 @@ async function onSubmit(payload: ScheduleEventPayload) {
       <DialogHeader class="px-4 pt-6 pb-0">
         <DialogTitle>{{ scheduleEvent ? 'Edytuj wpis' : 'Dodaj wpis do grafiku' }}</DialogTitle>
       </DialogHeader>
-      <ScheduleEventForm :schedule-event="scheduleEvent" @submit="onSubmit" @cancel="emit('close')" />
+      <ScheduleEventForm
+        :schedule-event="scheduleEvent"
+        @submit="onSubmit"
+        @cancel="emit('close')"
+      />
     </DialogContent>
   </Dialog>
 </template>
