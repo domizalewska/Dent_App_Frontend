@@ -64,7 +64,7 @@ const calendarValue = computed<DateValue | undefined>({
           :id="name"
           variant="outline"
           :aria-invalid="!!errorMessage"
-          class="w-full justify-start rounded-xl font-normal"
+          class="w-full justify-start rounded-md font-normal"
           :class="[!calendarValue ? 'text-muted-foreground' : '', size === 'sm' ? 'h-8 text-xs' : '']"
         >
           <CalendarIcon class="size-4 shrink-0" />

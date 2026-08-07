@@ -79,7 +79,7 @@ function onSubmit(values: Partial<PatientType>) {
         <div class="space-y-1.5">
           <Label class="px-2 text-xs font-medium text-muted-foreground">Ubezpieczenie</Label>
           <Select :model-value="value" @update:model-value="handleChange">
-            <SelectTrigger class="w-full rounded-xl">
+            <SelectTrigger class="w-full rounded-md">
               <SelectValue placeholder="Wybierz..." />
             </SelectTrigger>
             <SelectContent>
@@ -96,7 +96,7 @@ function onSubmit(values: Partial<PatientType>) {
         <div class="space-y-1.5">
           <Label class="px-2 text-xs font-medium text-muted-foreground">Grupa krwi</Label>
           <Select :model-value="value" @update:model-value="handleChange">
-            <SelectTrigger class="w-full rounded-xl">
+            <SelectTrigger class="w-full rounded-md">
               <SelectValue placeholder="Wybierz..." />
             </SelectTrigger>
             <SelectContent>

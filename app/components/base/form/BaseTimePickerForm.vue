@@ -103,7 +103,7 @@ function formatTime(value: TimeModel | null) {
           :placeholder="placeholder ?? 'HH:mm'"
           :disabled="inputDisabled"
           :aria-invalid="!!errorMessage"
-          :class="['rounded-xl cursor-pointer', size === 'sm' ? 'h-8 text-xs' : '']"
+          :class="['rounded-md cursor-pointer', size === 'sm' ? 'h-8 text-xs' : '']"
           readonly
         />
       </template>

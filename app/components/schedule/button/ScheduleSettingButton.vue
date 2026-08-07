@@ -8,7 +8,12 @@ const { open, close, activeProps, activeComponent } = useDialog()
 
 <template>
   <component :is="activeComponent" v-bind="activeProps" @close="close" />
-  <Button variant="outline" size="icon-xs" aria-label="Ustawienia grafiku" @click="open(ScheduleSettings, {})">
+  <Button
+    variant="outline"
+    size="icon-xs"
+    aria-label="Ustawienia grafiku"
+    @click="open(ScheduleSettings)"
+  >
     <Settings class="size-4" />
   </Button>
 </template>

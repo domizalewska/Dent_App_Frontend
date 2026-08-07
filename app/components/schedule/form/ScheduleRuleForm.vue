@@ -56,14 +56,16 @@ async function onDelete(uuid: string) {
       @submit="addScheduleRule"
     >
       <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Nowa reguła</p>
-      <div class="flex items-center gap-2">
-        <BaseSelectForm name="day" class="flex-1">
-          <SelectItem v-for="opt in dayOptions" :key="opt.value" :value="opt.value">
-            {{ opt.label }}
-          </SelectItem>
-        </BaseSelectForm>
-        <BaseTimePickerForm name="start_time" size="sm" label="" />
-        <BaseTimePickerForm name="end_time" size="sm" label="" />
+      <div class="flex items-start gap-2">
+        <BaseSelectForm
+          name="day"
+          size="sm"
+          :options="dayOptions"
+          :option-value="(o) => o.value"
+          :option-label="(o) => o.label"
+        />
+        <BaseTimePickerForm name="start_time" size="sm" label="" class="w-[100px]" />
+        <BaseTimePickerForm name="end_time" size="sm" label="" class="w-[100px]" />
       </div>
       <Button type="submit" variant="outline" size="sm">+ Dodaj regułę</Button>
     </Form>
@@ -76,7 +78,7 @@ async function onDelete(uuid: string) {
       >
         <span>{{ getDayLabel(rule.day) }}, {{ rule.start_time }} - {{ rule.end_time }}</span>
         <Button type="button" variant="ghost" size="icon-xs" @click="onDelete(rule.uuid)">
-          <Trash2 class="size-3.5 text-destructive" />
+          <Trash2 class="size-3.5 text-base" />
         </Button>
       </div>
     </div>
