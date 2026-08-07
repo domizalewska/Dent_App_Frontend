@@ -8,15 +8,17 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const { icon, label, className } = useScheduleEventMeta(props.entry.type)
+const { icon, label } = useScheduleEventMeta(props.entry.type)
+const { getColor } = useScheduleColors()
 </script>
 
 <template>
   <div
     :class="[
       'flex min-w-0 h-full w-full flex-col gap-0.5 rounded px-1 py-0.5 text-white',
-      colorClass ?? className,
+      colorClass,
     ]"
+    :style="colorClass ? {} : { backgroundColor: getColor(entry.type) }"
   >
     <div class="flex items-center gap-1 font-medium leading-tight">
       <component :is="icon" class="size-3 shrink-0" />
