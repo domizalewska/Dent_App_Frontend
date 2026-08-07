@@ -12,21 +12,21 @@ const rules = computed(() => rulesData.value?.data ?? [])
 
 <template>
   <Dialog open @update:open="emit('close')">
-    <DialogContent class="max-h-[90vh] overflow-y-auto p-0 gap-0">
-      <DialogHeader class="px-4 pt-6 pb-0">
+    <DialogContent class="h-[600px] p-0 gap-0 flex flex-col">
+      <DialogHeader class="px-4 pt-6 pb-0 shrink-0">
         <DialogTitle>Ustawienia grafiku</DialogTitle>
       </DialogHeader>
-      <Tabs default-value="pattern" class="w-full">
-        <div class="px-4 pt-4">
-          <TabsList class="w-full">
+      <Tabs default-value="pattern" class="flex flex-col flex-1 min-h-0">
+        <div class="px-4 pt-4 shrink-0">
+          <TabsList variant="line" class="w-full">
             <TabsTrigger value="pattern" class="flex-1">Wzorzec tygodniowy</TabsTrigger>
             <TabsTrigger value="google" class="flex-1">Integracja z Google Calendar</TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="pattern">
+        <TabsContent value="pattern" class="flex-1 overflow-y-auto mt-0">
           <ScheduleRuleForm :schedule-rule="rules" @cancel="emit('close')" />
         </TabsContent>
-        <TabsContent value="google">
+        <TabsContent value="google" class="flex-1 overflow-y-auto mt-0">
           <ScheduleGoogleCalendarTab />
         </TabsContent>
       </Tabs>

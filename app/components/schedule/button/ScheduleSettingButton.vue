@@ -3,11 +3,10 @@ import { Settings } from 'lucide-vue-next'
 import ScheduleSettings from '~/components/schedule/dialog/ScheduleSettings.vue'
 import { useDialog } from '~/composables/useDialog'
 
-const { open, close, activeProps, activeComponent } = useDialog()
+const { open } = useDialog()
 </script>
 
 <template>
-  <component :is="activeComponent" v-bind="activeProps" @close="close" />
   <Button
     variant="outline"
     size="icon-xs"

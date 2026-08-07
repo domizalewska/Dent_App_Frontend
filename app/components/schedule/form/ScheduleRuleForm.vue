@@ -48,7 +48,7 @@ async function onDelete(uuid: string) {
 </script>
 
 <template>
-  <div class="divide-y">
+  <div class="divide-y flex flex-col h-full">
     <Form
       :validation-schema="formSchema"
       :initial-values="initialValues"
@@ -70,7 +70,7 @@ async function onDelete(uuid: string) {
       <Button type="submit" variant="outline" size="sm">+ Dodaj regułę</Button>
     </Form>
 
-    <div v-if="props.scheduleRule?.length" class="px-4 py-2 space-y-1">
+    <div v-if="props.scheduleRule?.length" class="flex-1 overflow-y-auto px-4 py-2 space-y-1">
       <div
         v-for="rule in props.scheduleRule"
         :key="rule.uuid"
@@ -83,7 +83,7 @@ async function onDelete(uuid: string) {
       </div>
     </div>
 
-    <div class="px-4 py-3">
+    <div class="px-4 py-3 mt-auto">
       <BaseAcceptDeclineButtons
         accept-title="Zapisz"
         decline-title="Anuluj"
