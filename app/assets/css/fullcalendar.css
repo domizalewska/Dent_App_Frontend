@@ -133,7 +133,7 @@
 .fc-event {
   border: none !important;
   border-radius: 5px !important;
-  padding: 3px 7px !important;
+  padding: 0 !important;
   font-size: 12px !important;
   font-weight: 500 !important;
   box-shadow: none !important;
@@ -141,6 +141,16 @@
 
 .fc-timegrid-event {
   border-left: none !important;
+}
+
+.fc-timegrid-event-harness {
+  right: 0 !important;
+  inset-inline-end: 0 !important;
+  margin-right: 2px !important;
+}
+
+.fc-timegrid-event-harness-inset .fc-timegrid-event {
+  box-shadow: none !important;
 }
 
 .ev-blue {
