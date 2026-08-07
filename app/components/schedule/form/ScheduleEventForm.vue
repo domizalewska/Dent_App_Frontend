@@ -6,6 +6,7 @@ import { CalendarType } from '~/types'
 
 interface Props {
   scheduleEvent?: ScheduleEvent
+  initialValues?: ScheduleEvent
 }
 
 const props = defineProps<Props>()
@@ -49,14 +50,15 @@ const formSchema = toTypedSchema(
     }),
 )
 
+const seed = props.scheduleEvent ?? props.initialValues
 const initialValues = {
-  type: props.scheduleEvent?.type ?? CalendarType.WORK,
-  date: props.scheduleEvent?.date ?? '',
-  start_time: props.scheduleEvent?.start_time ?? '',
-  end_time: props.scheduleEvent?.end_time ?? '',
-  date_from: props.scheduleEvent?.date_from ?? '',
-  date_to: props.scheduleEvent?.date_to ?? '',
-  notes: props.scheduleEvent?.notes ?? '',
+  type: seed?.type ?? CalendarType.WORK,
+  date: seed?.date ?? '',
+  start_time: seed?.start_time ?? '',
+  end_time: seed?.end_time ?? '',
+  date_from: seed?.date_from ?? '',
+  date_to: seed?.date_to ?? '',
+  notes: seed?.notes ?? '',
 }
 
 function onSubmit(values: ScheduleEventPayload) {

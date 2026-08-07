@@ -4,6 +4,7 @@ import type { ScheduleEvent } from '~/types'
 interface Props {
   entry: ScheduleEvent
   timeText: string
+  colorClass?: string
 }
 
 const props = defineProps<Props>()
@@ -14,7 +15,7 @@ const { icon, label, className } = useScheduleEventMeta(props.entry.type)
   <div
     :class="[
       'flex min-w-0 h-full w-full flex-col gap-0.5 rounded px-1 py-0.5 text-white',
-      className,
+      colorClass ?? className,
     ]"
   >
     <div class="flex items-center gap-1 font-medium leading-tight">

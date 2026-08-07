@@ -5,6 +5,7 @@ import { useSchedule } from '~/composables/schedule/useSchedule'
 
 interface Props {
   scheduleEvent?: ScheduleEvent
+  initialValues?: ScheduleEvent
 }
 
 const props = defineProps<Props>()
@@ -30,6 +31,7 @@ async function onSubmit(payload: ScheduleEventPayload) {
       </DialogHeader>
       <ScheduleEventForm
         :schedule-event="scheduleEvent"
+        :initial-values="initialValues"
         @submit="onSubmit"
         @cancel="emit('close')"
       />

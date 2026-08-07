@@ -59,9 +59,9 @@ const calendarEvents = computed(() => [
     daysOfWeek: [getDayNumber(rule.day)],
     startTime: rule.start_time,
     endTime: rule.end_time,
-    extendedProps: { source: { ...rule, type: CalendarType.WORK } },
     backgroundColor: 'transparent',
     borderColor: 'transparent',
+    extendedProps: { source: { ...rule, type: CalendarType.WORK }, isRule: true },
   })),
 ])
 
@@ -70,7 +70,16 @@ function openAdd() {
 }
 
 function onEventClick(info: EventClickArg) {
-  if (info.event.id.startsWith('rule-')) return
+  if (info.event.id.startsWith('rule-')) {
+    open(ScheduleEventDialog, {
+      initialValues: {
+        date: info.event.startStr.slice(0, 10),
+        start_time: info.event.startStr.slice(11, 16),
+        end_time: info.event.endStr.slice(11, 16),
+      } as ScheduleEvent,
+    })
+    return
+  }
   const { source } = info.event.extendedProps as { source: ScheduleEvent }
   open(ScheduleEventDialog, { scheduleEvent: source })
 }
@@ -125,7 +134,7 @@ const options = computed(() => ({
   initialView: 'timeGridWeek',
   locale: plLocale,
   allDaySlot: true,
-  allDayText: '',
+  allDayText: 'Cały dzień',
   editable: true,
   selectable: true,
   selectMirror: true,
@@ -133,7 +142,7 @@ const options = computed(() => ({
   slotMaxTime: '22:00:00',
   slotDuration: '00:30:00',
   slotLabelInterval: '01:00:00',
-  dayHeaderFormat: { weekday: 'short', day: 'numeric' },
+  eventMaxStack: 1,
   slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
   datesSet: (info: { view: { title: string; type: string } }) => {
     calendarTitle.value = info.view.title
@@ -165,8 +174,29 @@ const options = computed(() => ({
           />
         </div>
         <FullCalendar ref="calendarRef" :options="options">
+          <template #dayHeaderContent="{ date, isToday }">
+            <div class="flex flex-col items-center gap-0.5 pt-1.5 pb-0.5">
+              <span class="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                {{ date.toLocaleDateString('pl', { weekday: 'short' }) }}
+              </span>
+              <span
+                :class="[
+                  'flex size-7 items-center justify-center rounded-full text-sm font-semibold',
+                  isToday ? 'bg-primary text-primary-foreground' : 'text-foreground',
+                ]"
+              >
+                {{ date.getDate() }}
+              </span>
+            </div>
+          </template>
           <template #eventContent="{ event, timeText }">
-            <ScheduleEventContent :entry="event.extendedProps.source" :time-text="timeText" />
+            <ScheduleEventContent
+              :entry="event.extendedProps.source"
+              :time-text="timeText"
+              :color-class="
+                event.extendedProps.isRule ? 'bg-emerald-600 border-emerald-700' : undefined
+              "
+            />
           </template>
         </FullCalendar>
       </ClientOnly>
