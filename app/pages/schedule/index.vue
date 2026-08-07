@@ -4,7 +4,9 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import plLocale from '@fullcalendar/core/locales/pl'
-import type { EventClickArg, EventDropArg } from '@fullcalendar/core'
+import type { DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/core'
+import { toast } from 'vue-sonner'
+import { toastErrorStyle } from '~/utils/toast'
 import { useDialog } from '~/composables/useDialog.ts'
 import { useSchedule } from '~/composables/schedule/useSchedule'
 import { useDayOfWeek } from '~/composables/schedule/useDayOfWeek'
@@ -65,15 +67,38 @@ const calendarEvents = computed(() => [
   })),
 ])
 
-function openAdd() {
+function isDateBlocked(date: string): boolean {
+  return events.value.some(
+    (e) =>
+      (e.type === CalendarType.VACATION || e.type === CalendarType.SICK_LEAVE) &&
+      date >= e.date_from &&
+      date <= e.date_to,
+  )
+}
+
+function openAdd(info: DateSelectArg) {
+  const date = info.startStr.slice(0, 10)
+  if (isDateBlocked(date)) {
+    toast('Nie można dodać wpisu — dzień jest zajęty przez urlop lub L4', {
+      style: toastErrorStyle,
+    })
+    return
+  }
   open(ScheduleEventDialog, {})
 }
 
 function onEventClick(info: EventClickArg) {
   if (info.event.id.startsWith('rule-')) {
+    const date = info.event.startStr.slice(0, 10)
+    if (isDateBlocked(date)) {
+      toast('Nie można dodać wpisu — dzień jest zajęty przez urlop lub L4', {
+        style: toastErrorStyle,
+      })
+      return
+    }
     open(ScheduleEventDialog, {
       initialValues: {
-        date: info.event.startStr.slice(0, 10),
+        date,
         start_time: info.event.startStr.slice(11, 16),
         end_time: info.event.endStr.slice(11, 16),
       } as ScheduleEvent,
@@ -85,6 +110,14 @@ function onEventClick(info: EventClickArg) {
 }
 
 function onEventDrop(info: EventDropArg) {
+  const date = info.event.startStr.slice(0, 10)
+  if (isDateBlocked(date)) {
+    info.revert()
+    toast('Nie można przenieść wpisu — dzień jest zajęty przez urlop lub L4', {
+      style: toastErrorStyle,
+    })
+    return
+  }
   const { source } = info.event.extendedProps as { source: ScheduleEvent }
   const isWork = source.type === CalendarType.WORK
   updateEvent(source.uuid, {
