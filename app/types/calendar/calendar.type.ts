@@ -1,0 +1,7 @@
+export enum CalendarType {
+  WORK = 'WORK',
+  SICK_LEAVE = 'SICK_LEAVE',
+  VACATION = 'VACATION',
+  EXAMINATION = 'EXAMINATION',
+  OTHER = 'OTHER',
+}

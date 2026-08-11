@@ -1,19 +1,8 @@
 <script setup lang="ts">
 import { ChevronDownIcon, WifiOffIcon } from 'lucide-vue-next'
 import { useAPI } from '~/composables/useAPI'
-import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
-import { useHeader } from '~/composables/useHeader'
 import { NotificationsEndpoints, notificationsPreferencesKey } from '~/features/notifications'
 import type { NotificationSettings } from '~/types'
-
-definePageMeta({ layout: 'dashboard' })
-
-const { set } = useBreadcrumbs()
-set([{ name: 'Ustawienia powiadomień', link: '/settings/notifications' }])
-
-const { setHeader, resetHeader } = useHeader()
-resetHeader()
-setHeader('Ustawienia powiadomień')
 
 const { $api } = useNuxtApp()
 const api = $api as typeof $fetch

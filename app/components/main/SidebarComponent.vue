@@ -57,11 +57,11 @@ const data = {
       url: '/schedule',
       icon: CalendarCheck,
     },
-    {
-      title: 'Grafik wizyt',
-      url: '/schedule-room',
-      icon: CalendarDays,
-    },
+    // {
+    //   title: 'Grafik wizyt',
+    //   url: '/schedule-room',
+    //   icon: CalendarDays,
+    // },
     {
       title: 'Grafik lekarzy',
       url: '/schedule-doctors',
@@ -113,7 +113,7 @@ const data = {
     <SidebarFooter>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton :tooltip="'Ustawienia'" @click="navigateTo('/settings')">
+          <SidebarMenuButton :tooltip="'Ustawienia'" @click="navigateTo('/settings/notifications')">
             <Settings2 />
             <span>Ustawienia</span>
           </SidebarMenuButton>
