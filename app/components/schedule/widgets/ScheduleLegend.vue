@@ -13,7 +13,7 @@ const entries = [
 </script>
 
 <template>
-  <div class="flex items-center gap-4 text-sm text-muted-foreground">
+  <div class="flex flex-row flex-wrap items-center gap-4 text-sm text-muted-foreground">
     <div v-for="entry in entries" :key="entry.type" class="flex items-center gap-1.5">
       <span class="size-3 rounded-sm shrink-0" :style="{ backgroundColor: getColor(entry.type) }" />
       <span class="text-sm">{{ entry.label }}</span>
