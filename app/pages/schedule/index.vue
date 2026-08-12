@@ -4,7 +4,9 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import plLocale from '@fullcalendar/core/locales/pl'
+import { h } from 'vue'
 import type { DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/core'
+import { AlertCircle } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { toastErrorStyle } from '~/utils/toast'
 import { useDialog } from '~/composables/useDialog.ts'
@@ -66,6 +68,9 @@ const calendarEvents = computed(() => [
     extendedProps: { source: { ...rule, type: CalendarType.WORK }, isRule: true },
   })),
 ])
+
+const errorToast = (message: string) =>
+  toast(message, { style: toastErrorStyle, icon: h(AlertCircle, { class: 'size-4' }) })
 
 function isDateBlocked(date: string): boolean {
   return events.value.some(

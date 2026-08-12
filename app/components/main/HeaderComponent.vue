@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ColorPicker from '~/components/main/ColorPicker.vue'
+import MessageButton from '~/components/messages/button/MessageButton.vue'
 
 const { user } = useAuth()
 </script>
