@@ -1,0 +1,11 @@
+{
+  "entryPoints": ["app/types"],
+  "entryPointStrategy": "expand",
+  "out": "docs",
+  "name": "Dent App — Types",
+  "includeVersion": false,
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "hideGenerator": true,
+  "skipErrorChecking": true
+}
