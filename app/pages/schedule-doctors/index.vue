@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import FullCalendar from '@fullcalendar/vue3'
+import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import plLocale from '@fullcalendar/core/locales/pl'
-import { Icon } from '@iconify/vue'
-import { useAPI } from '~/composables/useAPI'
-import { formatDateToString } from '~/utils/formatDate'
-import type { DoctorsScheduleResponse } from '~/types'
-import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
-import { appointmentsByDoctorKey, AppointmentsEndpoints } from '~/features/appointments'
-import { mockScheduleDoctors } from '~/mock/schedule-doctors/mockScheduleDoctors'
+import type { DateSelectArg, EventClickArg } from '@fullcalendar/core'
+import { toast } from 'vue-sonner'
+import { toastErrorStyle } from '~/utils/toast'
+import { useDialog } from '~/composables/useDialog.ts'
+import { useSchedule } from '~/composables/schedule/useSchedule'
+import { useDayOfWeek } from '~/composables/schedule/useDayOfWeek'
+import ScheduleEventDialog from '~/components/schedule/dialog/ScheduleEventDialog.vue'
+import type { ScheduleEvent, ScheduleRule } from '~/types'
+import { CalendarType, DayOfWeek } from '~/types'
+import { ScheduleRuleEndpoints, scheduleRulesKey } from '~/features/schedule'
 
-definePageMeta({ layout: 'dashboard', ssr: false })
+definePageMeta({ layout: 'dashboard' })
 
 const { set } = useBreadcrumbs()
 set([{ name: 'Grafik lekarzy', link: '/schedule-doctors' }])
@@ -21,7 +24,91 @@ const { setHeader, resetHeader } = useHeader()
 resetHeader()
 setHeader('Grafik lekarzy')
 
-const currentDate = ref(new Date())
+const { open, close, activeProps, activeComponent } = useDialog()
+const { events } = useSchedule()
+const { getDayNumber } = useDayOfWeek()
+
+const { data: rulesData } = useAPI<{ data: ScheduleRule[] }>(ScheduleRuleEndpoints.BASE, {
+  key: scheduleRulesKey,
+  default: () => ({
+    data: [
+      { uuid: 'mock-rule-1', day: DayOfWeek.Monday, start_time: '08:00', end_time: '16:00' },
+      { uuid: 'mock-rule-2', day: DayOfWeek.Wednesday, start_time: '10:00', end_time: '18:00' },
+      { uuid: 'mock-rule-3', day: DayOfWeek.Friday, start_time: '09:00', end_time: '15:00' },
+    ] as ScheduleRule[],
+  }),
+})
+const rules = computed(() => rulesData.value?.data ?? [])
+
+const calendarTitle = ref('')
+const currentView = ref('timeGridWeek')
+
+const calendarEvents = computed(() => [
+  ...events.value.map((e) => {
+    const isWork = e.type === CalendarType.WORK
+    return {
+      id: e.uuid,
+      start: isWork ? `${e.date}T${e.start_time}` : e.date_from,
+      end: isWork ? `${e.date}T${e.end_time}` : e.date_to,
+      allDay: !isWork,
+      extendedProps: { source: e },
+      backgroundColor: 'transparent',
+      borderColor: 'transparent',
+    }
+  }),
+  ...rules.value.map((rule) => ({
+    id: `rule-${rule.uuid}`,
+    daysOfWeek: [getDayNumber(rule.day)],
+    startTime: rule.start_time,
+    endTime: rule.end_time,
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    extendedProps: { source: { ...rule, type: CalendarType.WORK }, isRule: true },
+  })),
+])
+
+function isDateBlocked(date: string): boolean {
+  return events.value.some(
+    (e) =>
+      (e.type === CalendarType.VACATION || e.type === CalendarType.SICK_LEAVE) &&
+      date >= e.date_from &&
+      date <= e.date_to,
+  )
+}
+
+function openAdd(info: DateSelectArg) {
+  const date = info.startStr.slice(0, 10)
+  if (isDateBlocked(date)) {
+    toast('Nie można dodać wpisu — dzień jest zajęty przez urlop lub L4', {
+      style: toastErrorStyle,
+    })
+    return
+  }
+  open(ScheduleEventDialog, {})
+}
+
+function onEventClick(info: EventClickArg) {
+  if (info.event.id.startsWith('rule-')) {
+    const date = info.event.startStr.slice(0, 10)
+    if (isDateBlocked(date)) {
+      toast('Nie można dodać wpisu — dzień jest zajęty przez urlop lub L4', {
+        style: toastErrorStyle,
+      })
+      return
+    }
+    open(ScheduleEventDialog, {
+      initialValues: {
+        date,
+        start_time: info.event.startStr.slice(11, 16),
+        end_time: info.event.endStr.slice(11, 16),
+      } as ScheduleEvent,
+    })
+    return
+  }
+  const { source } = info.event.extendedProps as { source: ScheduleEvent }
+  open(ScheduleEventDialog, { scheduleEvent: source })
+}
+
 const calendarRef = ref()
 const calendarWrapper = ref<HTMLElement | null>(null)
 
@@ -33,246 +120,92 @@ onMounted(() => {
   onUnmounted(() => observer.disconnect())
 })
 
-function goPrev() {
-  calendarRef.value?.getApi().prev()
-  currentDate.value = calendarRef.value?.getApi().getDate()
+function handlePrev() {
+  calendarRef.value.getApi().prev()
+}
+function handleNext() {
+  calendarRef.value.getApi().next()
+}
+function handleToday() {
+  calendarRef.value.getApi().today()
+}
+function handleWeek() {
+  calendarRef.value.getApi().changeView('timeGridWeek')
+}
+function handleMonth() {
+  calendarRef.value.getApi().changeView('dayGridMonth')
 }
 
-function goNext() {
-  calendarRef.value?.getApi().next()
-  currentDate.value = calendarRef.value?.getApi().getDate()
-}
-
-function goToday() {
-  calendarRef.value?.getApi().today()
-  currentDate.value = new Date()
-}
-
-const dateLabel = computed(() => {
-  const d = currentDate.value
-  const day = d.getDay()
-  const monday = new Date(d)
-  monday.setDate(d.getDate() - (day === 0 ? 6 : day - 1))
-  const sunday = new Date(monday)
-  sunday.setDate(monday.getDate() + 6)
-  return `${formatDateToString(monday, 'd MMM')} – ${formatDateToString(sunday, 'd MMM yyyy')}`
-})
-
-const dateRangeQuery = computed(() => {
-  const d = currentDate.value
-  const day = d.getDay()
-  const monday = new Date(d)
-  monday.setDate(d.getDate() - (day === 0 ? 6 : day - 1))
-  const sunday = new Date(monday)
-  sunday.setDate(monday.getDate() + 6)
-  return {
-    date_from: monday.toISOString().slice(0, 10),
-    date_to: sunday.toISOString().slice(0, 10),
-  }
-})
-
-const { data: schedule, pending } = useAPI<DoctorsScheduleResponse>(
-  AppointmentsEndpoints.BY_DOCTORS,
-  {
-    key: appointmentsByDoctorKey,
-    query: dateRangeQuery,
-    server: false,
-    default: () => mockScheduleDoctors,
-  },
-)
-
-const selectedDoctorUuids = ref<Set<string>>(new Set())
-
-watch(
-  () => schedule.value?.doctors,
-  (doctors) => {
-    if (doctors?.length && selectedDoctorUuids.value.size === 0) {
-      selectedDoctorUuids.value = new Set(doctors.map((d) => d.uuid))
-    }
-  },
-  { immediate: true },
-)
-
-function toggleDoctor(uuid: string) {
-  const next = new Set(selectedDoctorUuids.value)
-  if (next.has(uuid)) {
-    if (next.size > 1) next.delete(uuid)
-  } else {
-    next.add(uuid)
-  }
-  selectedDoctorUuids.value = next
-}
-
-const resources = computed(() =>
-  schedule.value.doctors
-    .filter((d) => selectedDoctorUuids.value.has(d.uuid))
-    .map((d) => ({
-      id: d.uuid,
-      title: `${d.first_name} ${d.last_name}`,
-      extendedProps: { jobPosition: d.job_position?.name },
-    })),
-)
-
-const events = computed(() =>
-  Object.entries(schedule.value.appointments_by_doctor).flatMap(([doctorUuid, appointments]) =>
-    appointments.map((a) => ({
-      id: a.uuid,
-      resourceId: doctorUuid,
-      start: a.start_date,
-      end: a.end_date,
-      title: `${a.patient.first_name} ${a.patient.last_name}`,
-      extendedProps: { appointment: a },
-    })),
-  ),
-)
-
-const { open, close, activeComponent, activeProps } = useDialog()
-
-function openAddDialog() {
-  open(AppointmentDialog, { date: currentDate.value.toISOString().slice(0, 10) })
-}
-
-function openEditDialog(uuid: string) {
-  const appointment = Object.values(schedule.value.appointments_by_doctor)
-    .flat()
-    .find((a) => a.uuid === uuid)
-  if (appointment) open(AppointmentDialog, { appointment })
-}
-
-const calendarOptions = computed(() => ({
-  plugins: [timeGridPlugin, resourceTimeGridPlugin, interactionPlugin],
-  initialView: 'resourceTimeGridWeek',
-  initialDate: currentDate.value,
+const options = computed(() => ({
+  plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+  initialView: 'timeGridWeek',
   locale: plLocale,
-  headerToolbar: false,
-  allDaySlot: false,
+  allDaySlot: true,
+  allDayText: 'Cały dzień',
+  editable: true,
+  selectable: true,
+  selectMirror: true,
   slotMinTime: '06:00:00',
   slotMaxTime: '22:00:00',
   slotDuration: '00:30:00',
   slotLabelInterval: '01:00:00',
+  eventMaxStack: 1,
   slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
-  dayHeaderFormat: { weekday: 'short', day: 'numeric', month: 'numeric' },
-  height: 'auto',
-  nowIndicator: true,
-  resources: resources.value,
-  events: events.value,
-  resourceLabelContent: (arg: any) => {
-    const el = document.createElement('div')
-    el.className = 'resource-label'
-    el.innerHTML = `
-      <div class="resource-label__name">${arg.resource.title}</div>
-      ${arg.resource.extendedProps.jobPosition ? `<div class="resource-label__role">${arg.resource.extendedProps.jobPosition}</div>` : ''}
-    `
-    return { domNodes: [el] }
+  datesSet: (info: { view: { title: string; type: string } }) => {
+    calendarTitle.value = info.view.title
+    currentView.value = info.view.type
   },
-  eventClick: (info: any) => openEditDialog(info.event.id),
+  headerToolbar: false,
+  select: openAdd,
+  eventClick: onEventClick,
+  events: calendarEvents.value,
 }))
 </script>
 
 <template>
-  <Card class="h-full overflow-hidden flex flex-col">
-    <div class="flex flex-col">
-      <div class="flex items-center justify-between px-4 py-3 border-b border-border">
-        <div class="flex items-center gap-2">
-          <Button variant="outline" size="icon" @click="goPrev">
-            <Icon icon="lucide:chevron-left" class="size-4" />
-          </Button>
-          <Button variant="outline" size="sm" @click="goToday">Dziś</Button>
-          <Button variant="outline" size="icon" @click="goNext">
-            <Icon icon="lucide:chevron-right" class="size-4" />
-          </Button>
-          <span class="min-w-[200px] text-center text-sm font-medium px-2">
-            {{ dateLabel }}
-          </span>
-        </div>
-        <Button @click="openAddDialog">
-          <Icon icon="lucide:plus" class="size-4" />
-          Dodaj wizytę
-        </Button>
-      </div>
-
-      <div class="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-border bg-muted/30">
-        <span class="text-xs text-muted-foreground font-medium shrink-0">Lekarze:</span>
-        <button
-          v-for="doctor in schedule.doctors"
-          :key="doctor.uuid"
-          type="button"
-          class="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium border transition-colors"
-          :class="
-            selectedDoctorUuids.has(doctor.uuid)
-              ? 'bg-primary text-primary-foreground border-primary'
-              : 'bg-transparent text-muted-foreground border-border hover:bg-accent'
-          "
-          @click="toggleDoctor(doctor.uuid)"
-        >
-          <BaseUserAvatar :user="doctor" size="size-4" class="shrink-0" />
-          {{ doctor.first_name }} {{ doctor.last_name }}
-        </button>
-      </div>
-    </div>
-
+  <div class="flex flex-col gap-4 h-full">
     <component :is="activeComponent" v-bind="activeProps" @close="close" />
-
-    <div
-      v-if="pending"
-      class="flex flex-1 items-center justify-center text-muted-foreground text-sm"
-    >
-      Wczytywanie grafiku...
-    </div>
-
-    <div ref="calendarWrapper" v-else class="flex-1 overflow-auto doctors-schedule">
+    <ScheduleLegend />
+    <div ref="calendarWrapper" class="fc-wrapper flex-1">
       <ClientOnly>
-        <FullCalendar ref="calendarRef" :options="calendarOptions" />
+        <div class="flex">
+          <ScheduleHeader
+            :current-title="calendarTitle"
+            :current-view="currentView"
+            @prev="handlePrev"
+            @next="handleNext"
+            @today="handleToday"
+            @week="handleWeek"
+            @month="handleMonth"
+          />
+        </div>
+        <FullCalendar ref="calendarRef" :options="options">
+          <template #dayHeaderContent="{ date, isToday }">
+            <div class="flex flex-col items-center gap-0.5 pt-1.5 pb-0.5">
+              <span class="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                {{ date.toLocaleDateString('pl', { weekday: 'short' }) }}
+              </span>
+              <span
+                :class="[
+                  'flex size-7 items-center justify-center rounded-full text-sm font-semibold',
+                  isToday ? 'bg-primary text-primary-foreground' : 'text-foreground',
+                ]"
+              >
+                {{ date.getDate() }}
+              </span>
+            </div>
+          </template>
+          <template #eventContent="{ event, timeText }">
+            <ScheduleEventContent
+              :entry="event.extendedProps.source"
+              :time-text="timeText"
+              :color-class="
+                event.extendedProps.isRule ? 'bg-emerald-600 border-emerald-700' : undefined
+              "
+            />
+          </template>
+        </FullCalendar>
       </ClientOnly>
     </div>
-  </Card>
+  </div>
 </template>
-
-<style>
-.doctors-schedule .fc-theme-standard td,
-.doctors-schedule .fc-theme-standard th {
-  border-color: hsl(var(--border));
-}
-
-.doctors-schedule .fc-theme-standard .fc-scrollgrid {
-  border-color: hsl(var(--border));
-}
-
-.doctors-schedule .fc-col-header-cell-cushion {
-  color: hsl(var(--foreground));
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.doctors-schedule .fc-daygrid-day-number {
-  color: hsl(var(--foreground));
-}
-
-.doctors-schedule .resource-label {
-  padding: 4px 2px;
-  text-align: center;
-}
-
-.doctors-schedule .resource-label__name {
-  font-size: 12px;
-  font-weight: 500;
-  color: hsl(var(--foreground));
-}
-
-.doctors-schedule .resource-label__role {
-  font-size: 10px;
-  color: hsl(var(--muted-foreground));
-  margin-top: 1px;
-}
-
-.doctors-schedule .fc-timegrid-slot-label-cushion {
-  font-size: 11px;
-  color: hsl(var(--muted-foreground));
-}
-
-.doctors-schedule .fc-bg-event,
-.doctors-schedule .fc-non-business {
-  background: transparent;
-}
-</style>
