@@ -14,7 +14,7 @@ interface Props {
   optionAvatar?: (option: T) => string | undefined
   placeholder?: string
   emptyText?: string
-  size?: 'sm' | 'default'
+  size?: 'xs' | 'sm' | 'default'
   label?: string
   requiredMark?: boolean
   immediateFetch?: boolean
@@ -102,7 +102,11 @@ const selectedLabels = computed(() =>
         <ComboboxTrigger as-child>
           <Button
             variant="outline"
-            class="w-[280px] justify-between"
+            :size="size"
+            :class="[
+              'justify-between',
+              size === 'xs' ? 'w-[180px]' : size === 'sm' ? 'w-[220px]' : 'w-[280px]',
+            ]"
           >
             <span class="truncate">
               {{ selectedLabels.length > 0 ? selectedLabels.join(', ') : placeholder }}
@@ -111,7 +115,10 @@ const selectedLabels = computed(() =>
           </Button>
         </ComboboxTrigger>
       </ComboboxAnchor>
-      <ComboboxList class="w-[280px]" align="start">
+      <ComboboxList
+        :class="size === 'xs' ? 'w-[180px]' : size === 'sm' ? 'w-[220px]' : 'w-[280px]'"
+        align="start"
+      >
         <ComboboxInput :placeholder="placeholder" />
         <ComboboxEmpty>{{ emptyText }}</ComboboxEmpty>
           <ComboboxGroup>

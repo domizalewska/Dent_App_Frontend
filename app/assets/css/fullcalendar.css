@@ -256,3 +256,38 @@
   padding: 6px !important;
   background: var(--popover) !important;
 }
+
+ .fc-timegrid-col.fc-resource:first-child,
+ .fc-datagrid-cell.fc-resource:first-child {
+   border-left: 2px solid var(--border, #3f3f46);
+ }
+
+.fc-timegrid-col-frame {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fc-timegrid-axis-frame,
+.fc-scrollgrid-sync-inner {
+  padding: 2px 0;
+}
+
+.fc-resource-timeline-divider,
+.fc-datagrid-cell-main,
+.fc-col-header-cell .fc-datagrid-cell-cushion,
+th.fc-resource .fc-scrollgrid-sync-inner {
+  font-size: 11px !important;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: normal;
+  padding: 2px 4px;
+}
+
+
+.fc-col-header-cell[colspan] {
+  border-left: 2px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+
+th.fc-resource {
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+}

@@ -1,7 +1,8 @@
-import type { CalendarType } from '~/types'
+import type { CalendarType, User } from '~/types'
 
 export type ScheduleEvent = {
   uuid: string
+  resourceId: User
   type: CalendarType
   date: string
   start_time: string
@@ -13,8 +14,9 @@ export type ScheduleEvent = {
 }
 export type ScheduleEventPayload = Omit<ScheduleEvent, 'uuid'>
 
-export interface ScheduleRule {
+export type ScheduleRule = {
   uuid: string
+  resourceId: string
   day: DayOfWeek
   start_time: string
   end_time: string

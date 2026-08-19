@@ -41,6 +41,10 @@ export function usePagination(paginatedOptions: PaginationOptions) {
     pagination.value.current_page = initialPage
   }
 
+  const setNextPage = () => {
+    pagination.value.current_page += 1
+  }
+
   function setPage(page: number) {
     pagination.value.current_page = page
   }
@@ -135,6 +139,7 @@ export function usePagination(paginatedOptions: PaginationOptions) {
     setSort,
     sortingState,
     setSearch,
+    setNextPage,
     setFilters,
     clearFilters,
     resetPagination,

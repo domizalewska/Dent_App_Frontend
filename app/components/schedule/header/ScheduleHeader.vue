@@ -43,7 +43,7 @@ const { open, close, activeProps, activeComponent } = useDialog()
         v-if="showSelect"
         name="doctors"
         api-key="schedule-header-doctors"
-        size="sm"
+        size="xs"
         :api="UsersEndpoints.LIST_SELECT"
         :option-value="(u: User) => u.uuid"
         :option-label="(u: User) => `${u.first_name} ${u.last_name}`"
