@@ -1,106 +1,140 @@
 <script setup lang="ts" generic="T">
-import { XIcon, ChevronsUpDownIcon, CheckIcon } from 'lucide-vue-next'
+import { useField } from 'vee-validate'
+import { CheckIcon, ChevronsUpDownIcon } from 'lucide-vue-next'
+import { usePaginatedAPI } from '~/composables/useAPI'
+import type { PaginatedResponse, PaginatedResult } from '~/types'
 
 interface Props {
+  name: string
   api: string
+  apiKey: string
+  hideLabel?: boolean
   optionValue: (option: T) => string
   optionLabel: (option: T) => string
   optionAvatar?: (option: T) => string | undefined
   placeholder?: string
+  emptyText?: string
+  size?: 'sm' | 'default'
   label?: string
+  requiredMark?: boolean
+  immediateFetch?: boolean
+  withPagination?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   placeholder: 'Wybierz...',
+  size: 'default',
+  emptyText: 'Wystąpił błąd',
+  label: '',
+  requiredMark: false,
+  immediateFetch: true,
 })
 
-const model = defineModel<string[]>({ default: () => [] })
+const { paramsData } = usePagination({
+  initialPerPage: 50,
+})
 
-const { data } = useAPI<{ data: T[] }>(props.api)
-const open = ref(false)
+const serverData = ref<T[] | PaginatedResponse<T>>()
 
-const options = computed(() => data.value?.data ?? [])
+const { value, errorMessage } = useField<string[]>(() => props.name)
 
-const selectedOptions = computed(() =>
-  options.value.filter((o) => model.value.includes(props.optionValue(o))),
+usePaginatedAPI<T>(props.api, {
+  key: props.apiKey,
+  immediate: props.immediateFetch,
+  params: props.withPagination ? paramsData : undefined,
+  onResponse: ({ response }: { response: { _data: unknown } }) => {
+    if (!props.withPagination) {
+      serverData.value = response._data as T[]
+      return
+    }
+    const data = response._data as PaginatedResult<T>
+    let isPaginating = false
+    if (
+      serverData.value &&
+      typeof serverData.value === 'object' &&
+      'pagination' in serverData.value
+    ) {
+      isPaginating =
+        data.current_page >
+        (serverData.value as PaginatedResponse<T>).pagination.current_page
+    }
+
+    serverData.value = {
+      pagination: {
+        current_page: data.current_page,
+        from: data.from,
+        last_page: data.last_page,
+        per_page: data.per_page,
+        to: data.to,
+        total: data.total,
+      },
+      data: isPaginating
+        ? [
+            ...((serverData.value as PaginatedResponse<T>)?.data ?? []),
+            ...data.data,
+          ]
+        : [...data.data],
+    }
+  },
+})
+
+const options = computed(() => {
+  if (!serverData.value) return []
+  if (Array.isArray(serverData.value)) return serverData.value as T[]
+  return (serverData.value as PaginatedResponse<T>).data ?? []
+})
+
+const selectedLabels = computed(() =>
+  (value.value ?? []).map((v) => {
+    const option = options.value.find((o) => props.optionValue(o) === v)
+    return option ? props.optionLabel(option) : v
+  }),
 )
-
-const isSelected = (option: T) => model.value.includes(props.optionValue(option))
-
-function toggle(option: T) {
-  const val = props.optionValue(option)
-  model.value = model.value.includes(val)
-    ? model.value.filter((v) => v !== val)
-    : [...model.value, val]
-}
-
-function remove(e: MouseEvent, val: string) {
-  e.stopPropagation()
-  model.value = model.value.filter((v) => v !== val)
-}
 </script>
 
 <template>
-  <div class="w-full space-y-1.5">
-    <Label v-if="label" class="px-2 text-xs font-medium text-muted-foreground">{{ label }}</Label>
-
-    <Popover v-model:open="open">
-      <PopoverTrigger as-child>
-        <div
-          role="combobox"
-          class="min-h-9 w-full border border-input bg-transparent rounded-xl px-3 py-1.5 flex flex-wrap gap-1.5 items-center cursor-pointer hover:bg-accent/30 transition-colors"
-        >
-          <span v-if="selectedOptions.length === 0" class="text-sm text-muted-foreground flex-1">
-            {{ placeholder }}
-          </span>
-          <span
-            v-for="option in selectedOptions.slice(0, 3)"
-            :key="optionValue(option)"
-            class="flex items-center gap-1.5 bg-accent text-xs pl-1 pr-1.5 py-0.5 rounded-full"
+  <div>
+    <label v-if="label && !hideLabel" :for="name" class="text-sm"
+    >{{ label }}{{ requiredMark ? '*' : '' }}</label
+    >
+    <Combobox v-model="value" multiple>
+      <ComboboxAnchor as-child>
+        <ComboboxTrigger as-child>
+          <Button
+            variant="outline"
+            class="w-[280px] justify-between"
           >
-            <Avatar v-if="optionAvatar" class="size-4">
+            <span class="truncate">
+              {{ selectedLabels.length > 0 ? selectedLabels.join(', ') : placeholder }}
+            </span>
+            <ChevronsUpDownIcon class="opacity-50" />
+          </Button>
+        </ComboboxTrigger>
+      </ComboboxAnchor>
+      <ComboboxList class="w-[280px]" align="start">
+        <ComboboxInput :placeholder="placeholder" />
+        <ComboboxEmpty>{{ emptyText }}</ComboboxEmpty>
+          <ComboboxGroup>
+          <ComboboxItem
+            v-for="option in options"
+            :key="optionValue(option)"
+            :value="optionValue(option)"
+          >
+            <div
+              class="border-input data-[selected=true]:border-primary data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground pointer-events-none size-4 shrink-0 rounded-[4px] border transition-all select-none *:[svg]:opacity-0 data-[selected=true]:*:[svg]:opacity-100"
+              :data-selected="(value ?? []).includes(optionValue(option))"
+            >
+              <CheckIcon class="size-3.5 text-current" />
+            </div>
+            <Avatar v-if="optionAvatar" class="size-5">
               <AvatarImage :src="optionAvatar(option) ?? ''" />
-              <AvatarFallback class="text-[8px]">{{ optionLabel(option)[0] }}</AvatarFallback>
+              <AvatarFallback>{{ optionLabel(option)[0] }}</AvatarFallback>
             </Avatar>
             {{ optionLabel(option) }}
-            <button
-              type="button"
-              class="text-muted-foreground hover:text-foreground"
-              @click="remove($event, optionValue(option))"
-            >
-              <XIcon class="size-3" />
-            </button>
-          </span>
-          <span v-if="selectedOptions.length > 3" class="text-xs text-muted-foreground">
-            +{{ selectedOptions.length - 3 }}
-          </span>
-          <ChevronsUpDownIcon class="size-4 shrink-0 opacity-50 ml-auto" />
-        </div>
-      </PopoverTrigger>
-      <PopoverContent class="p-0 w-[--radix-popover-trigger-width]" align="start">
-        <Command>
-          <CommandInput placeholder="Szukaj..." />
-          <CommandList class="[&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-thumb]:rounded-full">
-            <CommandEmpty>Brak wyników</CommandEmpty>
-            <CommandGroup>
-              <CommandItem
-                v-for="option in options"
-                :key="optionValue(option)"
-                :value="optionLabel(option)"
-                class="gap-2"
-                @select="toggle(option)"
-              >
-                <Avatar v-if="optionAvatar" class="size-6">
-                  <AvatarImage :src="optionAvatar(option) ?? ''" />
-                  <AvatarFallback class="text-[10px]">{{ optionLabel(option)[0] }}</AvatarFallback>
-                </Avatar>
-                <span class="flex-1">{{ optionLabel(option) }}</span>
-                <CheckIcon v-if="isSelected(option)" class="size-4 text-primary" />
-              </CommandItem>
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+          </ComboboxItem>
+        </ComboboxGroup>
+      </ComboboxList>
+      <span v-if="errorMessage" class="text-xs">{{ errorMessage }}</span>
+    </Combobox>
   </div>
 </template>
