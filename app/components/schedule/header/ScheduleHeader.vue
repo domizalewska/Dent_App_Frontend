@@ -3,10 +3,15 @@ import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
 import ScheduleEventDialog from '~/components/schedule/dialog/ScheduleEventDialog.vue'
 import { useDialog } from '~/composables/useDialog'
+import { UsersEndpoints } from '~/features/users'
+import type { User } from '~/types'
 
 interface Props {
   currentTitle: string
   currentView?: string
+  showSettings?: boolean
+  showMonth?: boolean
+  showSelect?: boolean
 }
 
 defineProps<Props>()
@@ -34,7 +39,19 @@ const { open, close, activeProps, activeComponent } = useDialog()
     </span>
 
     <div class="flex flex-wrap items-center gap-1">
-      <ScheduleSettingButton />
+      <BaseMultiselect
+        v-if="showSelect"
+        name="doctors"
+        api-key="schedule-header-doctors"
+        size="sm"
+        :api="UsersEndpoints.LIST_SELECT"
+        :option-value="(u: User) => u.uuid"
+        :option-label="(u: User) => `${u.first_name} ${u.last_name}`"
+        :option-avatar="(u: User) => u.avatar_path ?? u.profile_picture"
+        placeholder="Dodaj uczestników..."
+        hide-label
+      />
+      <ScheduleSettingButton v-if="showSettings" />
       <Button size="xs" variant="outline" @click="open(ScheduleEventDialog, {})">
         + Dodaj wpis
       </Button>
@@ -46,6 +63,7 @@ const { open, close, activeProps, activeComponent } = useDialog()
         Tydzień
       </Button>
       <Button
+        v-if="showMonth"
         size="xs"
         :variant="currentView === 'dayGridMonth' ? 'default' : 'outline'"
         @click="emit('month')"

@@ -172,6 +172,7 @@ const options = computed(() => ({
           <ScheduleHeader
             :current-title="calendarTitle"
             :current-view="currentView"
+            show-select
             @prev="handlePrev"
             @next="handleNext"
             @today="handleToday"
