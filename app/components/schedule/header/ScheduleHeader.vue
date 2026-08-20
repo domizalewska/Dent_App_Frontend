@@ -12,9 +12,16 @@ interface Props {
   showSettings?: boolean
   showMonth?: boolean
   showSelect?: boolean
+  selectApi?: string
+  optionLabel?: (item: any) => string
+  optionAvatar?: (item: any) => string | undefined
 }
 
-defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  selectApi: UsersEndpoints.LIST_SELECT,
+  optionLabel: (u: any) => `${u.first_name} ${u.last_name}`,
+  optionAvatar: (u: any) => u.avatar_path ?? u.profile_picture,
+})
 const emit = defineEmits(['prev', 'next', 'today', 'week', 'month'])
 
 const { open, close, activeProps, activeComponent } = useDialog()
@@ -44,10 +51,10 @@ const { open, close, activeProps, activeComponent } = useDialog()
         name="doctors"
         api-key="schedule-header-doctors"
         size="xs"
-        :api="UsersEndpoints.LIST_SELECT"
+        :api="props.selectApi"
         :option-value="(u: User) => u.uuid"
-        :option-label="(u: User) => `${u.first_name} ${u.last_name}`"
-        :option-avatar="(u: User) => u.avatar_path ?? u.profile_picture"
+        :option-label="props.optionLabel"
+        :option-avatar="props.optionAvatar"
         placeholder="Dodaj uczestników..."
         hide-label
       />

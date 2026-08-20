@@ -10,10 +10,10 @@ import { useDialog } from '~/composables/useDialog.ts'
 import { useSchedule } from '~/composables/schedule/useSchedule'
 import { useDayOfWeek } from '~/composables/schedule/useDayOfWeek'
 import ScheduleEventDialog from '~/components/schedule/dialog/ScheduleEventDialog.vue'
-import type { DoctorResource, ScheduleEvent, ScheduleRule, User } from '~/types'
+import type { DoctorResource, ScheduleEvent, ScheduleRule } from '~/types'
 import { CalendarType, DayOfWeek } from '~/types'
 import { ScheduleRuleEndpoints, scheduleRulesKey } from '~/features/schedule'
-import { UsersEndpoints } from '~/features/users'
+import { DentistsEndpoints } from '~/features/dentists'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -61,7 +61,8 @@ const rules = computed(() => rulesData.value?.data ?? [])
 const calendarTitle = ref('')
 const currentView = ref('resourceTimeGridWeek')
 
-const { data: doctorsData } = usePaginatedAPI<User>(UsersEndpoints.LIST_SELECT, {
+type DentistSelectItem = { uuid: string; name: string }
+const { data: doctorsData } = usePaginatedAPI<DentistSelectItem>(DentistsEndpoints.LIST_SELECT, {
   key: 'all-doctors-list',
 })
 
@@ -193,11 +194,11 @@ const options = computed(() => ({
   initialView: 'resourceTimeGridWeek',
   datesAboveResources: true,
   resources: (doctorsData.value?.data ?? [])
-    .filter((doctor: User) => (values.doctors ?? []).includes(doctor.uuid))
+    .filter((doctor) => (values.doctors ?? []).includes(doctor.uuid))
     .map(
-      (doctor: User): DoctorResource => ({
+      (doctor): DoctorResource => ({
         id: doctor.uuid,
-        title: `${doctor.first_name} ${doctor.last_name}`,
+        title: doctor.name,
       }),
     ),
   locale: plLocale,
@@ -235,6 +236,9 @@ const options = computed(() => ({
             :current-title="calendarTitle"
             :current-view="currentView"
             show-select
+            :select-api="DentistsEndpoints.LIST_SELECT"
+            :option-label="(d: any) => d.name"
+            :option-avatar="() => undefined"
             @prev="handlePrev"
             @next="handleNext"
             @today="handleToday"
