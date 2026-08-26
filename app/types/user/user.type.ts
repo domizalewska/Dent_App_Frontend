@@ -1,9 +1,15 @@
 import type { JobPosition, TreatmentType } from '~/types'
 
+export enum UserStatus {
+  ACTIVE = 'ACTIVE',
+  NON_ACTIVE = 'NON_ACTIVE',
+}
+
 export type User = {
   uuid: string
   first_name: string
   last_name: string
+  status?: UserStatus
   email: string
   pesel: string
   private_email?: string
@@ -16,6 +22,7 @@ export type User = {
   created_at: string
   updated_at: string
   profile_picture?: string
+  avatar_path?: string
   background_picture?: string
   job_position?: JobPosition
   pwz_number?: string

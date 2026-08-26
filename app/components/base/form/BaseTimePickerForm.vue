@@ -23,12 +23,14 @@ interface Props {
   enableMinutes?: boolean
   range?: boolean
   inputDisabled?: boolean
+  size?: 'sm' | 'default'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   enableMinutes: true,
   enableSeconds: false,
   range: false,
+  size: 'default',
 })
 
 const { rules, label: labelRef } = toRefs(props)
@@ -101,7 +103,7 @@ function formatTime(value: TimeModel | null) {
           :placeholder="placeholder ?? 'HH:mm'"
           :disabled="inputDisabled"
           :aria-invalid="!!errorMessage"
-          class="rounded-xl cursor-pointer"
+          :class="['rounded-md cursor-pointer', size === 'sm' ? 'h-8 text-xs' : '']"
           readonly
         />
       </template>

@@ -58,10 +58,20 @@ const { data: teamData, status: teamStatus } = await useAPI<User[]>(TeamActivity
         />
       </div>
       <div class="flex gap-6 w-full">
-        <ScheduleWidgets :appointments="appointments" :loading="status === 'pending'" />
+        <ClientOnly>
+          <ScheduleWidgets :appointments="appointments" :loading="status === 'pending'" />
+          <template #fallback>
+            <ScheduleWidgets :appointments="[]" :loading="true" />
+          </template>
+        </ClientOnly>
       </div>
       <div class="flex gap-6 w-full">
-        <TeamActivityWidget :users="teamData ?? []" :loading="teamStatus === 'pending'" />
+        <ClientOnly>
+          <TeamActivityWidget :users="teamData ?? []" :loading="teamStatus === 'pending'" />
+          <template #fallback>
+            <TeamActivityWidget :users="[]" :loading="true" />
+          </template>
+        </ClientOnly>
       </div>
     </div>
   </div>

@@ -23,7 +23,7 @@ const { value, errorMessage } = useField<string>(() => props.name)
       :name="name"
       :placeholder="placeholder"
       :aria-invalid="!!errorMessage"
-      class="rounded-xl placeholder:text-sm resize-none"
+      class="rounded-md placeholder:text-sm resize-none"
     />
     <p v-if="errorMessage" class="text-xs text-destructive">{{ errorMessage }}</p>
   </div>

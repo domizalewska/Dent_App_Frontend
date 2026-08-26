@@ -1,0 +1,72 @@
+<script setup lang="ts">
+import { XIcon, UserRoundPlusIcon, Settings2Icon } from 'lucide-vue-next'
+import type { MessageGroupType, User } from '~/types'
+
+interface Props {
+  group?: MessageGroupType
+  user?: User
+}
+
+const props = defineProps<Props>()
+const emit = defineEmits<{ close: []; 'create-group': []; 'group-settings': [] }>()
+
+const { user: currentUser } = useAuth()
+const isPrivate = computed(() => !!props.user || (props.group?.users.length ?? 0) <= 2)
+const otherUser = computed(
+  () =>
+    props.user ??
+    props.group?.users.find((u) => u.uuid !== currentUser.value?.uuid) ??
+    props.group?.users[0],
+)
+</script>
+
+<template>
+  <div class="flex items-center gap-3 border-b border-border px-4 py-3 bg-card shrink-0">
+    <div class="relative shrink-0">
+      <template v-if="isPrivate">
+        <BaseUserAvatar v-if="otherUser" :user="otherUser" size="size-8" show-status />
+      </template>
+      <div v-else class="flex items-center">
+        <BaseUserAvatar
+          v-for="(user, index) in group?.users.slice(0, 3)"
+          :key="user.uuid"
+          :user="user"
+          size="size-7"
+          class="ring-1 ring-background ring-offset-0"
+          :class="index > 0 ? '-ml-2' : ''"
+        />
+      </div>
+    </div>
+
+    <div class="flex-1 min-w-0">
+      <p class="text-sm font-semibold truncate">
+        {{ isPrivate ? `${otherUser?.first_name} ${otherUser?.last_name}` : group?.name }}
+      </p>
+      <p class="text-xs text-muted-foreground">
+        {{ isPrivate ? otherUser?.job_position?.name : `${group?.users.length} uczestników` }}
+      </p>
+    </div>
+
+    <Button
+      v-if="isPrivate"
+      variant="ghost"
+      size="icon"
+      class="shrink-0 size-8"
+      @click="emit('create-group')"
+    >
+      <UserRoundPlusIcon class="size-4" />
+    </Button>
+    <Button
+      v-else
+      variant="ghost"
+      size="icon"
+      class="shrink-0 size-8"
+      @click="emit('group-settings')"
+    >
+      <Settings2Icon class="size-4" />
+    </Button>
+    <Button variant="ghost" size="icon" class="shrink-0 size-8" @click="emit('close')">
+      <XIcon class="size-4" />
+    </Button>
+  </div>
+</template>

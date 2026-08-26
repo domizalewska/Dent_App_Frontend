@@ -1,47 +1,60 @@
 import { toast } from 'vue-sonner'
 import { ScheduleEndpoints } from '~/features/schedule'
-import type { ScheduleEntry, ScheduleEntryPayload } from '~/types'
+import { CalendarType } from '~/types'
+import type { ScheduleEvent, ScheduleEventPayload } from '~/types'
 import { toastSuccessStyle, toastErrorStyle } from '~/utils/toast'
 
-const mockEntries: ScheduleEntry[] = [
+const mockEvents: ScheduleEvent[] = [
   {
     uuid: 'mock-1',
-    kind: 'work',
-    start: '2026-07-28T08:00:00',
-    end: '2026-07-28T16:00:00',
+    type: CalendarType.WORK,
+    date: '2026-08-04',
+    start_time: '08:00',
+    end_time: '16:00',
+    date_from: '',
+    date_to: '',
   },
   {
     uuid: 'mock-2',
-    kind: 'work',
-    start: '2026-07-29T09:00:00',
-    end: '2026-07-29T17:00:00',
+    type: CalendarType.WORK,
+    date: '2026-08-05',
+    start_time: '09:00',
+    end_time: '17:00',
+    date_from: '',
+    date_to: '',
   },
   {
     uuid: 'mock-3',
-    kind: 'vacation',
-    start: '2026-07-21',
-    end: '2026-07-26',
+    type: CalendarType.VACATION,
+    date: '',
+    start_time: '',
+    end_time: '',
+    date_from: '2026-08-11',
+    date_to: '2026-08-15',
   },
   {
     uuid: 'mock-4',
-    kind: 'sick_leave',
-    start: '2026-07-14',
-    end: '2026-07-16',
+    type: CalendarType.SICK_LEAVE,
+    date: '',
+    start_time: '',
+    end_time: '',
+    date_from: '2026-07-28',
+    date_to: '2026-07-30',
   },
 ]
 
-const entries = ref<ScheduleEntry[]>([...mockEntries])
+const events = ref<ScheduleEvent[]>([...mockEvents])
 const isLoading = ref(false)
 
 export function useSchedule() {
   const { $api } = useNuxtApp()
   const api = $api as typeof $fetch
 
-  async function fetchEntries() {
+  async function fetchEvents() {
     try {
       isLoading.value = true
-      const response = await api<{ data: ScheduleEntry[] }>(ScheduleEndpoints.BASE)
-      entries.value = response.data
+      const response = await api<{ data: ScheduleEvent[] }>(ScheduleEndpoints.BASE)
+      events.value = response.data
     } catch {
       // keep mock data on error during development
     } finally {
@@ -49,32 +62,43 @@ export function useSchedule() {
     }
   }
 
-  async function addEntry(payload: ScheduleEntryPayload) {
+  async function addEvent(payload: ScheduleEventPayload) {
     try {
-      const response = await api<{ data: ScheduleEntry }>(ScheduleEndpoints.BASE, {
+      const response = await api<{ data: ScheduleEvent }>(ScheduleEndpoints.BASE, {
         method: 'POST',
         body: payload,
       })
-      entries.value.push(response.data)
+      events.value.push(response.data)
       toast.success('Wpis został dodany', { style: toastSuccessStyle })
     } catch {
-      // optimistic mock for development
-      entries.value.push({ ...payload, uuid: `mock-${Date.now()}` })
+      events.value.push({ ...payload, uuid: `mock-${Date.now()}` })
       toast.success('Wpis został dodany', { style: toastSuccessStyle })
     }
   }
 
-  async function deleteEntry(uuid: string) {
-    const previous = [...entries.value]
-    entries.value = entries.value.filter((e) => e.uuid !== uuid)
+  async function updateEvent(uuid: string, payload: ScheduleEventPayload) {
+    const previous = [...events.value]
+    events.value = events.value.map((e) => (e.uuid === uuid ? { ...payload, uuid } : e))
+    try {
+      await api(ScheduleEndpoints.DETAILS(uuid), { method: 'PUT', body: payload })
+      toast.success('Wpis został zaktualizowany', { style: toastSuccessStyle })
+    } catch {
+      events.value = previous
+      toast.error('Błąd podczas aktualizacji', { style: toastErrorStyle })
+    }
+  }
+
+  async function deleteEvent(uuid: string) {
+    const previous = [...events.value]
+    events.value = events.value.filter((e) => e.uuid !== uuid)
     try {
       await api(ScheduleEndpoints.DETAILS(uuid), { method: 'DELETE' })
       toast.success('Wpis został usunięty', { style: toastSuccessStyle })
     } catch {
-      entries.value = previous
+      events.value = previous
       toast.error('Błąd podczas usuwania', { style: toastErrorStyle })
     }
   }
 
-  return { entries, isLoading, fetchEntries, addEntry, deleteEntry }
+  return { events, isLoading, fetchEvents, addEvent, updateEvent, deleteEvent }
 }

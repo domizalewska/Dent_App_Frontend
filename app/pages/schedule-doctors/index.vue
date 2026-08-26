@@ -23,6 +23,15 @@ setHeader('Grafik lekarzy')
 
 const currentDate = ref(new Date())
 const calendarRef = ref()
+const calendarWrapper = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  const observer = new ResizeObserver(() => {
+    calendarRef.value?.getApi()?.updateSize()
+  })
+  if (calendarWrapper.value) observer.observe(calendarWrapper.value)
+  onUnmounted(() => observer.disconnect())
+})
 
 function goPrev() {
   calendarRef.value?.getApi().prev()
@@ -211,7 +220,7 @@ const calendarOptions = computed(() => ({
       Wczytywanie grafiku...
     </div>
 
-    <div v-else class="flex-1 overflow-auto doctors-schedule">
+    <div ref="calendarWrapper" v-else class="flex-1 overflow-auto doctors-schedule">
       <ClientOnly>
         <FullCalendar ref="calendarRef" :options="calendarOptions" />
       </ClientOnly>
