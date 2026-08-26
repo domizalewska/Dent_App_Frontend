@@ -8,97 +8,73 @@
 <div class="col-content">
 <div class="tsd-page-title">
 <h1>Dent App — Types</h1></div>
-<div class="tsd-panel tsd-typography"><h1 id="🦷-dent-app-frontend" class="tsd-anchor-link">🦷 Dent App Frontend<a href="#🦷-dent-app-frontend" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1>
-<p>Frontend aplikacji <strong>Dental Scheduler</strong> – systemu planowania grafików dla przychodni dentystycznej. Zbudowany w oparciu o <strong>Nuxt 3 (Vue 3)</strong> i komunikuje się z backendem Laravel przez REST API.</p>
-<hr>
-<h2 id="📦-stack-technologiczny" class="tsd-anchor-link">📦 Stack technologiczny<a href="#📦-stack-technologiczny" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<div class="tsd-panel tsd-typography"><h1 id="dentapp" class="tsd-anchor-link">DentApp<a href="#dentapp" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<p>A web application for managing a dental clinic, focused on organizing employees, schedules, patients and clinic statistics.</p>
+<h2 id="tech-stack" class="tsd-anchor-link">Tech Stack<a href="#tech-stack" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <ul>
-<li><strong>Nuxt 3</strong> – framework Vue 3</li>
+<li><strong>Nuxt 3</strong></li>
+<li><strong>Vue 3</strong></li>
 <li><strong>TypeScript</strong></li>
-<li><strong>Vite</strong></li>
-<li><strong>Tailwind CSS / Nuxt UI</strong> (opcjonalnie)</li>
-<li><strong>ESLint + Prettier</strong> – linting</li>
-<li><strong>Husky + lint-staged</strong> – Git hooks</li>
-<li><strong>Playwright</strong> – testy E2E</li>
-<li><strong>Vitest</strong> – testy jednostkowe (opcjonalnie)</li>
+<li><strong>Tailwind CSS</strong></li>
+<li><strong>CI/CD</strong></li>
 </ul>
-<hr>
-<h2 id="📁-struktura-projektu" class="tsd-anchor-link">📁 Struktura projektu<a href="#📁-struktura-projektu" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
-<pre><code><span class="hl-0">dent_app_frontend</span><span class="hl-1">/</span><br/><span class="hl-1">├── </span><span class="hl-0">assets</span><span class="hl-1">/</span><br/><span class="hl-1">├── </span><span class="hl-0">components</span><span class="hl-1">/</span><br/><span class="hl-1">├── </span><span class="hl-0">composables</span><span class="hl-1">/</span><br/><span class="hl-1">├── </span><span class="hl-0">layouts</span><span class="hl-1">/</span><br/><span class="hl-1">├── </span><span class="hl-0">pages</span><span class="hl-1">/</span><br/><span class="hl-1">├── </span><span class="hl-0">tests</span><span class="hl-1">/         # </span><span class="hl-0">Playwright</span><br/><span class="hl-1">├── </span><span class="hl-0">public</span><span class="hl-1">/</span><br/><span class="hl-1">├── </span><span class="hl-0">nuxt</span><span class="hl-1">.</span><span class="hl-0">config</span><span class="hl-1">.</span><span class="hl-0">ts</span><br/><span class="hl-1">└── </span><span class="hl-0">package</span><span class="hl-1">.</span><span class="hl-0">json</span>
-</code><button>Copy</button></pre>
-
-<hr>
-<h2 id="⚙️-wymagania" class="tsd-anchor-link">⚙️ Wymagania<a href="#⚙️-wymagania" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h2 id="overview" class="tsd-anchor-link">Overview<a href="#overview" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>DentApp is a clinic management application designed to provide a clear and centralized interface for managing day-to-day clinic operations.</p>
+<p>The application includes dedicated views for:</p>
 <ul>
-<li>Node.js &gt;= 18</li>
-<li>npm lub pnpm</li>
+<li>Dashboard and key clinic metrics</li>
+<li>Employee schedules</li>
+<li>Doctor schedules</li>
+<li>Patient and employee management</li>
+<li>Employee profiles</li>
+<li>Clinic statistics</li>
+<li>Services and other administrative sections</li>
 </ul>
-<hr>
-<h2 id="🚀-instalacja" class="tsd-anchor-link">🚀 Instalacja<a href="#🚀-instalacja" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
-<pre><code class="bash"><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">install</span>
-</code><button type="button">Copy</button></pre>
-
-<h3 id="▶️-uruchomienie-w-trybie-developerskim" class="tsd-anchor-link">▶️ Uruchomienie w trybie developerskim<a href="#▶️-uruchomienie-w-trybie-developerskim" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<pre><code class="bash"><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">dev</span>
-</code><button type="button">Copy</button></pre>
-
-<p>Dostępne pod:</p>
-<pre><code><span class="hl-4">http</span><span class="hl-1">:</span><span class="hl-5">//localhost:3000</span>
-</code><button>Copy</button></pre>
-
-<h3 id="🏗-build-produkcyjny" class="tsd-anchor-link">🏗 Build produkcyjny<a href="#🏗-build-produkcyjny" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<pre><code class="bash"><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">build</span><br/><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">preview</span>
-</code><button type="button">Copy</button></pre>
-
-<hr>
-<h2 id="🔌-zmienne-środowiskowe" class="tsd-anchor-link">🔌 Zmienne środowiskowe<a href="#🔌-zmienne-środowiskowe" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
-<p>Utwórz plik <code>.env</code> w katalogu projektu:</p>
-<pre><code class="env">NUXT_PUBLIC_API_BASE_URL=http://localhost:8000/api
-</code><button type="button">Copy</button></pre>
-
-<hr>
-<h2 id="🔐-autoryzacja" class="tsd-anchor-link">🔐 Autoryzacja<a href="#🔐-autoryzacja" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h2 id="screenshots" class="tsd-anchor-link">Screenshots<a href="#screenshots" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="dashboard" class="tsd-anchor-link">Dashboard<a href="#dashboard" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The main dashboard provides an overview of the clinic, including today's appointments, active doctors, clinic utilization and the daily schedule.</p>
+<p><img src="media/dashboard.png" alt="Dashboard"></p>
+<h3 id="employee-schedule" class="tsd-anchor-link">Employee Schedule<a href="#employee-schedule" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>A weekly schedule view for organizing employee working hours, holidays and other types of schedule entries.</p>
+<p><img src="media/schedule.png" alt="Schedule"></p>
+<h3 id="statistics" class="tsd-anchor-link">Statistics<a href="#statistics" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>A statistics view presenting employee working time and its breakdown into work, holidays and leave.</p>
+<p><img src="media/statistics.png" alt="Statistics"></p>
+<h3 id="employee-profile" class="tsd-anchor-link">Employee Profile<a href="#employee-profile" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>A detailed employee profile containing personal information and dedicated sections for employee-related data.</p>
+<p><img src="media/profile.png" alt="Profile"></p>
+<h3 id="data-table" class="tsd-anchor-link">Data Table<a href="#data-table" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Example of a structured data management view used within the application.</p>
+<p><img src="media/table.webp" alt="Table"></p>
+<h2 id="project-highlights" class="tsd-anchor-link">Project Highlights<a href="#project-highlights" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <ul>
-<li>Token JWT otrzymywany z backendu (Laravel)</li>
-<li>Przechowywany w composable (<code>useAuth</code>) lub Pinia</li>
-<li>Automatycznie dodawany w nagłówkach <code>Authorization</code> przy <code>useFetch</code> lub Axios</li>
+<li>Building reusable UI components with Vue 3 and Nuxt 3</li>
+<li>Type-safe development with TypeScript</li>
+<li>Responsive interface built with Tailwind CSS</li>
+<li>Dashboard-oriented UI for presenting operational data</li>
+<li>Complex schedule and calendar-based views</li>
+<li>End-to-end development from Figma designs to frontend implementation and testing</li>
+<li>CI/CD integration</li>
 </ul>
-<hr>
-<h2 id="🧪-testy" class="tsd-anchor-link">🧪 Testy<a href="#🧪-testy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
-<h3 id="e2e-playwright" class="tsd-anchor-link">E2E (Playwright)<a href="#e2e-playwright" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<pre><code class="bash"><span class="hl-2">npx</span><span class="hl-1"> </span><span class="hl-3">playwright</span><span class="hl-1"> </span><span class="hl-3">install</span><br/><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">test:e2e</span>
+<h2 id="project-structure" class="tsd-anchor-link">Project Structure<a href="#project-structure" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>The project follows a modular frontend structure with reusable components and Nuxt 3 conventions.</p>
+<h2 id="development" class="tsd-anchor-link">Development<a href="#development" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Install dependencies:</p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span>
 </code><button type="button">Copy</button></pre>
 
-<p>Pliki testowe znajdują się w katalogu:</p>
-<pre><code><span class="hl-1">/</span><span class="hl-0">tests</span><span class="hl-1">/</span><span class="hl-0">e2e</span>
-</code><button>Copy</button></pre>
-
-<hr>
-<h2 id="🧹-linting" class="tsd-anchor-link">🧹 Linting<a href="#🧹-linting" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
-<pre><code class="bash"><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">lint</span><br/><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">lint:fix</span>
+<p>Start the development server:</p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">dev</span>
 </code><button type="button">Copy</button></pre>
 
-<hr>
-<h2 id="🪝-husky-git-hooks" class="tsd-anchor-link">🪝 Husky (Git hooks)<a href="#🪝-husky-git-hooks" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
-<ul>
-<li>Pre-commit: ESLint + Prettier</li>
-</ul>
-<p>Instalacja hooków:</p>
-<pre><code class="bash"><span class="hl-2">npx</span><span class="hl-1"> </span><span class="hl-3">husky</span><span class="hl-1"> </span><span class="hl-3">install</span>
+<p>The application will be available at:</p>
+<pre><code class="text">http://localhost:3000
 </code><button type="button">Copy</button></pre>
 
-<hr>
-<h2 id="🔄-workflow-git" class="tsd-anchor-link">🔄 Workflow Git<a href="#🔄-workflow-git" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
-<pre><code><span class="hl-0">main</span><br/><span class="hl-1"> └── </span><span class="hl-0">develop</span><br/><span class="hl-1">      └── </span><span class="hl-0">feature</span><span class="hl-5">/*</span><br/><span class="hl-5">      └── bugfix/*</span>
-</code><button>Copy</button></pre>
-
-<ul>
-<li>Brak commitów bezpośrednio do <code>main</code></li>
-<li>Każdy feature → Pull Request</li>
-</ul>
-<hr>
-<h2 id="📄-licencja" class="tsd-anchor-link">📄 Licencja<a href="#📄-licencja" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
-<p>Projekt – tylko do użytku przychodni dentystycznej.</p>
+<h2 id="author" class="tsd-anchor-link">Author<a href="#author" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p><strong>Dominika Zalewska</strong></p>
+<p>Fullstack Developer — PHP/Laravel, Vue 3/Nuxt 3, TypeScript</p>
+<p><a href="https://github.com/domizalewska">GitHub</a></p>
 </div></div>
 <div class="col-sidebar">
 <div class="page-menu">
@@ -114,26 +90,22 @@
 <div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
 <details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg>
 <h3>On This Page</h3></summary>
-<div class="tsd-accordion-details"><a href="#🦷-dent-app-frontend"><span>🦷 <wbr/>Dent <wbr/>App <wbr/>Frontend</span></a>
+<div class="tsd-accordion-details"><a href="#dentapp"><span>Dent<wbr/>App</span></a>
 <ul>
-<li><a href="#📦-stack-technologiczny"><span>📦 <wbr/>Stack technologiczny</span></a></li>
-<li><a href="#📁-struktura-projektu"><span>📁 <wbr/>Struktura projektu</span></a></li>
-<li><a href="#⚙️-wymagania"><span>⚙️ <wbr/>Wymagania</span></a></li>
-<li><a href="#🚀-instalacja"><span>🚀 <wbr/>Instalacja</span></a></li>
+<li><a href="#tech-stack"><span>Tech <wbr/>Stack</span></a></li>
+<li><a href="#overview"><span>Overview</span></a></li>
+<li><a href="#screenshots"><span>Screenshots</span></a></li>
 <li>
 <ul>
-<li><a href="#▶️-uruchomienie-w-trybie-developerskim"><span>▶️ <wbr/>Uruchomienie w trybie developerskim</span></a></li>
-<li><a href="#🏗-build-produkcyjny"><span>🏗 <wbr/>Build produkcyjny</span></a></li></ul></li>
-<li><a href="#🔌-zmienne-środowiskowe"><span>🔌 <wbr/>Zmienne środowiskowe</span></a></li>
-<li><a href="#🔐-autoryzacja"><span>🔐 <wbr/>Autoryzacja</span></a></li>
-<li><a href="#🧪-testy"><span>🧪 <wbr/>Testy</span></a></li>
-<li>
-<ul>
-<li><a href="#e2e-playwright"><span>E2<wbr/>E (<wbr/>Playwright)</span></a></li></ul></li>
-<li><a href="#🧹-linting"><span>🧹 <wbr/>Linting</span></a></li>
-<li><a href="#🪝-husky-git-hooks"><span>🪝 <wbr/>Husky (<wbr/>Git hooks)</span></a></li>
-<li><a href="#🔄-workflow-git"><span>🔄 <wbr/>Workflow <wbr/>Git</span></a></li>
-<li><a href="#📄-licencja"><span>📄 <wbr/>Licencja</span></a></li></ul></div></details></div>
+<li><a href="#dashboard"><span>Dashboard</span></a></li>
+<li><a href="#employee-schedule"><span>Employee <wbr/>Schedule</span></a></li>
+<li><a href="#statistics"><span>Statistics</span></a></li>
+<li><a href="#employee-profile"><span>Employee <wbr/>Profile</span></a></li>
+<li><a href="#data-table"><span>Data <wbr/>Table</span></a></li></ul></li>
+<li><a href="#project-highlights"><span>Project <wbr/>Highlights</span></a></li>
+<li><a href="#project-structure"><span>Project <wbr/>Structure</span></a></li>
+<li><a href="#development"><span>Development</span></a></li>
+<li><a href="#author"><span>Author</span></a></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="modules.html">Dent App — Types</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">
