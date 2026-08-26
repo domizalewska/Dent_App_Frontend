@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { SearchIcon } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
-import { ButtonGroup } from '@/components/ui/button-group';
-import { Input } from '@/components/ui/input';
-import { useDebounceFn } from '@vueuse/core';
-import { onMounted, ref } from 'vue';
+import { SearchIcon } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
+import { Input } from '@/components/ui/input'
+import { useDebounceFn } from '@vueuse/core'
+import { onMounted, ref } from 'vue'
 
 interface Props {
-  modelValue: string | null;
+  modelValue?: string;
 }
 
 const props = defineProps<Props>()

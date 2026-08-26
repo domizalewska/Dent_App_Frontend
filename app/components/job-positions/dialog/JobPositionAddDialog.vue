@@ -3,7 +3,7 @@ import { useJobPositions } from '~/composables/job-positions/useJobPositions'
 import type { JobPosition } from '~/types/job-position/job-position.type'
 import JobPositionForm from '~/components/job-positions/form/JobPositionForm.vue'
 
-const emit = defineEmits<{ close: [] }>()
+const emit = defineEmits(['close'])
 
 const { addRecord } = useJobPositions()
 

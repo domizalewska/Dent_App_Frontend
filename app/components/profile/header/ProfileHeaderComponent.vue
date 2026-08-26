@@ -83,5 +83,5 @@ function handleAvatarAction() {
     </div>
   </div>
 
-  <ContactDialog v-model:open="isEditOpen" :user="user" />
+  <ContactDialog v-if="isEditOpen" :user="user" @close="isEditOpen = false" />
 </template>

@@ -8,6 +8,7 @@ import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import BaseSwitchForm from '~/components/base/form/BaseSwitchForm.vue'
 import BaseSelectForm from '~/components/base/form/BaseSelectForm.vue'
 import { JobPositionsEndpoints } from '~/features/job-positions'
+import BaseAcceptDeclineButtons from '~/components/base/buttons/BaseAcceptDeclineButtons.vue'
 
 interface Props {
   user: User
@@ -15,27 +16,26 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const emit = defineEmits<{
-  submitted: []
-  cancelled: []
-}>()
-
-const { editProfile } = useProfile(props.user.uuid)
+const emit = defineEmits(['submit', 'cancel'])
 
 const formSchema = toTypedSchema(
   z.object({
     first_name: z.string().nonempty('Imię jest wymagane'),
     last_name: z.string().nonempty('Nazwisko jest wymagane'),
     pesel: z.string().regex(/^\d{11}$/, 'PESEL musi mieć 11 cyfr'),
-    street: z.string().nonempty('Ulica jest wymagana'),
-    house_number: z.string().nonempty('Numer domu jest wymagany'),
+    street: z.string().optional(),
+    house_number: z.string().optional(),
     apartment_number: z.string().optional(),
-    postal_code: z.string().regex(/^\d{2}-\d{3}$/, 'Format: NN-NNN'),
-    city: z.string().nonempty('Miejscowość jest wymagana'),
+    postal_code: z
+      .string()
+      .regex(/^\d{2}-\d{3}$/, 'Format: __-___')
+      .or(z.literal(''))
+      .optional(),
+    city: z.string().optional(),
     email: z.string().email('Nieprawidłowy adres email'),
     private_email: z.string().email('Nieprawidłowy adres email').or(z.literal('')).optional(),
-    phone_number: z.string().optional(),
-    private_phone_number: z.string().optional(),
+    phone_number: z.string().nullish(),
+    private_phone_number: z.string().nullish(),
     job_position_uuid: z.string().optional(),
     pwz_number: z.string().optional(),
     is_active: z.boolean(),
@@ -53,7 +53,7 @@ const initialValues = {
   city: props.user.city ?? '',
   email: props.user.email,
   private_email: props.user.private_email ?? '',
-  phone_number: props.user.phone_number,
+  phone_number: props.user.phone_number ?? '',
   private_phone_number: props.user.private_phone_number ?? '',
   job_position_uuid: props.user.job_position?.uuid ?? '',
   pwz_number: props.user.pwz_number ?? '',
@@ -61,8 +61,7 @@ const initialValues = {
 }
 
 async function onSubmit(values: UserPayload) {
-  await editProfile(values)
-  emit('submitted')
+  emit('submit', values)
 }
 </script>
 
@@ -139,9 +138,10 @@ async function onSubmit(values: UserPayload) {
           name="job_position_uuid"
           label="Stanowisko"
           placeholder="Wybierz stanowisko"
-          :api="JobPositionsEndpoints.LIST_SELECT"
+          :api-url="JobPositionsEndpoints.LIST_SELECT"
           :option-value="(e: JobPosition) => e.uuid"
           :option-label="(e: JobPosition) => e.name"
+          immediate-fetch
         />
         <BaseInputForm name="pwz_number" label="Numer PWZ" placeholder="Wpisz numer PWZ" />
       </div>
@@ -155,10 +155,12 @@ async function onSubmit(values: UserPayload) {
     </div>
 
     <div class="flex items-center justify-end gap-3 px-4 py-3">
-      <Button variant="ghost" size="sm" type="reset" class="rounded-lg" @click="emit('cancelled')">
-        Anuluj
-      </Button>
-      <Button size="sm" type="submit" class="min-w-[140px] rounded-lg">Zapisz zmiany</Button>
+      <BaseAcceptDeclineButtons
+        accept-title="Zapisz"
+        decline-title="Anuluj"
+        @submit="onSubmit"
+        @decline="emit('cancel')"
+      />
     </div>
   </Form>
 </template>

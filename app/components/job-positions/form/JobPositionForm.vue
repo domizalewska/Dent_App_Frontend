@@ -6,7 +6,7 @@ import { Form } from 'vee-validate'
 import type { JobPosition } from '~/types/job-position/job-position.type'
 
 const props = defineProps<{
-  initialValues?: Partial<JobPosition>
+  initialValues?: JobPosition
 }>()
 
 const emit = defineEmits(['submit', 'cancel'])
