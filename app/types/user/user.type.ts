@@ -23,9 +23,8 @@ export type User = {
   updated_at: string
   profile_picture?: string
   avatar_path?: string
-  background_picture?: string
-  job_position?: JobPosition
-  pwz_number?: string
+  background_path?: string
+  job_positions?: JobPosition
   competencies: TreatmentType[]
   street: string
   house_number: string
