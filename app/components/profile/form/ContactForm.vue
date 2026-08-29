@@ -7,6 +7,7 @@ import type { JobPosition } from '~/types/job-position/job-position.type'
 import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import BaseSwitchForm from '~/components/base/form/BaseSwitchForm.vue'
 import BaseSelectForm from '~/components/base/form/BaseSelectForm.vue'
+import BasePhoneForm from '~/components/base/form/BasePhoneForm.vue'
 import { JobPositionsEndpoints } from '~/features/job-positions'
 import BaseAcceptDeclineButtons from '~/components/base/buttons/BaseAcceptDeclineButtons.vue'
 
@@ -63,8 +64,8 @@ const initialValues = {
   city: props.user.city ?? '',
   email: props.user.email,
   private_email: props.user.private_email ?? '',
-  phone_number: props.user.phone_number ?? '',
-  private_phone_number: props.user.private_phone_number ?? '',
+  phone_number: props.user.phone_number?.find((p) => p.type === 'WORK')?.number ?? '',
+  private_phone_number: props.user.phone_number?.find((p) => p.type === 'PRIVATE')?.number ?? '',
   job_position_uuid: props.user.job_positions?.[0]?.uuid ?? '',
   is_active: props.user.is_active,
 }
@@ -94,6 +95,14 @@ async function onSubmit(values: UserPayload) {
           <BaseInputForm name="first_name" label="Imię" placeholder="Wpisz imię" />
           <BaseInputForm name="last_name" label="Nazwisko" placeholder="Wpisz nazwisko" />
         </div>
+        <div class="flex flex-row gap-2 w-1/2">
+          <BaseInputForm
+            name="pesel"
+            label="PESEL"
+            placeholder="_ _ _ _ _ _ _ _ _ _ _"
+            mask="###########"
+          />
+        </div>
       </div>
 
       <div class="flex flex-col gap-2">
@@ -116,7 +125,12 @@ async function onSubmit(values: UserPayload) {
           />
         </div>
         <div class="flex flex-row gap-2 w-1/2">
-          <BaseInputForm name="postal_code" label="Kod pocztowy" placeholder="__-___" />
+          <BaseInputForm
+            name="postal_code"
+            label="Kod pocztowy"
+            placeholder="__-___"
+            mask="##-###"
+          />
         </div>
       </div>
 
@@ -139,18 +153,8 @@ async function onSubmit(values: UserPayload) {
           />
         </div>
         <div class="flex flex-row gap-2">
-          <BaseInputForm
-            name="phone_number"
-            label="Telefon służbowy"
-            placeholder="Wpisz służbowy numer telefonu"
-            type="tel"
-          />
-          <BaseInputForm
-            name="private_phone_number"
-            label="Telefon prywatny"
-            placeholder="Wpisz prywatny numer telefonu"
-            type="tel"
-          />
+          <BasePhoneForm name="phone_number" label="Telefon służbowy" />
+          <BasePhoneForm name="private_phone_number" label="Telefon prywatny" />
         </div>
       </div>
 
@@ -159,7 +163,7 @@ async function onSubmit(values: UserPayload) {
           Informacje zawodowe
         </div>
         <BaseSelectForm
-          name="job_positions"
+          name="job_position_uuid"
           label="Stanowisko"
           placeholder="Wybierz stanowisko"
           :api-url="JobPositionsEndpoints.LIST_SELECT"
