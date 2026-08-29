@@ -1,20 +1,51 @@
 <script setup lang="ts">
 interface Props {
-  acceptTitle?: string
-  declineTitle?: string
+  confirmTitle?: string
+  cancelTitle?: string
+  confirmType?: 'submit' | 'reset' | 'button'
+  confirmDisabled?: boolean
+  confirmForm?: string
+  hideCancel?: boolean
+  hideConfirm?: boolean
 }
 
-defineProps<Props>()
-const emit = defineEmits(['submit', 'decline'])
+withDefaults(defineProps<Props>(), {
+  confirmTitle: 'Zapisz',
+  cancelTitle: 'Anuluj',
+  confirmType: 'button',
+})
+
+const emit = defineEmits(['cancel', 'accept'])
 </script>
 
 <template>
-  <div class="flex w-full flex-row flex-wrap items-center mt-4 gap-2">
-    <Button type="button" variant="secondary" class="w-full md:flex-1" size="sm" @click="emit('decline')">
-      <span class="text-color font-medium text-sm">{{ declineTitle }}</span>
+  <div class="flex w-full gap-2">
+    <slot name="start" />
+    <Button
+      v-if="!hideCancel"
+      type="button"
+      variant="secondary"
+      size="sm"
+      class="flex-1"
+      @click="emit('cancel')"
+    >
+      {{ cancelTitle }}
     </Button>
-    <Button type="submit" class="w-full md:flex-1" size="sm" @click="emit('submit')">
-      <span class="text-color font-medium text-sm">{{ acceptTitle }}</span>
+
+    <slot name="middle" />
+
+    <Button
+      v-if="!hideConfirm"
+      :type="confirmType"
+      :form="confirmForm"
+      :disabled="confirmDisabled"
+      size="sm"
+      class="flex-1"
+      @click="emit('accept')"
+    >
+      {{ confirmTitle }}
     </Button>
+
+    <slot name="end" />
   </div>
 </template>

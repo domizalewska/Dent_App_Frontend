@@ -2,6 +2,8 @@
 import { Eye, EyeOff } from 'lucide-vue-next'
 import { useField } from 'vee-validate'
 
+defineOptions({ inheritAttrs: false })
+
 interface Props {
   name: string
   label: string
@@ -25,7 +27,7 @@ const inputType = computed(() => {
 </script>
 
 <template>
-  <div class="space-y-1.5">
+  <div class="space-y-1.5 w-full">
     <Label :for="name" class="px-2 text-xs font-medium text-muted-foreground">{{ label }}</Label>
     <div class="relative">
       <Input
@@ -35,7 +37,14 @@ const inputType = computed(() => {
         :placeholder="placeholder"
         :type="inputType"
         :aria-invalid="!!errorMessage"
-        :class="['rounded-md', 'placeholder:text-sm', { 'pr-10': type === 'password' }, { 'h-8 text-xs': size === 'sm' }]"
+        v-bind="$attrs"
+        :class="[
+          'rounded-md',
+          'placeholder:text-sm',
+          'placeholder:text-muted-foreground/40',
+          { 'pr-10': type === 'password' },
+          { 'h-8 text-xs': size === 'sm' },
+        ]"
       />
       <Button
         v-if="type === 'password'"

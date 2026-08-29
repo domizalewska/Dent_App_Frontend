@@ -27,7 +27,7 @@ defineProps<Props>()
     </CardContent>
     <CardFooter>
       <slot name="footer">
-        <BaseAcceptDeclineButtons v-if="cardButtons"  accept-title="Zatwierdź" decline-title="Anuluj"/>
+        <BaseAcceptDeclineButtons v-if="cardButtons" confirm-title="Zatwierdź" cancel-title="Anuluj" />
       </slot>
     </CardFooter>
   </Card>
