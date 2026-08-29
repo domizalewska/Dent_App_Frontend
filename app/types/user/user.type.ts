@@ -24,7 +24,7 @@ export type User = {
   profile_picture?: string
   avatar_path?: string
   background_path?: string
-  job_positions?: JobPosition
+  job_positions?: JobPosition[]
   competencies: TreatmentType[]
   street: string
   house_number: string
