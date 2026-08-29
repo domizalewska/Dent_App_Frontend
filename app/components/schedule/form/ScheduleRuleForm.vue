@@ -85,9 +85,9 @@ async function onDelete(uuid: string) {
 
     <div class="px-4 py-3 mt-auto">
       <BaseAcceptDeclineButtons
-        accept-title="Zapisz"
-        decline-title="Anuluj"
-        @decline="emit('cancel')"
+        confirm-title="Zapisz"
+        cancel-title="Anuluj"
+        @cancel="emit('cancel')"
       />
     </div>
   </div>

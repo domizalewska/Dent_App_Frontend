@@ -42,6 +42,7 @@ export type UserPayload = {
   phone_number?: string
   private_phone_number?: string
   job_position_uuid?: string
+  job_positions?: string[]
   pwz_number?: string
   is_active: boolean
   competencies?: TreatmentType[]

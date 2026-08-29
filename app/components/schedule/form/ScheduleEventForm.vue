@@ -107,10 +107,10 @@ function onSubmit(values: ScheduleEventPayload) {
 
     <div class="px-4 py-3">
       <BaseAcceptDeclineButtons
-        accept-title="Zapisz"
-        decline-title="Anuluj"
-        @submit="emit('submit')"
-        @decline="emit('cancel')"
+        confirm-title="Zapisz"
+        cancel-title="Anuluj"
+        confirm-type="submit"
+        @cancel="emit('cancel')"
       />
     </div>
   </Form>

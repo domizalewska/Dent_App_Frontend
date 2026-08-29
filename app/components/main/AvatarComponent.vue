@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { LogOut, User as UserIcon } from 'lucide-vue-next'
 import type { User } from '~/types/user'
 import { useRouter } from '#vue-router'
@@ -7,6 +7,8 @@ import { ProfileRoutes } from '~/types/routes'
 
 const router = useRouter()
 const { logoutUser } = useAuth()
+
+const { assetsUrl } = useRuntimeConfig().public
 
 interface Props {
   user: User
@@ -19,8 +21,13 @@ defineProps<Props>()
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
       <Avatar class="cursor-pointer">
-        <AvatarImage v-if="user.profile_picture" :src="user.profile_picture" alt="User avatar" />
-        <AvatarFallback class="text-xs">
+        <img
+          v-if="user.avatar_path"
+          :src="`${assetsUrl}${user.avatar_path}`"
+          alt="User avatar"
+          class="w-full h-full rounded-full object-cover"
+        />
+        <AvatarFallback v-else class="text-xs">
           {{ user.first_name?.[0] }}{{ user.last_name?.[0] }}
         </AvatarFallback>
       </Avatar>
@@ -28,7 +35,13 @@ defineProps<Props>()
     <DropdownMenuContent class="w-56 rounded-xl mr-4">
       <DropdownMenuLabel class="flex items-center gap-2">
         <Avatar>
-          <AvatarFallback class="text-xs"
+          <img
+            v-if="user.avatar_path"
+            :src="`${assetsUrl}${user.avatar_path}`"
+            alt="User avatar"
+            class="w-full h-full rounded-full object-cover"
+          />
+          <AvatarFallback v-else class="text-xs"
             >{{ user.first_name?.[0] }}{{ user.last_name?.[0] }}</AvatarFallback
           >
         </Avatar>

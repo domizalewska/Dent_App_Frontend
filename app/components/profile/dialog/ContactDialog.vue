@@ -15,22 +15,18 @@ const id = route.params.id as string
 const { editProfile } = useProfile()
 
 async function handleSubmit(values: UserPayload) {
-  await editProfile(id, values).finally(() => emit('close'))
+  await editProfile(id, values)
+  emit('close')
 }
 </script>
 
 <template>
   <Dialog open @update:open="emit('close')">
-    <DialogContent class="max-h-[85vh] overflow-y-auto p-0 sm:max-w-lg">
+    <DialogContent class="max-h-[85vh] w-500 flex flex-col overflow-hidden p-0">
       <DialogHeader class="border-b px-4 py-3">
-        <DialogTitle class="text-sm font-medium">Edytuj dane pracownika</DialogTitle>
+        <DialogTitle class="text-md font-large">Edytuj dane pracownika</DialogTitle>
       </DialogHeader>
-      <ContactForm
-        :initial-values="user"
-        :user="user"
-        @submit="handleSubmit"
-        @cancel="emit('close')"
-      />
+      <ContactForm :user="user" @confirm="handleSubmit" @cancel="emit('close')" />
     </DialogContent>
   </Dialog>
 </template>

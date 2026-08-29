@@ -16,13 +16,19 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const emit = defineEmits(['submit', 'cancel'])
+const emit = defineEmits(['confirm', 'cancel'])
+
+const formRef = ref()
 
 const formSchema = toTypedSchema(
   z.object({
     first_name: z.string().nonempty('Imię jest wymagane'),
     last_name: z.string().nonempty('Nazwisko jest wymagane'),
-    pesel: z.string().regex(/^\d{11}$/, 'PESEL musi mieć 11 cyfr'),
+    pesel: z
+      .string()
+      .regex(/^\d{11}$/, 'PESEL musi mieć 11 cyfr')
+      .or(z.literal(''))
+      .optional(),
     street: z.string().optional(),
     house_number: z.string().optional(),
     apartment_number: z.string().optional(),
@@ -33,11 +39,15 @@ const formSchema = toTypedSchema(
       .optional(),
     city: z.string().optional(),
     email: z.string().email('Nieprawidłowy adres email'),
-    private_email: z.string().email('Nieprawidłowy adres email').or(z.literal('')).optional(),
-    phone_number: z.string().nullish(),
-    private_phone_number: z.string().nullish(),
+    private_email: z
+      .string()
+      .email('Nieprawidłowy adres email')
+      .or(z.literal(''))
+      .or(z.literal(null))
+      .optional(),
+    phone_number: z.string().nullish().optional(),
+    private_phone_number: z.string().nullish().optional(),
     job_position_uuid: z.string().optional(),
-    pwz_number: z.string().optional(),
     is_active: z.boolean(),
   }),
 )
@@ -55,87 +65,101 @@ const initialValues = {
   private_email: props.user.private_email ?? '',
   phone_number: props.user.phone_number ?? '',
   private_phone_number: props.user.private_phone_number ?? '',
-  job_position_uuid: props.user.job_position?.uuid ?? '',
-  pwz_number: props.user.pwz_number ?? '',
+  job_position_uuid: props.user.job_positions?.[0]?.uuid ?? '',
   is_active: props.user.is_active,
 }
 
 async function onSubmit(values: UserPayload) {
-  emit('submit', values)
+  const payload: UserPayload = {
+    ...values,
+  }
+  emit('confirm', payload)
 }
 </script>
 
 <template>
   <Form
+    ref="formRef"
     :validation-schema="formSchema"
     :initial-values="initialValues"
-    class="divide-y"
+    class="flex flex-1 flex-col min-h-0 overflow-hidden"
     @submit="onSubmit"
   >
-    <div class="px-4 py-4">
-      <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Dane podstawowe
-      </p>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 mb-4">
-        <BaseInputForm name="first_name" label="Imię" placeholder="Wpisz imię" />
-        <BaseInputForm name="last_name" label="Nazwisko" placeholder="Wpisz nazwisko" />
+    <div class="flex-1 overflow-y-auto min-h-0 px-3 py-4 flex flex-col gap-4">
+      <div class="flex flex-col gap-2">
+        <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Informacje ogólne
+        </div>
+        <div class="flex flex-row gap-2">
+          <BaseInputForm name="first_name" label="Imię" placeholder="Wpisz imię" />
+          <BaseInputForm name="last_name" label="Nazwisko" placeholder="Wpisz nazwisko" />
+        </div>
       </div>
-    </div>
 
-    <div class="px-4 py-4">
-      <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Adres</p>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-[2fr_1fr_1fr] mb-4">
-        <BaseInputForm name="street" label="Ulica" placeholder="Wpisz ulicę" />
-        <BaseInputForm name="house_number" label="Nr domu" placeholder="Nr domu" />
-        <BaseInputForm name="apartment_number" label="Nr mieszkania" placeholder="Nr mieszkania" />
+      <div class="flex flex-col gap-2">
+        <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Adres</div>
+        <div class="flex flex-row gap-2">
+          <BaseInputForm
+            name="street"
+            label="Ulica"
+            placeholder="Wpisz ulicę"
+            class="text-accent-foreground"
+          />
+          <BaseInputForm name="city" label="Miejscowość" placeholder="Wpisz miejscowość" />
+        </div>
+        <div class="flex flex-row gap-2">
+          <BaseInputForm name="house_number" label="Nr domu" placeholder="Nr domu" />
+          <BaseInputForm
+            name="apartment_number"
+            label="Nr mieszkania"
+            placeholder="Nr mieszkania"
+          />
+        </div>
+        <div class="flex flex-row gap-2 w-1/2">
+          <BaseInputForm name="postal_code" label="Kod pocztowy" placeholder="__-___" />
+        </div>
       </div>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_2fr]">
-        <BaseInputForm name="postal_code" label="Kod pocztowy" placeholder="NN-NNN" />
-        <BaseInputForm name="city" label="Miejscowość" placeholder="Wpisz miejscowość" />
-      </div>
-    </div>
 
-    <div class="px-4 py-4">
-      <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Kontakt
-      </p>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 mb-4">
-        <BaseInputForm
-          name="email"
-          label="Email służbowy"
-          placeholder="Wpisz email służbowy"
-          type="email"
-        />
-        <BaseInputForm
-          name="private_email"
-          label="Email prywatny"
-          placeholder="Wpisz email prywatny"
-          type="email"
-        />
+      <div class="flex flex-col gap-2">
+        <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Kontakt
+        </div>
+        <div class="flex flex-row gap-2">
+          <BaseInputForm
+            name="email"
+            label="Email służbowy"
+            placeholder="Wpisz email służbowy"
+            type="email"
+          />
+          <BaseInputForm
+            name="private_email"
+            label="Email prywatny"
+            placeholder="Wpisz email prywatny"
+            type="email"
+          />
+        </div>
+        <div class="flex flex-row gap-2">
+          <BaseInputForm
+            name="phone_number"
+            label="Telefon służbowy"
+            placeholder="Wpisz służbowy numer telefonu"
+            type="tel"
+          />
+          <BaseInputForm
+            name="private_phone_number"
+            label="Telefon prywatny"
+            placeholder="Wpisz prywatny numer telefonu"
+            type="tel"
+          />
+        </div>
       </div>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <BaseInputForm
-          name="phone_number"
-          label="Telefon służbowy"
-          placeholder="Wpisz służbowy numer telefonu"
-          type="tel"
-        />
-        <BaseInputForm
-          name="private_phone_number"
-          label="Telefon prywatny"
-          placeholder="Wpisz prywatny numer telefonu"
-          type="tel"
-        />
-      </div>
-    </div>
 
-    <div class="px-4 py-4">
-      <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Informacje zawodowe
-      </p>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div class="flex flex-col gap-2">
+        <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Informacje zawodowe
+        </div>
         <BaseSelectForm
-          name="job_position_uuid"
+          name="job_positions"
           label="Stanowisko"
           placeholder="Wybierz stanowisko"
           :api-url="JobPositionsEndpoints.LIST_SELECT"
@@ -143,23 +167,22 @@ async function onSubmit(values: UserPayload) {
           :option-label="(e: JobPosition) => e.name"
           immediate-fetch
         />
-        <BaseInputForm name="pwz_number" label="Numer PWZ" placeholder="Wpisz numer PWZ" />
+      </div>
+
+      <div>
+        <div class="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Status konta
+        </div>
+        <BaseSwitchForm name="is_active" label="Aktywny pracownik" />
       </div>
     </div>
 
-    <div class="px-4 py-4">
-      <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Status konta
-      </p>
-      <BaseSwitchForm name="is_active" label="Aktywny pracownik" />
-    </div>
-
-    <div class="flex items-center justify-end gap-3 px-4 py-3">
+    <div class="border-t px-3 py-3">
       <BaseAcceptDeclineButtons
-        accept-title="Zapisz"
-        decline-title="Anuluj"
-        @submit="onSubmit"
-        @decline="emit('cancel')"
+        confirm-title="Zapisz"
+        cancel-title="Anuluj"
+        confirm-type="submit"
+        @cancel="emit('cancel')"
       />
     </div>
   </Form>

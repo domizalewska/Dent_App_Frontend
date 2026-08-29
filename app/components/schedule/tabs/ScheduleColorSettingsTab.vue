@@ -44,10 +44,10 @@ const entries = Object.values(CalendarType).map((type) => ({
     <div class="px-4 py-3 flex items-center justify-between">
       <Button variant="ghost" size="sm" @click="reset">Przywróć domyślne</Button>
       <BaseAcceptDeclineButtons
-        accept-title="Zapisz"
-        decline-title="Anuluj"
-        @submit="emit('cancel')"
-        @decline="emit('cancel')"
+        confirm-title="Zapisz"
+        cancel-title="Anuluj"
+        @accept="emit('cancel')"
+        @cancel="emit('cancel')"
       />
     </div>
   </div>
