@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { User } from '~/types'
-import CompetenciesCard from '~/components/profile/card/CompetenciesCard.vue'
 import ProfileBackgroundPicture from '~/components/profile/header/ProfileBackgroundPicture.vue'
 
 interface Props {
@@ -11,8 +10,8 @@ defineProps<Props>()
 
 const tabs = [
   { name: 'Dane podstawowe', value: 'info' },
-  { name: 'Kompetencje', value: 'competencies' },
-  { name: 'Archiwum wizyt', value: 'visits' },
+  // { name: 'Kompetencje', value: 'competencies' },
+  // { name: 'Archiwum wizyt', value: 'visits' },
   { name: 'Hasło', value: 'password' },
 ]
 </script>
@@ -26,12 +25,7 @@ const tabs = [
       </CardContent>
       <div class="px-6 pt-2">
         <TabsList variant="line" class="w-full">
-          <TabsTrigger
-            v-for="tab in tabs"
-            :key="tab.value"
-            :value="tab.value"
-            class="flex-1"
-          >
+          <TabsTrigger v-for="tab in tabs" :key="tab.value" :value="tab.value" class="flex-1">
             {{ tab.name }}
           </TabsTrigger>
         </TabsList>
@@ -41,9 +35,9 @@ const tabs = [
     <TabsContent value="info">
       <ProfileCard :user="user" />
     </TabsContent>
-    <TabsContent value="competencies">
-      <CompetenciesCard :user="user" />
-    </TabsContent>
+    <!--    <TabsContent value="competencies">-->
+    <!--      <CompetenciesCard :user="user" />-->
+    <!--    </TabsContent>-->
     <TabsContent value="password">
       <PasswordCard />
     </TabsContent>
