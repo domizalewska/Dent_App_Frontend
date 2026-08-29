@@ -10,8 +10,8 @@ defineProps<Props>()
 </script>
 
 <template>
-  <Card class="overflow-hidden rounded-t-none py-0 gap-0">
-    <CardHeader class="border-b px-4 py-3 !pb-3 flex flex-row items-center">
+  <Card class="overflow-hidden rounded-t-none">
+    <CardHeader class="border-b px-4 py-3">
       <div class="flex items-center gap-2">
         <UserRound class="size-4 text-muted-foreground" />
         <div>

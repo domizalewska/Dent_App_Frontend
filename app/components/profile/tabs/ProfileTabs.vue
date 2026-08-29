@@ -25,12 +25,12 @@ const tabs = [
         <ProfileHeaderComponent :user="user" />
       </CardContent>
       <div class="px-6 pt-2">
-        <TabsList class="w-full">
+        <TabsList variant="line" class="w-full">
           <TabsTrigger
             v-for="tab in tabs"
             :key="tab.value"
             :value="tab.value"
-            class="px-2.5 sm:px-3"
+            class="flex-1"
           >
             {{ tab.name }}
           </TabsTrigger>
