@@ -108,7 +108,11 @@ function onSubmit(values: EventPayload) {
     </div>
 
     <div class="flex items-center justify-end gap-3 px-4 py-3">
-      <BaseAcceptDeclineButtons confirm-title="Zapisz" cancel-title="Anuluj" confirm-type="submit" />
+      <BaseAcceptDeclineButtons
+        confirm-title="Zapisz"
+        cancel-title="Anuluj"
+        confirm-type="submit"
+      />
     </div>
   </Form>
 </template>

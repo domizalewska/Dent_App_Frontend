@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Eye, EyeOff } from 'lucide-vue-next'
 import { useField } from 'vee-validate'
+import { vMaska } from 'maska/vue'
 
 defineOptions({ inheritAttrs: false })
 
@@ -10,6 +11,7 @@ interface Props {
   placeholder: string
   type?: string
   size?: 'sm' | 'default'
+  mask?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,6 +35,7 @@ const inputType = computed(() => {
       <Input
         :id="name"
         v-model="value"
+        v-maska="mask"
         :name="name"
         :placeholder="placeholder"
         :type="inputType"
