@@ -4,11 +4,11 @@ import { UsersEndpoints } from '~/features/users/users.endpoints'
 import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
 import { userInfoKey } from '~/features/users'
 
-export const useUserPictures = (uuid: string) => {
+export const useUserPictures = () => {
   const { $api } = useNuxtApp()
   const api = $api as typeof $fetch
 
-  async function uploadAvatar(file: File) {
+  async function uploadAvatar(uuid: string, file: File) {
     const formData = new FormData()
     formData.append('file', file)
 
@@ -21,7 +21,7 @@ export const useUserPictures = (uuid: string) => {
     await refreshNuxtData(userInfoKey)
   }
 
-  async function deleteAvatar() {
+  async function deleteAvatar(uuid: string) {
     const promise = api(UsersEndpoints.AVATAR(uuid), { method: 'DELETE' })
     toast.promise(promise, {
       success: { message: 'Zdjęcie profilowe zostało usunięte', style: toastSuccessStyle },
@@ -31,7 +31,7 @@ export const useUserPictures = (uuid: string) => {
     await refreshNuxtData(userInfoKey)
   }
 
-  async function uploadBackground(file: File) {
+  async function uploadBackground(uuid: string, file: File) {
     const formData = new FormData()
     formData.append('file', file)
 
@@ -44,7 +44,7 @@ export const useUserPictures = (uuid: string) => {
     await refreshNuxtData(userInfoKey)
   }
 
-  async function deleteBackground() {
+  async function deleteBackground(uuid: string) {
     const promise = api(UsersEndpoints.BACKGROUND(uuid), { method: 'DELETE' })
     toast.promise(promise, {
       success: { message: 'Zdjęcie w tle zostało usunięte', style: toastSuccessStyle },

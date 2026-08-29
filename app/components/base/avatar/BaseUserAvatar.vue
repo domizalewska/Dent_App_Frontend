@@ -8,21 +8,24 @@ interface Props {
   showStatus?: boolean
 }
 
-defineOptions({ inheritAttrs: false })
-
 const props = defineProps<Props>()
 
-const initials = computed(() =>
-  `${props.user.first_name[0]}${props.user.last_name[0]}`.toUpperCase(),
-)
+const { assetsUrl } = useRuntimeConfig().public
 </script>
 
 <template>
   <div class="relative inline-flex rounded-full" v-bind="$attrs">
-    <Avatar :class="[props.size ?? 'size-9']">
-      <AvatarImage v-if="props.user.avatar_path || props.user.profile_picture" :src="props.user.avatar_path ?? props.user.profile_picture" />
-      <AvatarFallback class="text-xs">{{ initials }}</AvatarFallback>
-    </Avatar>
+    <div :class="['rounded-full overflow-hidden bg-muted flex items-center justify-center', props.size ?? 'size-9']">
+      <img
+        v-if="user.avatar_path"
+        :src="`${assetsUrl}${user.avatar_path}`"
+        alt="User avatar"
+        class="w-full h-full object-cover"
+      />
+      <span v-else class="text-xs font-medium text-muted-foreground">
+        {{ user.first_name?.[0] }}{{ user.last_name?.[0] }}
+      </span>
+    </div>
     <BaseUserStatusBadge
       v-if="showStatus && user.status"
       :status="user.status"
