@@ -40,12 +40,7 @@ const formSchema = toTypedSchema(
       .optional(),
     city: z.string().optional(),
     email: z.string().email('Nieprawidłowy adres email'),
-    private_email: z
-      .string()
-      .email('Nieprawidłowy adres email')
-      .or(z.literal(''))
-      .or(z.literal(null))
-      .optional(),
+    private_email: z.string().email('Nieprawidłowy adres email').nullable().optional(),
     phone_number: z.string().nullish().optional(),
     private_phone_number: z.string().nullish().optional(),
     job_position_uuid: z.string().optional(),
