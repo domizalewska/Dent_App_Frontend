@@ -168,3 +168,78 @@
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.iti {
+  --iti-border-color: var(--input);
+  --iti-hover-color: var(--accent);
+  --iti-icon-color: var(--muted-foreground);
+  --iti-border-width: 0px;
+  width: 100%;
+}
+
+.iti input.iti__tel-input {
+  height: 2.25rem;
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--input);
+  background: transparent;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  box-shadow: var(--shadow-xs);
+  transition:
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+  outline: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .iti input.iti__tel-input {
+    background-color: color-mix(in oklch, var(--input) 30%, transparent);
+  }
+}
+
+.dark .iti input.iti__tel-input {
+  background-color: color-mix(in oklch, var(--input) 30%, transparent);
+}
+
+.iti input.iti__tel-input::placeholder {
+  color: var(--muted-foreground);
+}
+
+.iti input.iti__tel-input:focus-visible {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent);
+}
+
+.iti__dropdown-content {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: var(--shadow-md);
+  z-index: 50;
+}
+
+.iti__search-input {
+  background: transparent;
+  color: var(--foreground);
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.iti__country:hover,
+.iti__country.iti__highlight {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
