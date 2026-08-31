@@ -77,10 +77,10 @@ defineProps<Props>()
             <div class="text-muted-foreground">Telefon prywatny</div>
             <div class="font-medium">
               <a
-                v-if="user.phone_number?.find((p) => p.type === 'PRIVATE')?.number"
-                :href="`tel:${user.phone_number?.find((p) => p.type === 'PRIVATE')?.number}`"
+                v-if="user.private_phone_number"
+                :href="`tel:${user.private_phone_number}`"
                 class="hover:underline"
-                >{{ user.phone_number?.find((p) => p.type === 'PRIVATE')?.number }}</a
+                >{{ user.private_phone_number }}</a
               >
               <span v-else>—</span>
             </div>
@@ -89,10 +89,10 @@ defineProps<Props>()
             <div class="text-muted-foreground">Telefon służbowy</div>
             <div class="font-medium">
               <a
-                v-if="user.phone_number?.find((p) => p.type === 'WORK')?.number"
-                :href="`tel:${user.phone_number?.find((p) => p.type === 'WORK')?.number}`"
+                v-if="user.phone_number"
+                :href="`tel:${user.phone_number}`"
                 class="hover:underline"
-                >{{ user.phone_number?.find((p) => p.type === 'WORK')?.number }}</a
+                >{{ user.phone_number }}</a
               >
               <span v-else>—</span>
             </div>

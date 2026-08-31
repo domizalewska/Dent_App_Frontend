@@ -2,119 +2,144 @@
 import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
-import { Field, Form } from 'vee-validate'
-import type { PatientType } from '~/types'
+import { Form } from 'vee-validate'
+import type { Patient, PatientPayload } from '~/types'
+import BasePhoneForm from '~/components/base/form/BasePhoneForm.vue'
+import BaseAcceptDeclineButtons from '~/components/base/buttons/BaseAcceptDeclineButtons.vue'
 
-const props = defineProps<{
-  initialValues?: Partial<PatientType>
-}>()
+interface Props {
+  patient: Patient
+}
+
+const props = defineProps<Props>()
 
 const emit = defineEmits(['submit', 'cancel'])
-
-const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
-const INSURANCE_TYPES = ['NFZ', 'Prywatne', 'Brak']
 
 const formSchema = toTypedSchema(
   z.object({
     first_name: z.string().nonempty('Imię jest wymagane'),
     last_name: z.string().nonempty('Nazwisko jest wymagane'),
-    email: z.string().email('Nieprawidłowy adres email').optional().or(z.literal('')),
     pesel: z
       .string()
-      .length(11, 'PESEL musi mieć 11 cyfr')
-      .regex(/^\d{11}$/, 'PESEL może zawierać tylko cyfry')
-      .optional()
-      .or(z.literal('')),
-    address: z.string().optional().or(z.literal('')),
-    phone: z
+      .regex(/^\d{11}$/, 'PESEL musi mieć 11 cyfr')
+      .or(z.literal(''))
+      .optional(),
+    street: z.string().optional(),
+    house_number: z.string().optional(),
+    apartment_number: z.string().optional(),
+    postal_code: z
       .string()
-      .regex(/^\+?[\d\s\-]{9,15}$/, 'Nieprawidłowy numer telefonu')
-      .optional()
-      .or(z.literal('')),
-    insurance: z.enum(['NFZ', 'Prywatne', 'Brak']).optional(),
-    blood_group: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
+      .regex(/^\d{2}-\d{3}$/, 'Format: __-___')
+      .or(z.literal(''))
+      .optional(),
+    city: z.string().optional(),
+    email: z.string().email('Nieprawidłowy adres email'),
+    phone_number: z.string().nullish().optional(),
   }),
 )
 
-function onSubmit(values: Partial<PatientType>) {
-  emit('submit', values)
+const initialValues = {
+  first_name: props.patient.first_name,
+  last_name: props.patient.last_name,
+  pesel: props.patient.pesel ?? '',
+  street: props.patient.street ?? '',
+  house_number: props.patient.house_number ?? '',
+  apartment_number: props.patient.apartment_number ?? '',
+  postal_code: props.patient.postal_code ?? '',
+  city: props.patient.city ?? '',
+  email: props.patient.email,
+  phone_number: props.patient.phone_number ?? '',
+}
+
+function onSubmit(values: PatientPayload) {
+  const payload: PatientPayload = {
+    ...values,
+  }
+  emit('submit', payload)
 }
 </script>
 
 <template>
   <Form
-    class="px-4 py-4"
+    ref="formRef"
     :validation-schema="formSchema"
     :initial-values="initialValues"
+    class="flex flex-1 flex-col min-h-0 overflow-hidden"
     @submit="onSubmit"
   >
-    <div class="grid grid-cols-2 gap-4">
-      <BaseInputForm name="first_name" label="Imię" placeholder="Wpisz imię" type="text" />
-      <BaseInputForm name="last_name" label="Nazwisko" placeholder="Wpisz nazwisko" type="text" />
+    <div class="flex-1 overflow-y-auto min-h-0 px-3 py-4 flex flex-col gap-4">
+      <div class="flex flex-col gap-2">
+        <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Informacje ogólne
+        </div>
+        <div class="flex flex-row gap-2">
+          <BaseInputForm name="first_name" label="Imię" placeholder="Wpisz imię" />
+          <BaseInputForm name="last_name" label="Nazwisko" placeholder="Wpisz nazwisko" />
+        </div>
+        <div class="flex flex-row gap-2 w-1/2">
+          <BaseInputForm
+            name="pesel"
+            label="PESEL"
+            placeholder="_ _ _ _ _ _ _ _ _ _ _"
+            mask="###########"
+          />
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Adres</div>
+        <div class="flex flex-row gap-2">
+          <BaseInputForm
+            name="street"
+            label="Ulica"
+            placeholder="Wpisz ulicę"
+            class="text-accent-foreground"
+          />
+          <BaseInputForm name="city" label="Miejscowość" placeholder="Wpisz miejscowość" />
+        </div>
+        <div class="flex flex-row gap-2">
+          <BaseInputForm name="house_number" label="Nr domu" placeholder="Nr domu" />
+          <BaseInputForm
+            name="apartment_number"
+            label="Nr mieszkania"
+            placeholder="Nr mieszkania"
+          />
+        </div>
+        <div class="flex flex-row gap-2 w-1/2">
+          <BaseInputForm
+            name="postal_code"
+            label="Kod pocztowy"
+            placeholder="__-___"
+            mask="##-###"
+          />
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Kontakt
+        </div>
+        <div class="flex flex-row gap-2">
+          <BaseInputForm name="email" label="Email" placeholder="Wpisz email" type="email" />
+          <BasePhoneForm name="phone_number" label="Telefon służbowy" />
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Informacje dodatkowe
+        </div>
+        <div class="flex flex-row gap-2"></div>
+      </div>
     </div>
 
-    <div class="mt-4">
-      <BaseInputForm name="email" label="Email" placeholder="Wpisz adres email" type="email" />
-    </div>
-
-    <div class="mt-4">
-      <BaseInputForm
-        name="phone"
-        label="Numer telefonu"
-        placeholder="Wpisz numer telefonu"
-        type="tel"
+    <div class="border-t px-3 py-3">
+      <BaseAcceptDeclineButtons
+        confirm-title="Zapisz"
+        cancel-title="Anuluj"
+        confirm-type="submit"
+        @cancel="emit('cancel')"
       />
-    </div>
-
-    <div class="mt-4">
-      <BaseInputForm name="pesel" label="PESEL" placeholder="Wpisz numer PESEL" type="text" />
-    </div>
-
-    <div class="mt-4">
-      <BaseInputForm name="address" label="Adres" placeholder="Wpisz adres" type="text" />
-    </div>
-
-    <div class="mt-4 grid grid-cols-2 gap-4">
-      <Field v-slot="{ value, handleChange, errorMessage }" name="insurance">
-        <div class="space-y-1.5">
-          <Label class="px-2 text-xs font-medium text-muted-foreground">Ubezpieczenie</Label>
-          <Select :model-value="value" @update:model-value="handleChange">
-            <SelectTrigger class="w-full rounded-md">
-              <SelectValue placeholder="Wybierz..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem v-for="type in INSURANCE_TYPES" :key="type" :value="type">
-                {{ type }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          <p v-if="errorMessage" class="text-xs text-destructive">{{ errorMessage }}</p>
-        </div>
-      </Field>
-
-      <Field v-slot="{ value, handleChange, errorMessage }" name="blood_group">
-        <div class="space-y-1.5">
-          <Label class="px-2 text-xs font-medium text-muted-foreground">Grupa krwi</Label>
-          <Select :model-value="value" @update:model-value="handleChange">
-            <SelectTrigger class="w-full rounded-md">
-              <SelectValue placeholder="Wybierz..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem v-for="group in BLOOD_GROUPS" :key="group" :value="group">
-                {{ group }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          <p v-if="errorMessage" class="text-xs text-destructive">{{ errorMessage }}</p>
-        </div>
-      </Field>
-    </div>
-
-    <div class="mt-5 flex items-center justify-end gap-3 border-t pt-4">
-      <Button variant="ghost" size="sm" type="button" class="rounded-lg" @click="emit('cancel')">
-        Anuluj
-      </Button>
-      <Button size="sm" type="submit" class="min-w-[140px] rounded-lg">Zapisz</Button>
     </div>
   </Form>
 </template>

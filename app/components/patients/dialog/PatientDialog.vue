@@ -1,20 +1,26 @@
 <script setup lang="ts">
-import type { PatientType } from '~/types'
+import type { Patient, PatientPayload } from '~/types'
 
-const props = defineProps<{
+interface Props {
+  patient: Patient
   isEdit?: boolean
-  initialValues?: Partial<PatientType>
-}>()
+}
 
-const emit = defineEmits<{ close: [] }>()
+const props = defineProps<Props>()
 
+const emit = defineEmits(['close'])
+
+const route = useRoute()
+const id = route.params.id as string
 const { addRecord, editRecord } = usePatient()
 
-async function onSubmit(values: Partial<PatientType>) {
-  if (props.isEdit && props.initialValues?.uuid) {
-    await editRecord(props.initialValues.uuid, values).finally(() => emit('close'))
+async function onSubmit(values: PatientPayload) {
+  if (props.isEdit) {
+    await editRecord(id, values)
+    emit('close')
   } else {
-    await addRecord(values as PatientType).finally(() => emit('close'))
+    await addRecord(values as Patient)
+    emit('close')
   }
 }
 </script>
@@ -25,7 +31,7 @@ async function onSubmit(values: Partial<PatientType>) {
       <DialogHeader>
         <DialogTitle>{{ isEdit ? 'Edytuj pacjenta' : 'Dodaj pacjenta' }}</DialogTitle>
       </DialogHeader>
-      <PatientForm :initial-values="initialValues" @submit="onSubmit" @cancel="emit('close')" />
+      <PatientForm :patient="patient" @submit="onSubmit" @cancel="emit('close')" />
     </DialogContent>
   </Dialog>
 </template>

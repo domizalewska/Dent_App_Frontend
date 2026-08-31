@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import type { PatientType } from '~/types'
+import type { Patient } from '~/types'
 import PatientHeaderComponent from '~/components/patients/header/PatientHeaderComponent.vue'
 import PatientDocumentsTab from '~/components/patients/tab/PatientDocumentsTab.vue'
 import PatientPictureTab from '~/components/patients/tab/PatientPictureTab.vue'
 import PatientArchiveTab from '~/components/patients/tab/PatientArchiveTab.vue'
 
 interface Props {
-  patient: PatientType
+  patient: Patient
 }
 
 defineProps<Props>()
@@ -39,11 +39,12 @@ const tabs = [
 <template>
   <Tabs default-value="info" class="w-full gap-0">
     <Card class="overflow-hidden pt-0 rounded-b-none border-b-0">
-      <CardContent class="flex px-6 pb-0 justify-center">
+      <div class="h-32 bg-muted sm:h-40" />
+      <CardContent class="relative px-6 pb-0">
         <PatientHeaderComponent :patient="patient" />
       </CardContent>
       <div class="px-6">
-        <TabsList class="w-full">
+        <TabsList variant="line" class="w-full">
           <TabsTrigger
             v-for="tab in tabs"
             :key="tab.name"
