@@ -1,12 +1,5 @@
 import type { JobPosition, TreatmentType } from '~/types'
 
-export type PhoneNumber = {
-  uuid: string
-  number: string
-  type: 'PRIVATE' | 'WORK'
-  created_at: string
-}
-
 export enum UserStatus {
   ACTIVE = 'ACTIVE',
   NON_ACTIVE = 'NON_ACTIVE',
@@ -22,7 +15,8 @@ export type User = {
   private_email?: string
   private_email_verified_at?: string
   email_verified_at?: string
-  phone_number?: PhoneNumber[]
+  phone_number?: string
+  private_phone_number?: string
   is_active: boolean
   is_admin: boolean
   created_at: string
