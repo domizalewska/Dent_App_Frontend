@@ -10,6 +10,7 @@ export type Patient = {
   apartment_number: string
   postal_code: string
   city: string
+  notes: string
   is_active: boolean
   created_at: Date
   updated_at: Date

@@ -72,7 +72,7 @@ defineProps<Props>()
         </div>
       </div>
 
-      <div class="px-4 py-4">
+      <div class="flex-1 px-4 py-4">
         <p class="mb-3 text-sm font-medium">Kontakt</p>
         <div class="flex flex-col gap-2.5 text-sm">
           <div class="flex items-center justify-between gap-4">
@@ -95,6 +95,18 @@ defineProps<Props>()
               }}</a>
               <span v-else>—</span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-px self-stretch bg-border" />
+
+      <div class="flex-1 px-4 py-4">
+        <p class="mb-3 text-sm font-medium">Notatki</p>
+        <div class="flex flex-col gap-2.5 text-sm">
+          <div class="flex items-center justify-between gap-4">
+            <div class="text-muted-foreground">Pole notatek</div>
+            <div class="font-medium">{{ patient.notes ?? '—' }}</div>
           </div>
         </div>
       </div>
