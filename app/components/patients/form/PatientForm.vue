@@ -129,7 +129,13 @@ function onSubmit(values: PatientPayload) {
         <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           Informacje dodatkowe
         </div>
-        <div class="flex flex-row gap-2"></div>
+        <div class="flex flex-row gap-2 w-full">
+          <BaseTextareaForm
+            name="notes"
+            label="Notatki"
+            placeholder="Wpisz notatki dotyczące pacjenta"
+          />
+        </div>
       </div>
     </div>
 
