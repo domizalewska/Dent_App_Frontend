@@ -121,7 +121,7 @@ function onSubmit(values: PatientPayload) {
         </div>
         <div class="flex flex-row gap-2">
           <BaseInputForm name="email" label="Email" placeholder="Wpisz email" type="email" />
-          <BasePhoneForm name="phone_number" label="Telefon służbowy" />
+          <BasePhoneForm name="phone_number" label="Telefon" />
         </div>
       </div>
 

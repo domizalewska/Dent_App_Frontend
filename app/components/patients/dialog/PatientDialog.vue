@@ -27,9 +27,11 @@ async function onSubmit(values: PatientPayload) {
 
 <template>
   <Dialog open @update:open="emit('close')">
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>{{ isEdit ? 'Edytuj pacjenta' : 'Dodaj pacjenta' }}</DialogTitle>
+    <DialogContent class="max-h-[85vh] w-500 flex flex-col overflow-hidden p-0">
+      <DialogHeader class="border-b px-4 py-3">
+        <DialogTitle class="text-md font-large">{{
+          isEdit ? 'Edytuj pacjenta' : 'Dodaj pacjenta'
+        }}</DialogTitle>
       </DialogHeader>
       <PatientForm :patient="patient" @submit="onSubmit" @cancel="emit('close')" />
     </DialogContent>
