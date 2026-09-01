@@ -14,7 +14,7 @@ const { value, errorMessage } = useField<string>(() => props.name)
 </script>
 
 <template>
-  <div class="space-y-1.5">
+  <div class="space-y-1.5 w-full">
     <Label :for="name" class="px-2 text-xs font-medium text-muted-foreground">{{ label }}</Label>
     <Textarea
       v-bind="$attrs"
@@ -23,7 +23,11 @@ const { value, errorMessage } = useField<string>(() => props.name)
       :name="name"
       :placeholder="placeholder"
       :aria-invalid="!!errorMessage"
-      class="rounded-md placeholder:text-sm resize-none"
+      :class="[
+          'rounded-md',
+          'placeholder:text-sm',
+          'placeholder:text-muted-foreground/40',
+        ]"
     />
     <p v-if="errorMessage" class="text-xs text-destructive">{{ errorMessage }}</p>
   </div>
