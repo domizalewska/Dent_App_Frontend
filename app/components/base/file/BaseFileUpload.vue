@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { useDropZone } from '@vueuse/core';
-import { useTemplateRef } from 'vue';
-import { Upload, X } from 'lucide-vue-next';
-import { toast } from 'vue-sonner';
-import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast';
-import { refreshNuxtData } from 'nuxt/app';
+import { useDropZone } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
+import { Upload, X } from 'lucide-vue-next'
+import { toast } from 'vue-sonner'
+import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
+import { refreshNuxtData } from 'nuxt/app'
 
 interface Props {
   endpoint: string
-  onSuccess?: () => void
 }
 
 const props = defineProps<Props>()
+
+const emit = defineEmits(['close'])
 
 const MAX_FILES = 5
 const MAX_SIZE = 5 * 1024 * 1024
@@ -92,7 +93,7 @@ async function uploadFiles() {
 
   files.value = []
   await refreshNuxtData(props.endpoint)
-  props.onSuccess?.()
+  emit('close')
 }
 </script>
 

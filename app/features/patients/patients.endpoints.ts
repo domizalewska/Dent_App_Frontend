@@ -6,4 +6,5 @@ export const PatientsEndpoints = {
   APPOINTMENTS: (uuid: string) => `/patient/${uuid}/appointments`,
   FILE_UPLOADS: (uuid: string) => `/patient/${uuid}/file`,
   FILE_DOWNLOAD: (uuid: string, fileUuid: string) => `/patient/${uuid}/file-download/${fileUuid}`,
+  FILE_DELETE: (uuid: string, fileUuid: string) => `/patient/${uuid}/file/${fileUuid}`,
 }
