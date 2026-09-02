@@ -1,3 +1,5 @@
+import type { User } from '~/types'
+
 export type Patient = {
   uuid: string
   first_name: string
@@ -11,9 +13,12 @@ export type Patient = {
   postal_code: string
   city: string
   notes: string
+  doctor: User
   is_active: boolean
   created_at: Date
   updated_at: Date
 }
 
-export type PatientPayload = Omit<Patient, 'uuid'>
+export type PatientPayload = Omit<Patient, 'uuid' | 'doctor'> & {
+  doctor_uuid?: string
+}

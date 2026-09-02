@@ -66,28 +66,28 @@ function onSubmit(values: Omit<AppointmentPayload, 'date'>) {
       <BaseSelectForm
         name="room_uuid"
         label="Gabinet"
-        :api="RoomsEndpoints.BASE"
+        :api-url="RoomsEndpoints.BASE"
         :option-value="(r: RoomType) => r.uuid"
         :option-label="(r: RoomType) => r.name"
       />
       <BaseSelectForm
         name="patient_uuid"
         label="Pacjent"
-        :api="PatientsEndpoints.LIST_SELECT"
+        :api-url="PatientsEndpoints.LIST_SELECT"
         :option-value="(p: PatientType) => p.uuid"
         :option-label="(p: PatientType) => `${p.first_name} ${p.last_name}`"
       />
       <BaseSelectForm
         name="doctor_uuid"
         label="Lekarz"
-        :api="UsersEndpoints.LIST_SELECT"
+        :api-url="UsersEndpoints.LIST_SELECT"
         :option-value="(u: User) => u.uuid"
         :option-label="(u: User) => `${u.first_name} ${u.last_name}`"
       />
       <BaseSelectForm
         name="treatment_uuid"
         label="Usługa"
-        :api="TreatmentsEndpoints.LIST_SELECT"
+        :api-url="TreatmentsEndpoints.LIST_SELECT"
         :option-value="(t: TreatmentType) => t.uuid"
         :option-label="(t: TreatmentType) => t.name"
       />

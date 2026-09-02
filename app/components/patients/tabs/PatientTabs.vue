@@ -24,6 +24,11 @@ const tabs = [
     icon: 'material-symbols:shield-outline',
   },
   {
+    name: 'Recepty',
+    value: 'receipts',
+    icon: 'material-symbols:shield-outline',
+  },
+  {
     name: 'Zdjęcia',
     value: 'pictures',
     icon: 'solar:user-id-line-duotone',
@@ -63,6 +68,9 @@ const tabs = [
     </TabsContent>
     <TabsContent value="documents">
       <PatientDocumentsTab :patient="patient" />
+    </TabsContent>
+    <TabsContent value="receipts">
+      <PatientReceiptTab :patient="patient" />
     </TabsContent>
     <TabsContent value="pictures">
       <PatientPictureTab />

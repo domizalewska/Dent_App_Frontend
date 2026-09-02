@@ -3,9 +3,11 @@ import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { Form } from 'vee-validate'
-import type { Patient, PatientPayload } from '~/types'
+import type { Patient, PatientPayload, User } from '~/types'
 import BasePhoneForm from '~/components/base/form/BasePhoneForm.vue'
 import BaseAcceptDeclineButtons from '~/components/base/buttons/BaseAcceptDeclineButtons.vue'
+import BaseSelectForm from '~/components/base/form/BaseSelectForm.vue'
+import { UsersEndpoints } from '~/features/users'
 
 interface Props {
   patient: Patient
@@ -35,6 +37,8 @@ const formSchema = toTypedSchema(
     city: z.string().optional(),
     email: z.string().email('Nieprawidłowy adres email'),
     phone_number: z.string().nullish().optional(),
+    doctor_uuid: z.string().optional(),
+    notes: z.string().optional(),
   }),
 )
 
@@ -49,6 +53,8 @@ const initialValues = {
   city: props.patient.city ?? '',
   email: props.patient.email,
   phone_number: props.patient.phone_number ?? '',
+  doctor_uuid: props.patient?.doctor?.uuid ?? '',
+  notes: props.patient.notes ?? '',
 }
 
 function onSubmit(values: PatientPayload) {
@@ -122,6 +128,23 @@ function onSubmit(values: PatientPayload) {
         <div class="flex flex-row gap-2">
           <BaseInputForm name="email" label="Email" placeholder="Wpisz email" type="email" />
           <BasePhoneForm name="phone_number" label="Telefon" />
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Lekarz prowadzący
+        </div>
+        <div class="flex flex-row gap-2 w-full">
+          <BaseSelectForm
+            name="doctor_uuid"
+            label="Imię i nazwisko"
+            placeholder="Wybierz lekarza prowadzącego"
+            :api-url="UsersEndpoints.DENTIST_LIST_SELECT"
+            :option-value="(e: User) => e.uuid"
+            :option-label="(e: User) => e.first_name + ' ' + e.last_name"
+            immediate-fetch
+          />
         </div>
       </div>
 

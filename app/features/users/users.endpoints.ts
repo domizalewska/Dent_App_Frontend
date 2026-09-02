@@ -1,6 +1,7 @@
 export const UsersEndpoints = {
   BASE: '/user',
   LIST_SELECT: '/user/selectlist',
+  DENTIST_LIST_SELECT: '/dentist/selectlist',
   USER_EDIT_PASSWORD: '/user/edit-password',
   EXPORT: '/user/export',
   DETAILS: (uuid: string) => `/user/${uuid}`,

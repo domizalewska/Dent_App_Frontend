@@ -55,6 +55,11 @@ const isEditOpen = ref(false)
       </div>
     </div>
 
-    <PatientDialog v-if="isEditOpen" :patient="patient" @close="isEditOpen = false" />
+    <PatientDialog
+      v-if="isEditOpen"
+      :patient="patient"
+      :is-edit="true"
+      @close="isEditOpen = false"
+    />
   </div>
 </template>
