@@ -6,6 +6,7 @@ export type Patient = {
   last_name: string
   email?: string
   phone_number?: string
+  gender?: string
   pesel?: string
   street: string
   house_number: string

@@ -11,7 +11,11 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const { assetsUrl } = useRuntimeConfig().public
 
+function resolveUrl(path: string) {
+  return path.startsWith('http') ? path : `${assetsUrl}/${path}`
+}
 </script>
 
 <template>
@@ -20,7 +24,7 @@ const props = defineProps<Props>()
       <template v-if="user">
         <img
           v-if="user.avatar_path"
-          :src="user.avatar_path"
+          :src="resolveUrl(user.avatar_path)"
           alt="User avatar"
           class="w-full h-full object-cover"
         />
