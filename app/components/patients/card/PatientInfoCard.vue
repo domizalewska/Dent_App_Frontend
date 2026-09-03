@@ -106,7 +106,9 @@ defineProps<Props>()
         <div class="flex flex-col gap-2.5 text-sm">
           <div class="flex items-center justify-between gap-4">
             <div class="text-muted-foreground">Imię i nazwisko</div>
-            <BaseUserAvatar :user="patient.doctor" show-name />
+            <div class="flex items-center">
+              <BaseUserAvatar :user="patient.doctor" show-name />
+            </div>
           </div>
         </div>
       </div>

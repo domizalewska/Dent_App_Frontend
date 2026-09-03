@@ -19,8 +19,8 @@ function resolveUrl(path: string) {
 </script>
 
 <template>
-  <div class="relative inline-flex rounded-full" v-bind="$attrs">
-    <div :class="['rounded-full overflow-hidden bg-muted flex items-center justify-center', props.size ?? 'size-9']">
+  <div :class="['relative inline-flex rounded-full', props.size ?? 'size-9']" v-bind="$attrs">
+    <div class="w-full h-full rounded-full overflow-hidden bg-muted flex items-center justify-center">
       <template v-if="user">
         <img
           v-if="user.avatar_path"
@@ -44,10 +44,10 @@ function resolveUrl(path: string) {
       class="absolute bottom-0 right-0"
     />
   </div>
-  <span v-if="showName && user" class="text-sm font-medium truncate">
+  <span v-if="showName && user" class="ml-2 text-sm font-medium truncate">
     {{ user.first_name }} {{ user.last_name }}
   </span>
-  <span v-else-if="showName && patient" class="text-sm font-medium truncate">
+  <span v-else-if="showName && patient" class="ml-2 text-sm font-medium truncate">
     {{ patient.first_name }} {{ patient.last_name }}
   </span>
 </template>
