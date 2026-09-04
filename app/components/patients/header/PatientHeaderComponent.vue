@@ -13,7 +13,7 @@ const isEditOpen = ref(false)
 
 <template>
   <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6">
-    <div class="group relative -mt-12 size-16 sm:-mt-14 sm:size-32">
+    <div class="group relative shrink-0 -mt-12 size-16 sm:-mt-14 sm:size-32">
       <BaseUserAvatar
         :patient="patient"
         size="size-full border-4 border-card shadow-lg"
