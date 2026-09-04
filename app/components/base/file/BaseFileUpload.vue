@@ -8,6 +8,7 @@ import { refreshNuxtData } from 'nuxt/app'
 
 interface Props {
   endpoint: string
+  refreshKeys?: string[]
 }
 
 const props = defineProps<Props>()
@@ -92,7 +93,7 @@ async function uploadFiles() {
   )
 
   files.value = []
-  await refreshNuxtData(props.endpoint)
+  await refreshNuxtData([props.endpoint, ...(props.refreshKeys ?? [])])
   emit('close')
 }
 </script>

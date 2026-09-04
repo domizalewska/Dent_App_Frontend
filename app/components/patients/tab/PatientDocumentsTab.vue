@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseFileUpload from '~/components/base/file/BaseFileUpload.vue'
 import BaseFileList from '~/components/base/file/BaseFileList.vue'
-import { PatientsEndpoints } from '~/features/patients'
+import { PatientsEndpoints, patientDetailKey } from '~/features/patients'
 import type { Patient } from '~/types'
 import { Plus } from 'lucide-vue-next'
 
@@ -48,6 +48,7 @@ function onUploadClose() {
       </DialogHeader>
       <BaseFileUpload
         :endpoint="PatientsEndpoints.FILE_UPLOADS(patient.uuid)"
+        :refresh-keys="[patientDetailKey(patient.uuid)]"
         @close="onUploadClose"
       />
     </DialogContent>

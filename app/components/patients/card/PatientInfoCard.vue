@@ -106,9 +106,10 @@ defineProps<Props>()
         <div class="flex flex-col gap-2.5 text-sm">
           <div class="flex items-center justify-between gap-4">
             <div class="text-muted-foreground">Imię i nazwisko</div>
-            <div class="flex items-center">
+            <div v-if="patient.doctor" class="flex items-center">
               <BaseUserAvatar :user="patient.doctor" show-name />
             </div>
+            <div v-else class="font-medium">Brak przypisanego lekarza</div>
           </div>
         </div>
       </div>
@@ -120,7 +121,7 @@ defineProps<Props>()
         <div class="flex flex-col gap-2.5 text-sm">
           <div class="flex items-center justify-between gap-4">
             <div class="text-muted-foreground">Pole notatek</div>
-            <div class="font-medium">{{ patient.notes ?? '—' }}</div>
+            <div class="font-medium">{{ patient.notes ?? 'Brak notatek' }}</div>
           </div>
         </div>
       </div>
