@@ -73,7 +73,7 @@ const tabs = [
       <PatientReceiptTab :patient="patient" />
     </TabsContent>
     <TabsContent value="pictures">
-      <PatientPictureTab />
+      <PatientPictureTab :patient="patient" />
     </TabsContent>
     <TabsContent value="archive">
       <PatientArchiveTab :patient-uuid="patient.uuid" />

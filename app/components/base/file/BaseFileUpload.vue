@@ -9,6 +9,8 @@ import { refreshNuxtData } from 'nuxt/app'
 interface Props {
   endpoint: string
   refreshKeys?: string[]
+  accept?: string
+  dropDataTypes?: string[]
 }
 
 const props = defineProps<Props>()
@@ -44,7 +46,7 @@ function addFiles(incoming: File[] | null) {
 
 const { isOverDropZone } = useDropZone(dropZoneRef, {
   onDrop: addFiles,
-  dataTypes: ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  dataTypes: props.dropDataTypes ?? ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
   multiple: true,
   preventDefaultForUnhandled: false,
 })
@@ -125,7 +127,7 @@ async function uploadFiles() {
       ref="fileInput"
       type="file"
       multiple
-      accept=".pdf,.docx"
+      :accept="accept ?? '.pdf,.docx'"
       class="hidden"
       @change="onFileChange"
     />
