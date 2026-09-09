@@ -1,4 +1,4 @@
-import type { Patient, User } from '~/types'
+import type { Medicine, Patient, User } from '~/types'
 
 export type Receipt = {
   uuid: string
@@ -9,8 +9,7 @@ export type Receipt = {
   status: string
   patient: Patient
   doctor: User
-  place: //uzupelnic modelem
-  medicine: //uzupelnic modelem
+  medicine: Medicine
 }
 
 export type ReceiptPayload = Omit<Receipt, 'uuid'>
