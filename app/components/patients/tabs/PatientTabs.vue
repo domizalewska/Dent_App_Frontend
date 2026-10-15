@@ -5,6 +5,7 @@ import PatientHeaderComponent from '~/components/patients/header/PatientHeaderCo
 import PatientDocumentsTab from '~/components/patients/tab/PatientDocumentsTab.vue'
 import PatientPictureTab from '~/components/patients/tab/PatientPictureTab.vue'
 import PatientArchiveTab from '~/components/patients/tab/PatientArchiveTab.vue'
+import PatientReceiptTab from '~/components/patients/tab/PatientReceiptTab.vue'
 
 interface Props {
   patient: Patient
@@ -70,7 +71,7 @@ const tabs = [
       <PatientDocumentsTab :patient="patient" />
     </TabsContent>
     <TabsContent value="receipts">
-      <PatientReceiptTab :patient="patient" />
+      <PatientReceiptTab :patient-uuid="patient.uuid" />
     </TabsContent>
     <TabsContent value="pictures">
       <PatientPictureTab :patient="patient" />
