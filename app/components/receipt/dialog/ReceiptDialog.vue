@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Receipt, UserPayload } from '~/types'
+import type { UserPayload } from '~/types'
 
 interface Props {
-  receipt: Receipt
+  patientUuid: string
 }
 
 defineProps<Props>()
@@ -25,7 +25,7 @@ async function handleSubmit(values: UserPayload) {
       <DialogHeader class="border-b px-4 py-3">
         <DialogTitle class="text-md font-large">Recepta</DialogTitle>
       </DialogHeader>
-      <ReceiptForm :receipt="receipt" @confirm="handleSubmit" @cancel="emit('close')" />
+      <ReceiptForm @confirm="handleSubmit" @cancel="emit('close')" />
     </DialogContent>
   </Dialog>
 </template>

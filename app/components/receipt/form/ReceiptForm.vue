@@ -7,12 +7,6 @@ import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import BaseSelectForm from '~/components/base/form/BaseSelectForm.vue'
 import { MedicineEndpoints } from '~/features/medicine'
 
-interface Props {
-  receipt: Receipt
-}
-
-const props = defineProps<Props>()
-
 const emit = defineEmits(['confirm', 'cancel'])
 
 const formRef = ref()
@@ -20,14 +14,9 @@ const formRef = ref()
 const formSchema = toTypedSchema(
   z.object({
     type: z.string().nonempty('Typ jest wymagany'),
-    medicine: z.string().nonempty('Lek jest wymagany'),
+    medicine_uuid: z.string().nonempty('Lek jest wymagany'),
   }),
 )
-
-const initialValues = {
-  type: props.receipt.type,
-  medicine: props.receipt.medicine,
-}
 
 async function onSubmit(values: ReceiptPayload) {
   const payload: ReceiptPayload = {
@@ -41,20 +30,10 @@ async function onSubmit(values: ReceiptPayload) {
   <Form
     ref="formRef"
     :validation-schema="formSchema"
-    :initial-values="initialValues"
     class="flex flex-1 flex-col min-h-0 overflow-hidden"
     @submit="onSubmit"
   >
     <div class="flex-1 overflow-y-auto min-h-0 px-3 py-4 flex flex-col gap-4">
-      <div class="flex flex-col gap-2">
-        <div class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Pacjent
-        </div>
-        <div class="flex flex-row gap-2">
-          {{ receipt.patient.last_name + '' + receipt.patient.last_name }}
-        </div>
-      </div>
-
       <div class="flex flex-col gap-2">
         <div class="flex flex-row gap-2">
           <BaseSelectForm

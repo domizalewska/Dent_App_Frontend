@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { FilePlus } from 'lucide-vue-next'
 import PatientReceiptTable from '~/components/patients/table/PatientReceiptTable.vue'
+import ReceiptDialog from '~/components/receipt/dialog/ReceiptDialog.vue'
 
 interface Props {
   patientUuid: string
 }
 
 defineProps<Props>()
+
+const showDialog = ref(false)
 </script>
 <template>
   <Card class="overflow-hidden rounded-t-none">
@@ -14,7 +17,7 @@ defineProps<Props>()
       <CardTitle class="text-sm font-medium uppercase tracking-wide text-muted-foreground">
         Recepty
       </CardTitle>
-      <Button variant="outline" size="sm">
+      <Button variant="outline" size="sm" @click="showDialog = true">
         <FilePlus class="size-4" />
         Dodaj receptę
       </Button>
@@ -23,4 +26,5 @@ defineProps<Props>()
       <PatientReceiptTable :patient-uuid="patientUuid" />
     </CardContent>
   </Card>
+  <ReceiptDialog v-if="showDialog" :patient-uuid="patientUuid" @close="showDialog = false" />
 </template>
