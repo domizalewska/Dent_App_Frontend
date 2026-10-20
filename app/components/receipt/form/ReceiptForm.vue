@@ -54,7 +54,6 @@ async function onSubmit(values: ReceiptPayload) {
                 value: ReceiptEnumType.RPZ,
               },
             ]"
-            immediate-fetch
           />
         </div>
 
