@@ -34,9 +34,9 @@ function onUploadClose() {
     <CardContent class="px-6 pb-4 pt-3 flex flex-col gap-3">
       <BaseImageList
         ref="fileListRef"
-        :endpoint="PatientsEndpoints.FILE_UPLOADS(patient.uuid)"
-        :download-url="(fileUuid) => PatientsEndpoints.FILE_DOWNLOAD(patient.uuid, fileUuid)"
-        :delete-url="(fileUuid) => PatientsEndpoints.FILE_DELETE(patient.uuid, fileUuid)"
+        :endpoint="PatientsEndpoints.PHOTO_LIST(patient.uuid)"
+        :download-url="(photoUuid) => PatientsEndpoints.PHOTO_DOWNLOAD(patient.uuid, photoUuid)"
+        :delete-url="(photoUuid) => PatientsEndpoints.PHOTO_DETAILS(patient.uuid, photoUuid)"
       />
     </CardContent>
   </Card>
@@ -47,7 +47,7 @@ function onUploadClose() {
         <DialogTitle>Dodaj zdjęcia</DialogTitle>
       </DialogHeader>
       <BaseFileUpload
-        :endpoint="PatientsEndpoints.FILE_UPLOADS(patient.uuid)"
+        :endpoint="PatientsEndpoints.PHOTO_STORE(patient.uuid)"
         :refresh-keys="[patientDetailKey(patient.uuid)]"
         accept="image/*"
         :drop-data-types="['image/jpeg', 'image/png', 'image/webp', 'image/gif']"
