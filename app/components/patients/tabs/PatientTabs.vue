@@ -2,6 +2,7 @@
 import { Icon } from '@iconify/vue'
 import type { Patient } from '~/types'
 import PatientHeaderComponent from '~/components/patients/header/PatientHeaderComponent.vue'
+import PatientStatisticsWidget from '~/components/patients/widgets/PatientStatisticsWidget.vue'
 import PatientDocumentsTab from '~/components/patients/tab/PatientDocumentsTab.vue'
 import PatientPictureTab from '~/components/patients/tab/PatientPictureTab.vue'
 import PatientArchiveTab from '~/components/patients/tab/PatientArchiveTab.vue'
@@ -49,6 +50,7 @@ const tabs = [
       <CardContent class="relative px-6 pb-0">
         <PatientHeaderComponent :patient="patient" />
       </CardContent>
+      <PatientStatisticsWidget :patient-uuid="patient.uuid" />
       <div class="px-6">
         <TabsList variant="line" class="w-full">
           <TabsTrigger
