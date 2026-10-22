@@ -3,7 +3,7 @@ import { refreshNuxtData } from 'nuxt/app'
 import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
 import { PatientsEndpoints } from '~/features/patients'
 import type { PatientType } from '~/types'
-import { patientsKey, patientDetailKey } from '~/features/patients'
+import { patientsKey, patientDetailKey, patientStatisticsKey } from '~/features/patients'
 
 export const usePatient = () => {
   const { $api } = useNuxtApp()
@@ -27,7 +27,7 @@ export const usePatient = () => {
       api(PatientsEndpoints.DETAILS(uuid), {
         method: 'PUT',
         body: payload,
-      }).then(() => refreshNuxtData([patientsKey, patientDetailKey(uuid)])),
+      }).then(() => refreshNuxtData([patientsKey, patientDetailKey(uuid), patientStatisticsKey(uuid)])),
       {
         success: { message: 'Zmiany zostały zapisane', style: toastSuccessStyle },
         error: { message: 'Błąd podczas zapisywania zmian', style: toastErrorStyle },
