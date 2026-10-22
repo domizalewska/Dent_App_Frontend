@@ -47,16 +47,6 @@ export const patientAppointmentsColumns: ColumnDef<AppointmentType>[] = [
       ),
   },
   {
-    accessorKey: 'duration_minutes',
-    header: () => h('div', { class: 'text-foreground' }, 'Czas trwania'),
-    cell: ({ row }) =>
-      h(
-        'div',
-        { class: 'text-left font-normal text-muted-foreground' },
-        `${row.original.duration_minutes} min`,
-      ),
-  },
-  {
     accessorKey: 'status',
     header: () => h('div', { class: 'text-foreground' }, 'Status'),
     cell: ({ row }) => {
