@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PatientStatistics } from '~/types'
-import { PatientsEndpoints } from '~/features/patients'
+import { PatientsEndpoints, patientStatisticsKey } from '~/features/patients'
 import { formatDateToString } from '~/utils/formatDate'
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { data: stats } = useAPI<PatientStatistics>(PatientsEndpoints.STATISTICS(props.patientUuid))
+const { data: stats } = useAPI<PatientStatistics>(PatientsEndpoints.STATISTICS(props.patientUuid), { key: patientStatisticsKey(props.patientUuid) })
 </script>
 
 <template>

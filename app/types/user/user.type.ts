@@ -21,6 +21,7 @@ export type User = {
   is_admin: boolean
   created_at: string
   updated_at: string
+  position?: string
   profile_picture?: string
   avatar_path?: string
   background_path?: string
