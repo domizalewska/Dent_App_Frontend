@@ -356,6 +356,110 @@ useStatisticsPeriod() // period: { year, month } via useState
 
 ---
 
+## Layouty (`app/layouts/`)
+
+Dwa layouty:
+- **`dashboard`** — shell aplikacji (sidebar, header, breadcrumbs, `HeaderPage`). Domyślny dla wszystkich stron po zalogowaniu.
+- **`login`** — minimalistyczny, tylko branding. Dla stron auth.
+
+Każda strona deklaruje layout:
+```typescript
+definePageMeta({ layout: 'dashboard' })
+```
+
+### Wzorzec kompletnej strony
+
+Z `patients/index.vue` — tak wygląda standardowa strona z tabelą:
+
+```vue
+<script setup lang="ts">
+definePageMeta({ layout: 'dashboard' })
+
+// 1. Nagłówek i breadcrumbs (wywołaj w <script setup>, nie w onMounted)
+const { setHeader } = useHeader()
+const { set } = useBreadcrumbs()
+setHeader('Pacjenci')
+set([{ name: 'Pacjenci', link: '/patients' }])
+
+// 2. Paginacja + wyszukiwanie
+const { globalSearch, setSearch } = usePagination({
+  stateKey: 'patient-table',
+  initialSort: 'created_at,desc',
+})
+
+// 3. Dialog (jeden useDialog na stronę, montuje aktualny komponent)
+const { open, close, activeComponent, activeProps } = useDialog()
+function openAddDialog() {
+  open(PatientDialog)   // opcjonalnie: open(PatientDialog, { extraProp: value })
+}
+
+// 4. Dane (await — Nuxt auto-awaits w setup)
+const { data, pending } = await usePaginatedAPI<PatientType>(
+  PatientsEndpoints.BASE, { key: patientsKey }
+)
+</script>
+
+<template>
+  <Card class="h-full px-6">
+    <!-- Loading state: skeleton zamiast treści -->
+    <div v-if="pending">
+      <BaseSkeletonHeader />
+      <BaseTableSkeleton />
+    </div>
+
+    <template v-if="data">
+      <!-- Header z akcjami -->
+      <BaseHeader>
+        <template #right>
+          <BaseTableSearch :model-value="globalSearch" @search="setSearch" />
+          <BaseExportFile :extensions="['xlsx', 'csv', 'pdf']" :endpoint="PatientsEndpoints.EXPORT" file-name="Pacjenci" />
+          <Button @click="openAddDialog">Dodaj</Button>
+        </template>
+      </BaseHeader>
+
+      <!-- Aktualnie otwarty dialog (null gdy zamknięty) -->
+      <component :is="activeComponent" v-bind="activeProps" @close="close" />
+
+      <!-- Tabela -->
+      <DataTable :columns="patientsColumns" :data="data.data"
+        :on-row-click="(row) => router.push(PatientRoutes.PATIENT_PROFILE(row.uuid))" />
+    </template>
+  </Card>
+</template>
+```
+
+### useDialog — otwieranie dialogów
+
+`useDialog()` to singleton (stan globalny). Dialog renderuje się przez `<component :is>` w szablonie strony — **nie** przez `v-if` per komponent.
+
+```typescript
+const { open, close, activeComponent, activeProps } = useDialog()
+
+// Otwieranie bez propsów
+open(PatientDialog)
+
+// Otwieranie z propsami (przekazane jako v-bind)
+open(PatientDialog, { patient: selectedPatient, isEdit: true })
+
+// Zamykanie (wywołaj przez @close z komponentu dialogu)
+close()
+```
+
+`v-if` per komponent (`<PatientDialog v-if="show">`) stosuj tylko gdy dialog **nie** korzysta z `useDialog()` i jest osadzony bezpośrednio w szablonie rodzica (np. w zakładkach).
+
+### assetsUrl — zdjęcia i pliki binarne
+
+Zasoby (awatary, zdjęcia) używają osobnego base URL:
+
+```typescript
+const { assetsUrl } = useRuntimeConfig().public
+// np. <img :src="`${assetsUrl}${user.avatar_path}`" />
+```
+
+Zmienna środowiskowa: `ASSETS_URL` (domyślnie `http://localhost:8000`).
+
+---
+
 ## Plugin `$api` (`app/plugins/api.ts`)
 
 Wszystkie żądania HTTP idą przez `useNuxtApp().$api` — customowy `$fetch.create()` z:
@@ -570,6 +674,32 @@ const { data } = usePaginatedAPI<PatientType>(
 - Nie commituj zmian bez pytania użytkownika
 - Nie instaluj paczek bez zgody użytkownika
 
+### Konwencje TypeScript
+
+- **Enumy** — zawsze string enums, nigdy numeryczne:
+  ```typescript
+  export enum UserStatus { ACTIVE = 'ACTIVE', NON_ACTIVE = 'NON_ACTIVE' }  // ✓
+  export enum UserStatus { ACTIVE, NON_ACTIVE }  // ✗
+  ```
+- **Typy domenowe** — suffix `Type` dla kształtu z API (ma `uuid`, zagnieżdżone relacje):
+  ```typescript
+  export type PatientType = { uuid: string; doctor: User; ... }
+  ```
+- **Payload** — derywuj przez `Omit` z głównego typu, nie pisz od nowa:
+  ```typescript
+  export type PatientPayload = Omit<Patient, 'uuid' | 'doctor'> & { doctor_uuid?: string }
+  ```
+- **Relacje opcjonalne** — oznaczaj jako `?: Type | null` (API może nie populować):
+  ```typescript
+  doctor?: User | null
+  ```
+- Komponenty importuj pełną ścieżką w `<script>`: `import PatientDialog from '~/components/patients/dialog/PatientDialog.vue'`  
+  W szablonach są auto-importowane (nuxt.config: `pathPrefix: false`).
+
+### Mock data (`app/mock/`)
+
+Foldery `app/mock/<feature>/` zawierają typowane dane testowe. Używaj ich w testach zamiast pisać inline fixtures.
+
 ---
 
 ## Znane problemy / workarounds
@@ -579,6 +709,18 @@ const { data } = usePaginatedAPI<PatientType>(
 Reka UI `SelectContentImpl` wywołuje `useHideOthers()` co ukrywa dialog przez `aria-hidden`.
 Workaround: `SelectContent.vue` ma `:disable-outside-pointer-events="false"`.
 Jeśli Select w Dialog nadal nie działa — sprawdź czy SelectPortal montuje w body zamiast w Dialog.
+
+---
+
+## Git workflow
+
+Przed każdą operacją git (commit, branch, PR, issue) przeczytaj **[GITFLOW.md](./GITFLOW.md)**.
+
+Skrót zasad:
+- Branche od `dev`: `feature/`, `fix/`, `refactor/`, `docs/`, `chore/`
+- Commity: Conventional Commits po angielsku (`feat:`, `fix:`, `refactor:`, `docs:`)
+- PR zawsze do `dev` z obowiązkowym opisem (co, dlaczego, jak testować)
+- Nie commituj, nie pushuj, nie twórz PR bez pytania użytkownika
 
 ---
 
