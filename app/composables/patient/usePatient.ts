@@ -27,7 +27,9 @@ export const usePatient = () => {
       api(PatientsEndpoints.DETAILS(uuid), {
         method: 'PUT',
         body: payload,
-      }).then(() => refreshNuxtData([patientsKey, patientDetailKey(uuid), patientStatisticsKey(uuid)])),
+      }).then(() =>
+        refreshNuxtData([patientsKey, patientDetailKey(uuid), patientStatisticsKey(uuid)]),
+      ),
       {
         success: { message: 'Zmiany zostały zapisane', style: toastSuccessStyle },
         error: { message: 'Błąd podczas zapisywania zmian', style: toastErrorStyle },

@@ -76,7 +76,12 @@ test('wyświetla listę', async ({ page }) => {
     await route.fulfill({
       json: {
         data: [{ uuid: '1', code: 'RX001', status: 'active' }],
-        current_page: 1, last_page: 1, per_page: 10, total: 1, from: 1, to: 1,
+        current_page: 1,
+        last_page: 1,
+        per_page: 10,
+        total: 1,
+        from: 1,
+        to: 1,
       },
     })
   })
@@ -122,9 +127,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
-  projects: [
-    { name: 'chromium', use: { browserName: 'chromium' } },
-  ],
+  projects: [{ name: 'chromium', use: { browserName: 'chromium' } }],
 })
 ```
 
@@ -140,9 +143,11 @@ export default defineConfig({
 ## Wywołanie
 
 Użytkownik pisze np.:
+
 > /test dodawanie recepty do pacjenta
 
 Ty:
+
 1. Pytasz o: czy mockować API? czy jest zalogowanie? jaki URL?
 2. Tworzysz `e2e/<feature>/<action>.spec.ts`
 3. Jeśli brak `playwright.config.ts` — tworzysz go

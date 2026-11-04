@@ -50,12 +50,19 @@ export const <feature>Columns: ColumnDef<<Type>>[] = [
 ```
 
 Status badge config (dodaj przed `export` jeśli feature ma status):
+
 ```typescript
 const statusConfig: Record<string, { label: string; class: string }> = {
   active: { label: 'Aktywny', class: 'bg-green-500/15 text-green-500 border border-green-500/30' },
-  inactive: { label: 'Nieaktywny', class: 'bg-destructive/15 text-destructive border border-destructive/30' },
+  inactive: {
+    label: 'Nieaktywny',
+    class: 'bg-destructive/15 text-destructive border border-destructive/30',
+  },
 }
-const defaultStatusConfig = { label: 'Nieznany', class: 'bg-muted text-muted-foreground border border-border' }
+const defaultStatusConfig = {
+  label: 'Nieznany',
+  class: 'bg-muted text-muted-foreground border border-border',
+}
 ```
 
 ### 2. `app/components/<feature>/table/<Feature>Table.vue`
@@ -98,9 +105,11 @@ const { data } = usePaginatedAPI<<Type>>(() =>
 ## Wywołanie
 
 Użytkownik pisze np.:
+
 > /tabela treatment Treatment pola: name, type, status, created_at
 
 Ty:
+
 1. Sprawdzasz czy `app/features/treatment/` istnieje i co tam jest
 2. Tworzysz/aktualizujesz `treatment.columns.ts`
 3. Tworzysz `app/components/treatment/table/TreatmentTable.vue`

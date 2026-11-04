@@ -8,10 +8,10 @@ Ten plik opisuje zasady pracy z gitem w projekcie dent_app_frontend. Obowiązuje
 
 ### Główne gałęzie
 
-| Gałąź | Cel |
-|---|---|
+| Gałąź  | Cel                                           |
+| ------ | --------------------------------------------- |
 | `main` | Produkcja — tylko stabilny, przetestowany kod |
-| `dev` | Integracja — wszystkie PR trafiają tutaj |
+| `dev`  | Integracja — wszystkie PR trafiają tutaj      |
 
 **Nowe branche zawsze tworzone od `dev`**, nie od `main`.
 
@@ -21,15 +21,16 @@ Ten plik opisuje zasady pracy z gitem w projekcie dent_app_frontend. Obowiązuje
 <typ>/<nazwa-funkcjonalności>
 ```
 
-| Typ | Kiedy używać | Przykład |
-|---|---|---|
-| `feature/` | Nowa funkcjonalność | `feature/patient-statistics` |
-| `fix/` | Naprawa błędu | `fix/patient-form-validation` |
-| `refactor/` | Refaktoryzacja bez nowej funkcji | `refactor/patient` |
-| `docs/` | Tylko dokumentacja | `docs/update-claude-md` |
-| `chore/` | Zmiany konfiguracji, zależności | `chore/update-dependencies` |
+| Typ         | Kiedy używać                     | Przykład                      |
+| ----------- | -------------------------------- | ----------------------------- |
+| `feature/`  | Nowa funkcjonalność              | `feature/patient-statistics`  |
+| `fix/`      | Naprawa błędu                    | `fix/patient-form-validation` |
+| `refactor/` | Refaktoryzacja bez nowej funkcji | `refactor/patient`            |
+| `docs/`     | Tylko dokumentacja               | `docs/update-claude-md`       |
+| `chore/`    | Zmiany konfiguracji, zależności  | `chore/update-dependencies`   |
 
 **Zasady:**
+
 - Tylko małe litery i myślniki, bez spacji ani podkreśleń
 - Nazwa powinna wskazywać co zmienia, nie kto zmienia
 - Krótka i konkretna: `feature/receipt-table` nie `feature/dodanie-nowej-tabeli-do-recepty`
@@ -46,15 +47,15 @@ Ten plik opisuje zasady pracy z gitem w projekcie dent_app_frontend. Obowiązuje
 
 Opis po dwukropku — małą literą, bez kropki na końcu, po angielsku.
 
-| Typ | Kiedy używać |
-|---|---|
-| `feat` | Nowa funkcjonalność widoczna dla użytkownika |
-| `fix` | Naprawa błędu |
-| `refactor` | Zmiana struktury kodu bez zmiany zachowania |
-| `docs` | Zmiany w dokumentacji (CLAUDE.md, GITFLOW.md, README) |
-| `chore` | Konfiguracja, narzędzia, zależności |
-| `style` | Formatowanie, brak zmian logiki |
-| `test` | Dodawanie lub zmiana testów |
+| Typ        | Kiedy używać                                          |
+| ---------- | ----------------------------------------------------- |
+| `feat`     | Nowa funkcjonalność widoczna dla użytkownika          |
+| `fix`      | Naprawa błędu                                         |
+| `refactor` | Zmiana struktury kodu bez zmiany zachowania           |
+| `docs`     | Zmiany w dokumentacji (CLAUDE.md, GITFLOW.md, README) |
+| `chore`    | Konfiguracja, narzędzia, zależności                   |
+| `style`    | Formatowanie, brak zmian logiki                       |
+| `test`     | Dodawanie lub zmiana testów                           |
 
 ### Przykłady
 
@@ -105,6 +106,7 @@ refactor: Patient module — composables and components cleanup
 ## Dlaczego
 
 Wyjaśnij kontekst i powód zmian:
+
 - Jaki problem rozwiązuje?
 - Czego wymagał użytkownik / jakie było zgłoszenie?
 - Jeśli refaktoryzacja — co było nie tak z poprzednim podejściem?
@@ -112,6 +114,7 @@ Wyjaśnij kontekst i powód zmian:
 ## Jak testować
 
 Konkretne kroki do weryfikacji zmian przez reviewera:
+
 - [ ] Wejdź na `/patients` — tabela ładuje się poprawnie
 - [ ] Kliknij w pacjenta — otwiera się profil z zakładką Statystyki
 - [ ] Dodaj pacjenta przez dialog — pojawia się toast sukcesu i lista się odświeża
@@ -168,32 +171,41 @@ w profilu pacjenta bez wchodzenia w osobny moduł statystyk.
 ### Opis issue — struktura
 
 **Dla błędów (`[BUG]`):**
+
 ```markdown
 ## Opis błędu
+
 Co się dzieje a co powinno się dziać.
 
 ## Kroki do odtworzenia
+
 1. Wejdź na...
 2. Kliknij...
 3. Zaobserwuj...
 
 ## Oczekiwane zachowanie
+
 Co powinno się stać.
 
 ## Środowisko
+
 - Branch:
 - Przeglądarka:
 ```
 
 **Dla funkcjonalności (`[FEAT]`):**
+
 ```markdown
 ## Cel
+
 Co chcemy osiągnąć i dlaczego.
 
 ## Propozycja rozwiązania
+
 Jak to może działać (opcjonalnie).
 
 ## Kryteria akceptacji
+
 - [ ] Co musi działać żeby uznać zadanie za skończone
 - [ ] ...
 ```

@@ -9,7 +9,9 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { data: stats } = useAPI<PatientStatistics>(PatientsEndpoints.STATISTICS(props.patientUuid), { key: patientStatisticsKey(props.patientUuid) })
+const { data: stats } = useAPI<PatientStatistics>(PatientsEndpoints.STATISTICS(props.patientUuid), {
+  key: patientStatisticsKey(props.patientUuid),
+})
 </script>
 
 <template>
@@ -40,7 +42,9 @@ const { data: stats } = useAPI<PatientStatistics>(PatientsEndpoints.STATISTICS(p
       <span class="text-xs uppercase tracking-wide text-muted-foreground">Nieobecności</span>
       <span class="text-sm font-medium">
         {{ stats?.no_shows.count ?? 0 }}
-        <span class="text-xs text-muted-foreground font-normal">/ {{ stats?.no_shows.total_appointments ?? 0 }} wizyt</span>
+        <span class="text-xs text-muted-foreground font-normal"
+          >/ {{ stats?.no_shows.total_appointments ?? 0 }} wizyt</span
+        >
       </span>
       <span v-if="stats?.no_shows.last_at" class="text-xs text-muted-foreground">
         ostatnio {{ formatDateToString(stats.no_shows.last_at, 'dd.MM.yyyy') }}

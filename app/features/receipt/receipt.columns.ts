@@ -23,14 +23,16 @@ const statusConfig: Record<string, { label: string; class: string }> = {
   },
 }
 
-const defaultStatusConfig = { label: 'Nieznany', class: 'bg-muted text-muted-foreground border border-border' }
+const defaultStatusConfig = {
+  label: 'Nieznany',
+  class: 'bg-muted text-muted-foreground border border-border',
+}
 
 export const receiptColumns: ColumnDef<Receipt>[] = [
   {
     accessorKey: 'code',
     header: () => h('div', { class: 'text-foreground' }, 'Kod recepty'),
-    cell: ({ row }) =>
-      h('div', { class: 'text-left font-medium' }, row.original.code),
+    cell: ({ row }) => h('div', { class: 'text-left font-medium' }, row.original.code),
   },
   {
     accessorKey: 'name',

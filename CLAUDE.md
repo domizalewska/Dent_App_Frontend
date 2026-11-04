@@ -57,6 +57,7 @@ app/
 ## Warstwa features (`app/features/<feature>/`)
 
 Każda feature zawiera:
+
 - `<feature>.endpoints.ts` — stałe URL API
 - `<feature>.key.ts` — klucze cache do `refreshNuxtData`
 - `<feature>.columns.ts` — definicje kolumn TanStack Table (jeśli feature ma tabelę)
@@ -80,7 +81,8 @@ export const PatientsEndpoints = {
   STATISTICS: (uuid: string) => `/patient/${uuid}/statistics`,
   PHOTO_LIST: (uuid: string) => `/patient/${uuid}/photo`,
   PHOTO_STORE: (uuid: string) => `/patient/${uuid}/photo`,
-  PHOTO_DOWNLOAD: (uuid: string, photoUuid: string) => `/patient/${uuid}/photo-download/${photoUuid}`,
+  PHOTO_DOWNLOAD: (uuid: string, photoUuid: string) =>
+    `/patient/${uuid}/photo-download/${photoUuid}`,
   PHOTO_DETAILS: (uuid: string, photoUuid: string) => `/patient/${uuid}/photo/${photoUuid}`,
 }
 ```
@@ -95,6 +97,7 @@ export const patientStatisticsKey = (uuid: string) => `patient-statistics-${uuid
 ```
 
 Klucze są tablicami lub pojedynczymi stringami w `refreshNuxtData`:
+
 ```typescript
 refreshNuxtData(patientsKey)
 refreshNuxtData([patientsKey, patientDetailKey(uuid), patientStatisticsKey(uuid)])
@@ -117,8 +120,11 @@ export const patientsColumns: ColumnDef<PatientType>[] = [
     accessorKey: 'last_name',
     header: () => h('div', { class: 'flex item-center text-center text-foreground' }, 'Użytkownik'),
     cell: ({ row }) =>
-      h('div', { class: 'text-left font-normal text-muted-foreground' },
-        row.original.first_name + ' ' + row.original.last_name),
+      h(
+        'div',
+        { class: 'text-left font-normal text-muted-foreground' },
+        row.original.first_name + ' ' + row.original.last_name,
+      ),
   },
   {
     accessorKey: 'email',
@@ -131,35 +137,59 @@ export const patientsColumns: ColumnDef<PatientType>[] = [
     accessorKey: 'created_at',
     header: sortableHeader('Data rejestracji'),
     cell: ({ row }) =>
-      h('div', { class: 'text-left font-normal text-muted-foreground' },
-        formatDateToString(row.original.created_at, 'dd-MM-yyyy')),
+      h(
+        'div',
+        { class: 'text-left font-normal text-muted-foreground' },
+        formatDateToString(row.original.created_at, 'dd-MM-yyyy'),
+      ),
     enableSorting: true,
   },
   {
     accessorKey: 'action',
     header: () => h('div', {}),
     cell: () =>
-      h('div', {}, h(Button, { variant: 'outline', size: 'icon', class: 'rounded-full' },
-        { default: () => h(Trash2, { class: 'size-4' }) })),
+      h(
+        'div',
+        {},
+        h(
+          Button,
+          { variant: 'outline', size: 'icon', class: 'rounded-full' },
+          { default: () => h(Trash2, { class: 'size-4' }) },
+        ),
+      ),
   },
 ]
 ```
 
 Status badge w kolumnie (wzorzec switch):
+
 ```typescript
 const statusConfig = (status: VisitStatus) => {
   switch (status) {
     case VisitStatus.SCHEDULED:
-      return { label: 'Zaplanowana', class: 'bg-blue-500/15 text-blue-500 border border-blue-500/30' }
+      return {
+        label: 'Zaplanowana',
+        class: 'bg-blue-500/15 text-blue-500 border border-blue-500/30',
+      }
     case VisitStatus.COMPLETED:
-      return { label: 'Zakończona', class: 'bg-green-500/15 text-green-500 border border-green-500/30' }
+      return {
+        label: 'Zakończona',
+        class: 'bg-green-500/15 text-green-500 border border-green-500/30',
+      }
     case VisitStatus.NO_SHOW:
-      return { label: 'Anulowana', class: 'bg-destructive/15 text-destructive border border-destructive/30' }
+      return {
+        label: 'Anulowana',
+        class: 'bg-destructive/15 text-destructive border border-destructive/30',
+      }
   }
 }
 // w cell:
 const config = statusConfig(row.original.status)
-return h('span', { class: `text-xs px-2.5 py-0.5 rounded-full font-medium ${config.class}` }, config.label)
+return h(
+  'span',
+  { class: `text-xs px-2.5 py-0.5 rounded-full font-medium ${config.class}` },
+  config.label,
+)
 ```
 
 ---
@@ -169,6 +199,7 @@ return h('span', { class: `text-xs px-2.5 py-0.5 rounded-full font-medium ${conf
 ### Struktura folderu
 
 Każda domena ma podfolder z plikiem typu i `index.ts`:
+
 ```
 types/
   patient/
@@ -254,28 +285,32 @@ export function usePaginatedAPI<T>(url: string | (() => string), options?: objec
 // Użycie:
 const { data, pending, refresh } = useAPI<Patient>(PatientsEndpoints.DETAILS(uuid))
 const { data } = usePaginatedAPI<PatientType>(() => PatientsEndpoints.BASE)
-const { data } = useAPI<ItemType>(url, { key: patientDetailKey(uuid) })  // z kluczem cache
+const { data } = useAPI<ItemType>(url, { key: patientDetailKey(uuid) }) // z kluczem cache
 ```
 
 ### usePagination — stan paginacji z sessionStorage
 
 ```typescript
-const pagination = usePagination({ stateKey: 'patients', initialPerPage: 15, initialSort: 'created_at,desc' })
+const pagination = usePagination({
+  stateKey: 'patients',
+  initialPerPage: 15,
+  initialSort: 'created_at,desc',
+})
 
 // Zwraca (readonly refs + metody):
-pagination.paramsData     // computed: { page, perPage, sort, searchString, ...filters }
-pagination.pagination     // { current_page, from, last_page, per_page, to }
-pagination.sort           // string | null — format: 'field,asc' lub 'field,desc'
-pagination.globalSearch   // string | null
-pagination.filters        // FilterModel
-pagination.sortingState   // SortingState (dla TanStack Table)
-pagination.filtersCount   // liczba aktywnych filtrów
+pagination.paramsData // computed: { page, perPage, sort, searchString, ...filters }
+pagination.pagination // { current_page, from, last_page, per_page, to }
+pagination.sort // string | null — format: 'field,asc' lub 'field,desc'
+pagination.globalSearch // string | null
+pagination.filters // FilterModel
+pagination.sortingState // SortingState (dla TanStack Table)
+pagination.filtersCount // liczba aktywnych filtrów
 
 pagination.setPage(n)
 pagination.setPerPage(n)
-pagination.setSort(updater)   // przyjmuje Updater<SortingState> z TanStack
+pagination.setSort(updater) // przyjmuje Updater<SortingState> z TanStack
 pagination.setSearch(value)
-pagination.setFilters(data)   // czyści null/undefined/''
+pagination.setFilters(data) // czyści null/undefined/''
 pagination.clearFilters()
 pagination.resetPagination()
 
@@ -303,8 +338,9 @@ export const usePatient = () => {
 
   async function addRecord(payload: PatientType) {
     return toast.promise(
-      api(PatientsEndpoints.BASE, { method: 'POST', body: payload })
-        .then(() => refreshNuxtData(patientsKey)),
+      api(PatientsEndpoints.BASE, { method: 'POST', body: payload }).then(() =>
+        refreshNuxtData(patientsKey),
+      ),
       {
         success: { message: 'Dodany nowy rekord', style: toastSuccessStyle },
         error: { message: 'Błąd podczas dodawania rekordu', style: toastErrorStyle },
@@ -314,8 +350,9 @@ export const usePatient = () => {
 
   async function editRecord(uuid: string, payload: Partial<PatientType>) {
     return toast.promise(
-      api(PatientsEndpoints.DETAILS(uuid), { method: 'PUT', body: payload })
-        .then(() => refreshNuxtData([patientsKey, patientDetailKey(uuid), patientStatisticsKey(uuid)])),
+      api(PatientsEndpoints.DETAILS(uuid), { method: 'PUT', body: payload }).then(() =>
+        refreshNuxtData([patientsKey, patientDetailKey(uuid), patientStatisticsKey(uuid)]),
+      ),
       {
         success: { message: 'Zmiany zostały zapisane', style: toastSuccessStyle },
         error: { message: 'Błąd podczas zapisywania zmian', style: toastErrorStyle },
@@ -325,8 +362,9 @@ export const usePatient = () => {
 
   async function deleteRecord(uuid: string) {
     return toast.promise(
-      api(PatientsEndpoints.DETAILS(uuid), { method: 'DELETE' })
-        .then(() => refreshNuxtData(patientsKey)),
+      api(PatientsEndpoints.DETAILS(uuid), { method: 'DELETE' }).then(() =>
+        refreshNuxtData(patientsKey),
+      ),
       {
         success: { message: 'Rekord został usunięty', style: toastSuccessStyle },
         error: { message: 'Błąd podczas usuwania rekordu', style: toastErrorStyle },
@@ -339,6 +377,7 @@ export const usePatient = () => {
 ```
 
 Dostępne feature composables:
+
 - `usePatient` — `addRecord`, `editRecord`, `deleteRecord`
 - `useAppointments` — `addAppointment`, `editAppointment`, `deleteRecord`
 - `useUser` — `addUser`, `editUser`, `deactivateUser`
@@ -347,10 +386,10 @@ Dostępne feature composables:
 ### Pozostałe composables
 
 ```typescript
-useAuth()          // user, token, isAuthenticated, loginUser(), logoutUser()
-useDialog()        // activeComponent, activeProps, open(component, props), close()
-useDocumentStatus()   // getStatusLabel(status), getStatusClass(status)
-useScheduleColors()   // localStorage per CalendarType
+useAuth() // user, token, isAuthenticated, loginUser(), logoutUser()
+useDialog() // activeComponent, activeProps, open(component, props), close()
+useDocumentStatus() // getStatusLabel(status), getStatusClass(status)
+useScheduleColors() // localStorage per CalendarType
 useStatisticsPeriod() // period: { year, month } via useState
 ```
 
@@ -359,10 +398,12 @@ useStatisticsPeriod() // period: { year, month } via useState
 ## Layouty (`app/layouts/`)
 
 Dwa layouty:
+
 - **`dashboard`** — shell aplikacji (sidebar, header, breadcrumbs, `HeaderPage`). Domyślny dla wszystkich stron po zalogowaniu.
 - **`login`** — minimalistyczny, tylko branding. Dla stron auth.
 
 Każda strona deklaruje layout:
+
 ```typescript
 definePageMeta({ layout: 'dashboard' })
 ```
@@ -390,13 +431,13 @@ const { globalSearch, setSearch } = usePagination({
 // 3. Dialog (jeden useDialog na stronę, montuje aktualny komponent)
 const { open, close, activeComponent, activeProps } = useDialog()
 function openAddDialog() {
-  open(PatientDialog)   // opcjonalnie: open(PatientDialog, { extraProp: value })
+  open(PatientDialog) // opcjonalnie: open(PatientDialog, { extraProp: value })
 }
 
 // 4. Dane (await — Nuxt auto-awaits w setup)
-const { data, pending } = await usePaginatedAPI<PatientType>(
-  PatientsEndpoints.BASE, { key: patientsKey }
-)
+const { data, pending } = await usePaginatedAPI<PatientType>(PatientsEndpoints.BASE, {
+  key: patientsKey,
+})
 </script>
 
 <template>
@@ -412,7 +453,11 @@ const { data, pending } = await usePaginatedAPI<PatientType>(
       <BaseHeader>
         <template #right>
           <BaseTableSearch :model-value="globalSearch" @search="setSearch" />
-          <BaseExportFile :extensions="['xlsx', 'csv', 'pdf']" :endpoint="PatientsEndpoints.EXPORT" file-name="Pacjenci" />
+          <BaseExportFile
+            :extensions="['xlsx', 'csv', 'pdf']"
+            :endpoint="PatientsEndpoints.EXPORT"
+            file-name="Pacjenci"
+          />
           <Button @click="openAddDialog">Dodaj</Button>
         </template>
       </BaseHeader>
@@ -421,8 +466,11 @@ const { data, pending } = await usePaginatedAPI<PatientType>(
       <component :is="activeComponent" v-bind="activeProps" @close="close" />
 
       <!-- Tabela -->
-      <DataTable :columns="patientsColumns" :data="data.data"
-        :on-row-click="(row) => router.push(PatientRoutes.PATIENT_PROFILE(row.uuid))" />
+      <DataTable
+        :columns="patientsColumns"
+        :data="data.data"
+        :on-row-click="(row) => router.push(PatientRoutes.PATIENT_PROFILE(row.uuid))"
+      />
     </template>
   </Card>
 </template>
@@ -463,6 +511,7 @@ Zmienna środowiskowa: `ASSETS_URL` (domyślnie `http://localhost:8000`).
 ## Plugin `$api` (`app/plugins/api.ts`)
 
 Wszystkie żądania HTTP idą przez `useNuxtApp().$api` — customowy `$fetch.create()` z:
+
 - `baseURL`: z `useRuntimeConfig().public.apiBase` (domyślnie `/api`)
 - **Request interceptor**: `Authorization: Bearer {token}` z `localStorage`
 - **Response error interceptor**:
@@ -488,18 +537,19 @@ Globalna straż — działa tylko client-side (`import.meta.server` → return).
 
 Wszystkie integrują się z **vee-validate** przez `useField(props.name)`. Wymagają bycia wewnątrz `<Form>` z vee-validate.
 
-| Komponent | Props | Uwagi |
-|---|---|---|
-| `BaseInputForm` | `name`, `label`, `placeholder`, `type?`, `size?`, `mask?` | Obsługuje password toggle, maska przez vMaska |
-| `BaseSelectForm` | `name`, `label?`, `placeholder?`, `apiUrl?`, `apiKey?`, `options?`, `additionalOptions?`, `optionValue?`, `optionLabel?`, `optionDisabled?`, `assignValue?`, `immediateFetch?`, `withPagination?`, `additionalParams?` | Lazy fetch przy otwarciu; `withPagination` ładuje kolejne strony przy scrollu |
-| `BaseTextareaForm` | `name`, `label`, `placeholder` | — |
-| `BaseDateTimeForm` | `name`, `label?`, `placeholder?`, `size?`, `requiredMark?`, `rules?` | Popover z Calendar (reka-ui), wartość jako string ISO (`YYYY-MM-DD`) |
-| `BaseTimePickerForm` | `name`, `label?`, `placeholder?`, `size?`, `enableSeconds?`, `range?`, `rules?` | VueDatePicker, wartość jako `HH:mm:ss` |
-| `BaseSwitchForm` | `name`, `label`, `disabled?` | — |
-| `BasePhoneForm` | `name`, `label?`, `rules?` | IntlTelInput, tylko kraje europejskie, domyślnie PL |
-| `BaseMultiselect` | `api`, `optionValue`, `optionLabel`, `optionAvatar?`, `placeholder?`, `label?` | `defineModel<string[]>`, własny combobox z Command |
+| Komponent            | Props                                                                                                                                                                                                                  | Uwagi                                                                         |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `BaseInputForm`      | `name`, `label`, `placeholder`, `type?`, `size?`, `mask?`                                                                                                                                                              | Obsługuje password toggle, maska przez vMaska                                 |
+| `BaseSelectForm`     | `name`, `label?`, `placeholder?`, `apiUrl?`, `apiKey?`, `options?`, `additionalOptions?`, `optionValue?`, `optionLabel?`, `optionDisabled?`, `assignValue?`, `immediateFetch?`, `withPagination?`, `additionalParams?` | Lazy fetch przy otwarciu; `withPagination` ładuje kolejne strony przy scrollu |
+| `BaseTextareaForm`   | `name`, `label`, `placeholder`                                                                                                                                                                                         | —                                                                             |
+| `BaseDateTimeForm`   | `name`, `label?`, `placeholder?`, `size?`, `requiredMark?`, `rules?`                                                                                                                                                   | Popover z Calendar (reka-ui), wartość jako string ISO (`YYYY-MM-DD`)          |
+| `BaseTimePickerForm` | `name`, `label?`, `placeholder?`, `size?`, `enableSeconds?`, `range?`, `rules?`                                                                                                                                        | VueDatePicker, wartość jako `HH:mm:ss`                                        |
+| `BaseSwitchForm`     | `name`, `label`, `disabled?`                                                                                                                                                                                           | —                                                                             |
+| `BasePhoneForm`      | `name`, `label?`, `rules?`                                                                                                                                                                                             | IntlTelInput, tylko kraje europejskie, domyślnie PL                           |
+| `BaseMultiselect`    | `api`, `optionValue`, `optionLabel`, `optionAvatar?`, `placeholder?`, `label?`                                                                                                                                         | `defineModel<string[]>`, własny combobox z Command                            |
 
 **BaseSelectForm — ważne szczegóły:**
+
 - `immediateFetch` tylko gdy `apiUrl` jest podane — inaczej wywoła CORS na `/api`
 - `optionValue` i `optionLabel` przyjmują string (klucz) lub funkcję `(e: T) => string`
 - `assignValue` — dodaje aktualną wartość do listy gdy nie ma jej w wynikach API
@@ -507,24 +557,25 @@ Wszystkie integrują się z **vee-validate** przez `useField(props.name)`. Wymag
 
 ### Komponenty bazowe — inne
 
-| Komponent | Props / API |
-|---|---|
-| `BaseCard` | `cardTitle`, `cardDescription?`, `cardButtons?`; sloty: `header`, `description`, `content`, `footer` |
-| `BaseIconButton` | `tooltip` (required), `variant?` (default: `outline`), `side?` (default: `top`) — Button z Tooltip |
-| `BaseDeleteConfirmDialog` | `title?`, `description?`; `v-model:open`; emit: `confirm` |
-| `BaseConfirmDialog` | podobny do Delete bez destructive stylu |
-| `BaseFileUpload` | `endpoint`, `refreshKeys?`, `accept?`, `dropDataTypes?` — drag&drop, max 5 plików × 5MB |
-| `BaseFileList` | `endpoint`, `downloadUrl`, `deleteUrl` — lista plików z pobieraniem/usuwaniem |
-| `BaseImageList` | `endpoint`, `downloadUrl`, `deleteUrl` — lista zdjęć z podglądem |
-| `BaseExportFile` | `extensions: ExportType[]`, `endpoint`, `params?`, `fileName?` — dropdown eksportu (xlsx/csv/pdf) |
-| `BaseTableSearch` | `modelValue?`; emit: `search` — debounce 1500ms |
-| `BaseUserAvatar` | awatar użytkownika |
-| `BaseBadge` | badge statusu |
-| `BaseDatatableSkeleton` | skeleton ładowania tabeli |
+| Komponent                 | Props / API                                                                                          |
+| ------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `BaseCard`                | `cardTitle`, `cardDescription?`, `cardButtons?`; sloty: `header`, `description`, `content`, `footer` |
+| `BaseIconButton`          | `tooltip` (required), `variant?` (default: `outline`), `side?` (default: `top`) — Button z Tooltip   |
+| `BaseDeleteConfirmDialog` | `title?`, `description?`; `v-model:open`; emit: `confirm`                                            |
+| `BaseConfirmDialog`       | podobny do Delete bez destructive stylu                                                              |
+| `BaseFileUpload`          | `endpoint`, `refreshKeys?`, `accept?`, `dropDataTypes?` — drag&drop, max 5 plików × 5MB              |
+| `BaseFileList`            | `endpoint`, `downloadUrl`, `deleteUrl` — lista plików z pobieraniem/usuwaniem                        |
+| `BaseImageList`           | `endpoint`, `downloadUrl`, `deleteUrl` — lista zdjęć z podglądem                                     |
+| `BaseExportFile`          | `extensions: ExportType[]`, `endpoint`, `params?`, `fileName?` — dropdown eksportu (xlsx/csv/pdf)    |
+| `BaseTableSearch`         | `modelValue?`; emit: `search` — debounce 1500ms                                                      |
+| `BaseUserAvatar`          | awatar użytkownika                                                                                   |
+| `BaseBadge`               | badge statusu                                                                                        |
+| `BaseDatatableSkeleton`   | skeleton ładowania tabeli                                                                            |
 
 ### Struktura komponentów feature
 
 Konwencja folderów — komponent feature zawiera kombinację:
+
 ```
 components/<feature>/
   card/      ← karty informacyjne (np. PatientInfoCard)
@@ -548,7 +599,10 @@ Dialog wywołuje feature composable, Form emituje dane do rodzica:
 <script setup lang="ts">
 import type { Patient, PatientPayload } from '~/types'
 
-interface Props { patient: Patient; isEdit?: boolean }
+interface Props {
+  patient: Patient
+  isEdit?: boolean
+}
 const props = defineProps<Props>()
 const emit = defineEmits(['close'])
 
@@ -577,6 +631,7 @@ async function onSubmit(values: PatientPayload) {
 ```
 
 Renderowanie w rodzicu — `v-if` unmountuje dialog:
+
 ```vue
 <Button @click="showDialog = true">Dodaj</Button>
 <PatientDialog v-if="showDialog" :patient="emptyPatient" @close="showDialog = false" />
@@ -590,15 +645,23 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { Form } from 'vee-validate'
 import { z } from 'zod'
 
-interface Props { patient: Patient }
+interface Props {
+  patient: Patient
+}
 const props = defineProps<Props>()
 const emit = defineEmits(['submit', 'cancel'])
 
-const formSchema = toTypedSchema(z.object({
-  first_name: z.string().nonempty('Imię jest wymagane'),
-  email: z.string().email('Nieprawidłowy adres email'),
-  postal_code: z.string().regex(/^\d{2}-\d{3}$/, 'Format: __-___').or(z.literal('')).optional(),
-}))
+const formSchema = toTypedSchema(
+  z.object({
+    first_name: z.string().nonempty('Imię jest wymagane'),
+    email: z.string().email('Nieprawidłowy adres email'),
+    postal_code: z
+      .string()
+      .regex(/^\d{2}-\d{3}$/, 'Format: __-___')
+      .or(z.literal(''))
+      .optional(),
+  }),
+)
 
 const initialValues = {
   first_name: props.patient.first_name,
@@ -611,8 +674,12 @@ function onSubmit(values: PatientPayload) {
 </script>
 
 <template>
-  <Form :validation-schema="formSchema" :initial-values="initialValues"
-        class="flex flex-1 flex-col min-h-0 overflow-hidden" @submit="onSubmit">
+  <Form
+    :validation-schema="formSchema"
+    :initial-values="initialValues"
+    class="flex flex-1 flex-col min-h-0 overflow-hidden"
+    @submit="onSubmit"
+  >
     <div class="flex-1 overflow-y-auto min-h-0 px-3 py-4 flex flex-col gap-4">
       <BaseInputForm name="first_name" label="Imię" placeholder="Wpisz imię" />
       <BaseInputForm name="email" label="Email" placeholder="Wpisz email" type="email" />
@@ -631,8 +698,12 @@ function onSubmit(values: PatientPayload) {
       <BaseSwitchForm name="is_active" label="Aktywny" />
     </div>
     <div class="border-t px-3 py-3">
-      <BaseAcceptDeclineButtons confirm-title="Zapisz" cancel-title="Anuluj"
-        confirm-type="submit" @cancel="emit('cancel')" />
+      <BaseAcceptDeclineButtons
+        confirm-title="Zapisz"
+        cancel-title="Anuluj"
+        confirm-type="submit"
+        @cancel="emit('cancel')"
+      />
     </div>
   </Form>
 </template>
@@ -648,7 +719,8 @@ import type { PatientType } from '~/types'
 
 const pagination = usePagination({ stateKey: 'patients' })
 const { data } = usePaginatedAPI<PatientType>(
-  () => `${PatientsEndpoints.BASE}?${new URLSearchParams(pagination.paramsData.value as any).toString()}`
+  () =>
+    `${PatientsEndpoints.BASE}?${new URLSearchParams(pagination.paramsData.value as any).toString()}`,
 )
 </script>
 
@@ -678,8 +750,14 @@ const { data } = usePaginatedAPI<PatientType>(
 
 - **Enumy** — zawsze string enums, nigdy numeryczne:
   ```typescript
-  export enum UserStatus { ACTIVE = 'ACTIVE', NON_ACTIVE = 'NON_ACTIVE' }  // ✓
-  export enum UserStatus { ACTIVE, NON_ACTIVE }  // ✗
+  export enum UserStatus {
+    ACTIVE = 'ACTIVE',
+    NON_ACTIVE = 'NON_ACTIVE',
+  } // ✓
+  export enum UserStatus {
+    ACTIVE,
+    NON_ACTIVE,
+  } // ✗
   ```
 - **Typy domenowe** — suffix `Type` dla kształtu z API (ma `uuid`, zagnieżdżone relacje):
   ```typescript
@@ -717,6 +795,7 @@ Jeśli Select w Dialog nadal nie działa — sprawdź czy SelectPortal montuje w
 Przed każdą operacją git (commit, branch, PR, issue) przeczytaj **[GITFLOW.md](./GITFLOW.md)**.
 
 Skrót zasad:
+
 - Branche od `dev`: `feature/`, `fix/`, `refactor/`, `docs/`, `chore/`
 - Commity: Conventional Commits po angielsku (`feat:`, `fix:`, `refactor:`, `docs:`)
 - PR zawsze do `dev` z obowiązkowym opisem (co, dlaczego, jak testować)

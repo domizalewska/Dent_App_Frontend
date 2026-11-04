@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { ChevronRight, ChevronDown, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft } from 'lucide-vue-next'
+import {
+  ChevronRight,
+  ChevronDown,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+  ChevronLeft,
+} from 'lucide-vue-next'
 import { usePaginatedAPI } from '~/composables/useAPI'
 import { usePagination } from '~/composables/usePagination'
 import { formatDateToString } from '~/composables/useDates'
@@ -33,10 +40,14 @@ const { pagination, paramsData, sortingState, setPage, setPerPage, setSort, setS
 
 const expandedKeys = ref(new Set<string>())
 
-const { data: dataFiles, status, refresh } = usePaginatedAPI<FileModel[]>(
-  `${props.apiUrl}/file`,
-  { query: paramsData, immediate: !!props.apiUrl && !props.isNested },
-)
+const {
+  data: dataFiles,
+  status,
+  refresh,
+} = usePaginatedAPI<FileModel[]>(`${props.apiUrl}/file`, {
+  query: paramsData,
+  immediate: !!props.apiUrl && !props.isNested,
+})
 
 interface FlatRow {
   data: FileModel & { is_nested: boolean }
@@ -83,9 +94,7 @@ function sortState(field: string) {
 }
 
 const totalPages = computed(() =>
-  dataFiles.value
-    ? Math.ceil(dataFiles.value.pagination.total / pagination.value.per_page)
-    : 0,
+  dataFiles.value ? Math.ceil(dataFiles.value.pagination.total / pagination.value.per_page) : 0,
 )
 
 function onFileRefresh() {
@@ -123,7 +132,10 @@ defineExpose({ refresh })
               <TableHead class="cursor-pointer select-none" @click="handleSort('filename')">
                 <div class="flex items-center gap-1.5">
                   Nazwa pliku
-                  <ArrowUpDown v-if="sortState('filename') === 'none'" class="size-3.5 text-muted-foreground" />
+                  <ArrowUpDown
+                    v-if="sortState('filename') === 'none'"
+                    class="size-3.5 text-muted-foreground"
+                  />
                   <ArrowUp v-else-if="sortState('filename') === 'asc'" class="size-3.5" />
                   <ArrowDown v-else class="size-3.5" />
                 </div>
@@ -132,7 +144,10 @@ defineExpose({ refresh })
               <TableHead class="cursor-pointer select-none" @click="handleSort('user')">
                 <div class="flex items-center gap-1.5">
                   Osoba załączająca plik
-                  <ArrowUpDown v-if="sortState('user') === 'none'" class="size-3.5 text-muted-foreground" />
+                  <ArrowUpDown
+                    v-if="sortState('user') === 'none'"
+                    class="size-3.5 text-muted-foreground"
+                  />
                   <ArrowUp v-else-if="sortState('user') === 'asc'" class="size-3.5" />
                   <ArrowDown v-else class="size-3.5" />
                 </div>
@@ -144,7 +159,10 @@ defineExpose({ refresh })
             <template v-if="flatRows.length">
               <TableRow v-for="row in flatRows" :key="row.data.uuid">
                 <TableCell>
-                  <div class="flex items-center gap-1" :style="{ paddingLeft: `${row.depth * 1.5}rem` }">
+                  <div
+                    class="flex items-center gap-1"
+                    :style="{ paddingLeft: `${row.depth * 1.5}rem` }"
+                  >
                     <Button
                       v-if="row.hasChildren"
                       variant="ghost"
@@ -207,8 +225,8 @@ defineExpose({ refresh })
 
         <div class="flex items-center gap-2">
           <span>
-            {{ dataFiles.pagination.from }}–{{ dataFiles.pagination.to }}
-            z {{ dataFiles.pagination.total }}
+            {{ dataFiles.pagination.from }}–{{ dataFiles.pagination.to }} z
+            {{ dataFiles.pagination.total }}
           </span>
           <Button
             variant="ghost"

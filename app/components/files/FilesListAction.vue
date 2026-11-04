@@ -42,9 +42,7 @@ const isImage = computed(() => props.file.mimetype.startsWith('image/'))
 
 async function fetchBlob(): Promise<Blob | null> {
   try {
-    const json = await api<FileDownloadResponse>(
-      `${props.apiUrl}/file-download/${props.file.uuid}`,
-    )
+    const json = await api<FileDownloadResponse>(`${props.apiUrl}/file-download/${props.file.uuid}`)
     return formatBaseToBlob(json.content, json.mime)
   } catch {
     return null
@@ -138,7 +136,12 @@ async function deleteFn() {
 
       <Tooltip v-if="!disabled">
         <TooltipTrigger as-child>
-          <Button variant="ghost" size="icon" class="size-8 text-destructive hover:text-destructive" @click="deleteConfirmOpen = true">
+          <Button
+            variant="ghost"
+            size="icon"
+            class="size-8 text-destructive hover:text-destructive"
+            @click="deleteConfirmOpen = true"
+          >
             <Trash2 class="size-4" />
           </Button>
         </TooltipTrigger>
@@ -181,7 +184,10 @@ async function deleteFn() {
     :api-url="`${apiUrl}/file-new-version/${file.uuid}`"
     :fileable-type="fileableType"
     @close="uploadOpen = false"
-    @success="uploadOpen = false; emit('refresh')"
+    @success="
+      uploadOpen = false
+      emit('refresh')
+    "
   />
 
   <!-- Rename dialog -->
@@ -190,7 +196,10 @@ async function deleteFn() {
     :api-url="`${apiUrl}/file/${file.uuid}`"
     :name="file.filename"
     @close="renameOpen = false"
-    @success="renameOpen = false; emit('refresh')"
+    @success="
+      renameOpen = false
+      emit('refresh')
+    "
   />
 
   <!-- Delete confirm -->
