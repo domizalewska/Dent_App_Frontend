@@ -59,8 +59,8 @@ const initialValues = {
   city: props.user.city ?? '',
   email: props.user.email,
   private_email: props.user.private_email ?? '',
-  phone_number: props.user.phone_number?.find((p) => p.type === 'WORK')?.number ?? '',
-  private_phone_number: props.user.phone_number?.find((p) => p.type === 'PRIVATE')?.number ?? '',
+  phone_number: props.user.phone_number ?? '',
+  private_phone_number: props.user.private_phone_number ?? '',
   job_position_uuid: props.user.job_positions?.[0]?.uuid ?? '',
   is_active: props.user.is_active,
 }

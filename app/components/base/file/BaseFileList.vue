@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Download, Eye, FileText } from 'lucide-vue-next'
+import { Download, Eye, FileText, Trash } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
-import { toastErrorStyle } from '~/utils/toast'
+import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
 import type { FileItem } from '~/types/file/file.type'
 import { formatBaseToBlob } from '~/utils/formatBaseToBlob'
 import { formatDateToString } from '~/utils/formatDate'
@@ -9,11 +9,14 @@ import { formatDateToString } from '~/utils/formatDate'
 interface Props {
   endpoint: string
   downloadUrl: (fileUuid: string) => string
+  deleteUrl: (fileUuid: string) => string
 }
 
 const props = defineProps<Props>()
 
-const { data: fileData, pending, error } = usePaginatedAPI<FileItem>(() => props.endpoint, { key: props.endpoint })
+const { data: fileData, pending, error, refresh } = usePaginatedAPI<FileItem>(() => props.endpoint, { key: props.endpoint })
+
+defineExpose({ refresh })
 
 interface FileDownloadResponse {
   filename: string
@@ -30,6 +33,14 @@ const previewOpen = ref(false)
 const previewBlobUrl = ref<string | null>(null)
 const previewFile = ref<FileItem | null>(null)
 const previewLoading = ref(false)
+
+const deleteConfirmOpen = ref(false)
+const fileToDelete = ref<FileItem | null>(null)
+
+function confirmDelete(file: FileItem) {
+  fileToDelete.value = file
+  deleteConfirmOpen.value = true
+}
 
 const iconBg: Record<string, string> = {
   pdf: 'bg-blue-500/15',
@@ -93,6 +104,21 @@ async function downloadFile(file: FileItem) {
     toast('Błąd pobierania', { description: 'Nie udało się pobrać pliku', style: toastErrorStyle })
   }
 }
+
+async function deleteFile() {
+  if (!fileToDelete.value) return
+  try {
+    await api(props.deleteUrl(fileToDelete.value.uuid), { method: 'DELETE' })
+    toast('Plik usunięty', { style: toastSuccessStyle })
+    await refresh()
+  }
+  catch {
+    toast('Błąd usuwania', { description: 'Nie udało się usunąć pliku', style: toastErrorStyle })
+  }
+  finally {
+    fileToDelete.value = null
+  }
+}
 </script>
 
 <template>
@@ -139,7 +165,7 @@ async function downloadFile(file: FileItem) {
             {{ file.filename }}.{{ file.extension }}
           </span>
           <span class="text-xs text-muted-foreground">
-            {{ file.extension.toUpperCase() }} · {{ formatSize(file.size) }} · {{ formatDateToString(file.created_at) }}
+            {{ file.extension.toUpperCase() }} · {{ formatSize(file.size) }} · {{ formatDateToString(file?.created_at, 'dd-mmm-yyyy') }}
           </span>
         </div>
 
@@ -155,6 +181,9 @@ async function downloadFile(file: FileItem) {
           </Button>
           <Button variant="ghost" size="icon" class="size-8" @click="downloadFile(file)">
             <Download class="size-4" />
+          </Button>
+          <Button variant="ghost" size="sm" @click="confirmDelete(file)">
+            <Trash class="size-4" />
           </Button>
         </div>
       </div>
@@ -197,4 +226,10 @@ async function downloadFile(file: FileItem) {
       </div>
     </DialogContent>
   </Dialog>
+
+  <BaseDeleteConfirmDialog
+    v-model="deleteConfirmOpen"
+    description="Plik zostanie trwale usunięty."
+    @confirm="deleteFile"
+  />
 </template>

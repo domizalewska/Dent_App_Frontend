@@ -9,7 +9,13 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const { assetsUrl } = useRuntimeConfig().public
+
 const isDeleteBackgroundOpen = ref(false)
+
+function resolveUrl(path: string) {
+  return path.startsWith('http') ? path : `${assetsUrl}/${path}`
+}
 
 const { uploadBackground, deleteBackground } = useUserPictures()
 
@@ -28,7 +34,7 @@ function handleBackgroundAction() {
   <div
     class="group relative flex h-32 bg-muted bg-cover bg-center sm:h-40"
     :style="{
-      backgroundImage: `url('${user.background_path ?? 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/pawel-czerwinski-O4fAgtXLRwI-unsplash.jpg'}')`,
+      backgroundImage: `url('${user.background_path ? resolveUrl(user.background_path) : 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/pawel-czerwinski-O4fAgtXLRwI-unsplash.jpg'}')`,
     }"
   >
     <button

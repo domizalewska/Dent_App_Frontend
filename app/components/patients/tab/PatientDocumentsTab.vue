@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import BaseFileUpload from '~/components/base/file/BaseFileUpload.vue'
 import BaseFileList from '~/components/base/file/BaseFileList.vue'
-import { PatientsEndpoints } from '~/features/patients'
-import type { PatientType } from '~/types'
+import { PatientsEndpoints, patientDetailKey } from '~/features/patients'
+import type { Patient } from '~/types'
 import { Plus } from 'lucide-vue-next'
 
 interface Props {
-  patient: PatientType
+  patient: Patient
 }
 
 defineProps<Props>()
 
 const isOpen = ref(false)
+const fileListRef = useTemplateRef('fileListRef')
+
+function onUploadClose() {
+  isOpen.value = false
+  fileListRef.value?.refresh()
+}
 </script>
 
 <template>
@@ -27,8 +33,10 @@ const isOpen = ref(false)
     </CardHeader>
     <CardContent class="px-6 pt-3 pb-4 flex flex-col gap-3">
       <BaseFileList
+        ref="fileListRef"
         :endpoint="PatientsEndpoints.FILE_UPLOADS(patient.uuid)"
         :download-url="(fileUuid) => PatientsEndpoints.FILE_DOWNLOAD(patient.uuid, fileUuid)"
+        :delete-url="(fileUuid) => PatientsEndpoints.FILE_DELETE(patient.uuid, fileUuid)"
       />
     </CardContent>
   </Card>
@@ -40,7 +48,8 @@ const isOpen = ref(false)
       </DialogHeader>
       <BaseFileUpload
         :endpoint="PatientsEndpoints.FILE_UPLOADS(patient.uuid)"
-        :on-success="() => (isOpen = false)"
+        :refresh-keys="[patientDetailKey(patient.uuid)]"
+        @close="onUploadClose"
       />
     </DialogContent>
   </Dialog>

@@ -98,7 +98,7 @@ function onSubmit(values: UserPayload) {
         name="job_position_uuid"
         label="Stanowisko"
         placeholder="Wybierz stanowisko"
-        :api="JobPositionsEndpoints.LIST_SELECT"
+        :api-url="JobPositionsEndpoints.LIST_SELECT"
         :option-value="(e: JobPosition) => e.uuid"
         :option-label="(e: JobPosition) => e.name"
       />

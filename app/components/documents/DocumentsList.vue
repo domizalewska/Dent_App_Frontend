@@ -12,6 +12,12 @@ interface Props {
 defineProps<Props>()
 
 const isOpen = ref(false)
+const fileListRef = useTemplateRef('fileListRef')
+
+function onUploadClose() {
+  isOpen.value = false
+  fileListRef.value?.refresh()
+}
 </script>
 
 <template>
@@ -24,8 +30,10 @@ const isOpen = ref(false)
     </CardHeader>
     <CardContent class="px-6 pt-3 pb-4 flex flex-col gap-3">
       <BaseFileList
+        ref="fileListRef"
         :endpoint="UsersEndpoints.FILE_UPLOAD(user.uuid)"
         :download-url="(fileUuid) => UsersEndpoints.FILE_DOWNLOAD(user.uuid, fileUuid)"
+        :delete-url="(fileUuid) => UsersEndpoints.FILE_DELETE(user.uuid, fileUuid)"
       />
     </CardContent>
   </Card>
@@ -35,10 +43,7 @@ const isOpen = ref(false)
       <DialogHeader>
         <DialogTitle>Dodaj dokumenty</DialogTitle>
       </DialogHeader>
-      <BaseFileUpload
-        :endpoint="UsersEndpoints.FILE_UPLOAD(user.uuid)"
-        :on-success="() => (isOpen = false)"
-      />
+      <BaseFileUpload :endpoint="UsersEndpoints.FILE_UPLOAD(user.uuid)" @close="onUploadClose" />
     </DialogContent>
   </Dialog>
 </template>

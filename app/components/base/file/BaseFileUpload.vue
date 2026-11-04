@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { useDropZone } from '@vueuse/core';
-import { useTemplateRef } from 'vue';
-import { Upload, X } from 'lucide-vue-next';
-import { toast } from 'vue-sonner';
-import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast';
-import { refreshNuxtData } from 'nuxt/app';
+import { useDropZone } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
+import { Upload, X } from 'lucide-vue-next'
+import { toast } from 'vue-sonner'
+import { toastErrorStyle, toastSuccessStyle } from '~/utils/toast'
+import { refreshNuxtData } from 'nuxt/app'
 
 interface Props {
   endpoint: string
-  onSuccess?: () => void
+  refreshKeys?: string[]
+  accept?: string
+  dropDataTypes?: string[]
 }
 
 const props = defineProps<Props>()
+
+const emit = defineEmits(['close'])
 
 const MAX_FILES = 5
 const MAX_SIZE = 5 * 1024 * 1024
@@ -42,7 +46,7 @@ function addFiles(incoming: File[] | null) {
 
 const { isOverDropZone } = useDropZone(dropZoneRef, {
   onDrop: addFiles,
-  dataTypes: ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  dataTypes: props.dropDataTypes ?? ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
   multiple: true,
   preventDefaultForUnhandled: false,
 })
@@ -91,8 +95,8 @@ async function uploadFiles() {
   )
 
   files.value = []
-  await refreshNuxtData(props.endpoint)
-  props.onSuccess?.()
+  await refreshNuxtData([props.endpoint, ...(props.refreshKeys ?? [])])
+  emit('close')
 }
 </script>
 
@@ -123,7 +127,7 @@ async function uploadFiles() {
       ref="fileInput"
       type="file"
       multiple
-      accept=".pdf,.docx"
+      :accept="accept ?? '.pdf,.docx'"
       class="hidden"
       @change="onFileChange"
     />
