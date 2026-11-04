@@ -16,6 +16,6 @@ const statusClass = {
 <template>
   <span
     class="block rounded-full ring-2 ring-background size-2.5"
-    :class="statusClass"
+    :class="statusClass[user.status]"
   />
 </template>

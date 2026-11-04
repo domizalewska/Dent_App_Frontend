@@ -76,6 +76,7 @@ function onSubmit(values: Omit<AppointmentPayload, 'date'>) {
         :api-url="PatientsEndpoints.LIST_SELECT"
         :option-value="(p: PatientType) => p.uuid"
         :option-label="(p: PatientType) => `${p.first_name} ${p.last_name}`"
+        immediate-fetch
       />
       <BaseSelectForm
         name="doctor_uuid"

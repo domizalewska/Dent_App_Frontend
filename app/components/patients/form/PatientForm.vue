@@ -24,8 +24,7 @@ const formSchema = toTypedSchema(
     pesel: z
       .string()
       .regex(/^\d{11}$/, 'PESEL musi mieć 11 cyfr')
-      .or(z.literal(''))
-      .optional(),
+      .or(z.literal('')),
     street: z.string().optional(),
     house_number: z.string().optional(),
     apartment_number: z.string().optional(),

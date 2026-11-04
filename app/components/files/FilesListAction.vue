@@ -52,6 +52,10 @@ async function fetchBlob(): Promise<Blob | null> {
 async function viewFile() {
   previewLoading.value = true
   previewOpen.value = true
+  if (previewBlobUrl.value) {
+    URL.revokeObjectURL(previewBlobUrl.value)
+    previewBlobUrl.value = null
+  }
   const blob = await fetchBlob()
   if (blob) {
     previewBlobUrl.value = URL.createObjectURL(blob)
