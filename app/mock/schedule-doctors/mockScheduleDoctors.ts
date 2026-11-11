@@ -1,4 +1,3 @@
-import { AppointmentStatus } from '~/types'
 import type { DoctorsScheduleResponse } from '~/types'
 
 const today = new Date().toISOString().slice(0, 10)
@@ -82,7 +81,7 @@ export const mockScheduleDoctors: DoctorsScheduleResponse = {
         description: '',
         start_date: `${today}T09:00:00`,
         end_date: `${today}T09:30:00`,
-        status: AppointmentStatus.CONFIRMED,
+        status: 'CONFIRMED',
       },
       {
         uuid: 'appt-d-002',
@@ -119,7 +118,7 @@ export const mockScheduleDoctors: DoctorsScheduleResponse = {
         description: '',
         start_date: `${today}T10:00:00`,
         end_date: `${today}T10:45:00`,
-        status: AppointmentStatus.PENDING,
+        status: 'PENDING',
       },
     ],
     'doc-002': [
@@ -158,7 +157,7 @@ export const mockScheduleDoctors: DoctorsScheduleResponse = {
         description: '',
         start_date: `${today}T09:30:00`,
         end_date: `${today}T10:15:00`,
-        status: AppointmentStatus.CONFIRMED,
+        status: 'CONFIRMED',
       },
     ],
     'doc-003': [
@@ -197,7 +196,7 @@ export const mockScheduleDoctors: DoctorsScheduleResponse = {
         description: '',
         start_date: `${today}T11:00:00`,
         end_date: `${today}T12:30:00`,
-        status: AppointmentStatus.IN_PROGRESS,
+        status: 'IN_PROGRESS',
       },
     ],
   },

@@ -9,7 +9,6 @@ import { RoomsEndpoints, roomsKey } from '~/features/rooms'
 import RoomPlanCalendar from '~/components/schedule-room/calendar/RoomPlanCalendar.vue'
 import { mockRooms, mockScheduleAppointments } from '~/mock/schedule-room/mockScheduleRoom'
 import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
-import AppointmentLegend from '~/components/schedule-room/legend/AppointmentLegend.vue'
 
 definePageMeta({
   layout: 'dashboard',
@@ -83,7 +82,6 @@ function openEditDialog(uuid: string) {
           </Button>
         </div>
 
-        <AppointmentLegend />
       </div>
 
       <Button @click="openAddDialog">

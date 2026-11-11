@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { DoctorsScheduleResponse } from '~/types'
-import AppointmentDayCalendar from '~/components/base/AppointmentDayCalendar.vue'
 
 interface Props {
   schedule: DoctorsScheduleResponse
@@ -23,16 +22,9 @@ const colMinWidth = computed(() => (props.view === 'week' ? '900px' : '200px'))
         class="border-r border-border last:border-r-0"
         :style="{ minWidth: colMinWidth }"
       >
-        <AppointmentDayCalendar
-          :title="`${doctor.first_name} ${doctor.last_name}`"
-          :subtitle="doctor.job_position?.name"
-          :appointments="schedule.appointments_by_doctor[doctor.uuid] ?? []"
-          :date="date"
-          :view="view"
-          :show-axis="i === 0"
-          color-by="patient"
-          @appointment-click="(uuid) => emit('appointmentClick', uuid)"
-        />
+        <div class="p-4 text-sm text-muted-foreground">
+          {{ doctor.first_name }} {{ doctor.last_name }}
+        </div>
       </div>
     </div>
   </div>

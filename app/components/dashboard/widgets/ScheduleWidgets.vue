@@ -35,8 +35,10 @@ defineProps<{
       Brak wizyt zaplanowanych na dziś.
     </div>
 
-    <div v-else>
-      <ScheduleItems v-for="appt in appointments" :key="appt.uuid" :appointment="appt" />
+    <div v-else class="px-6 py-4 space-y-2">
+      <div v-for="appt in appointments" :key="appt.uuid" class="text-sm text-muted-foreground">
+        {{ appt.uuid }}
+      </div>
     </div>
   </div>
 </template>

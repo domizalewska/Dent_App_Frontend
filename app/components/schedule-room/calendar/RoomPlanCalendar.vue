@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { AppointmentType, RoomType } from '~/types'
-import AppointmentDayCalendar from '~/components/base/AppointmentDayCalendar.vue'
 
 interface Props {
   rooms: RoomType[]
@@ -16,13 +15,7 @@ const emit = defineEmits<{ eventClick: [uuid: string] }>()
   <div class="rooms-day-plan-wrapper">
     <div class="rooms-day-plan">
       <div v-for="(room, i) in rooms" :key="room.uuid" class="rooms-day-plan__col">
-        <AppointmentDayCalendar
-          :title="room.name"
-          :appointments="appointments.filter((a) => a.room.uuid === room.uuid)"
-          :date="date"
-          :show-axis="i === 0"
-          @appointment-click="emit('eventClick', $event)"
-        />
+        <div class="p-4 text-sm text-muted-foreground">{{ room.name }}</div>
       </div>
     </div>
   </div>

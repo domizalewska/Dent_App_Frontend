@@ -1,4 +1,3 @@
-import { AppointmentStatus } from '~/types'
 import type { AppointmentType, RoomType } from '~/types'
 
 export const mockRooms: RoomType[] = [
@@ -44,7 +43,7 @@ export const mockScheduleAppointments: AppointmentType[] = [
     description: '',
     start_date: `${today}T09:00:00`,
     end_date: `${today}T09:30:00`,
-    status: AppointmentStatus.CONFIRMED,
+    status: 'CONFIRMED',
   },
   {
     uuid: 'appt-002',
@@ -80,7 +79,7 @@ export const mockScheduleAppointments: AppointmentType[] = [
     description: '',
     start_date: `${today}T10:00:00`,
     end_date: `${today}T11:30:00`,
-    status: AppointmentStatus.IN_PROGRESS,
+    status: 'IN_PROGRESS',
   },
   {
     uuid: 'appt-003',
@@ -116,7 +115,7 @@ export const mockScheduleAppointments: AppointmentType[] = [
     description: '',
     start_date: `${today}T09:30:00`,
     end_date: `${today}T10:30:00`,
-    status: AppointmentStatus.PENDING,
+    status: 'PENDING',
   },
   {
     uuid: 'appt-004',
@@ -152,7 +151,7 @@ export const mockScheduleAppointments: AppointmentType[] = [
     description: '',
     start_date: `${today}T11:00:00`,
     end_date: `${today}T11:45:00`,
-    status: AppointmentStatus.CONFIRMED,
+    status: 'CONFIRMED',
   },
   {
     uuid: 'appt-005',
@@ -188,6 +187,6 @@ export const mockScheduleAppointments: AppointmentType[] = [
     description: '',
     start_date: `${today}T10:00:00`,
     end_date: `${today}T11:00:00`,
-    status: AppointmentStatus.PENDING,
+    status: 'PENDING',
   },
 ]
