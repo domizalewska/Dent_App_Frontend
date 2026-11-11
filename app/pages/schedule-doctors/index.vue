@@ -276,8 +276,8 @@ const calendarOptions = computed(() => ({
   border-spacing: 0 !important;
 }
 
-.doctors-schedule .fc-timegrid-col:not(:last-child),
-.doctors-schedule .fc-col-header-cell:not(:last-child) {
+.doctors-schedule .fc-timegrid-col[data-resource-id]:not(:last-child),
+.doctors-schedule .fc-col-header-cell[data-resource-id]:not(:last-child) {
   border-right: 3px solid var(--muted-foreground) !important;
 }
 </style>
