@@ -27,11 +27,11 @@ export type User = {
   background_path?: string
   job_positions?: JobPosition[]
   competencies: TreatmentType[]
-  street: string
-  house_number: string
-  apartment_number: string
-  postal_code: string
-  city: string
+  street?: string
+  house_number?: string
+  apartment_number?: string
+  postal_code?: string
+  city?: string
 }
 
 export type UserPayload = {

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { DoctorsScheduleResponse } from '~/types'
+import type { AppointmentType, User } from '~/types'
 
 interface Props {
-  schedule: DoctorsScheduleResponse
+  appointments: AppointmentType[]
+  doctors: User[]
   date: Date
   view?: 'day' | 'week'
 }
@@ -15,9 +16,9 @@ const colMinWidth = computed(() => (props.view === 'week' ? '900px' : '200px'))
 
 <template>
   <div class="max-h-[600px] overflow-y-auto overflow-x-auto border border-border rounded-xl">
-    <div class="grid" :style="{ gridTemplateColumns: `repeat(${schedule.doctors.length}, 1fr)` }">
+    <div class="grid" :style="{ gridTemplateColumns: `repeat(${doctors.length}, 1fr)` }">
       <div
-        v-for="(doctor, i) in schedule.doctors"
+        v-for="doctor in doctors"
         :key="doctor.uuid"
         class="border-r border-border last:border-r-0"
         :style="{ minWidth: colMinWidth }"

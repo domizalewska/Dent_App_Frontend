@@ -23,3 +23,5 @@ export type Patient = {
 export type PatientPayload = Omit<Patient, 'uuid' | 'doctor'> & {
   doctor_uuid?: string
 }
+
+export type PatientSummary = Pick<Patient, 'uuid' | 'first_name' | 'last_name'>

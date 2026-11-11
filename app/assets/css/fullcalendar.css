@@ -219,6 +219,66 @@
   width: 0;
 }
 
+/* doctors-schedule */
+.doctors-schedule .fc-theme-standard td,
+.doctors-schedule .fc-theme-standard th {
+  border-color: var(--border);
+}
+
+.doctors-schedule .fc-theme-standard .fc-scrollgrid {
+  border-color: var(--border);
+}
+
+.doctors-schedule .fc-col-header-cell-cushion {
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.doctors-schedule .fc-daygrid-day-number {
+  color: var(--foreground);
+}
+
+.doctors-schedule .resource-label {
+  padding: 4px 2px;
+  text-align: center;
+}
+
+.doctors-schedule .resource-label__name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.doctors-schedule .resource-label__role {
+  font-size: 10px;
+  color: var(--muted-foreground);
+  margin-top: 1px;
+}
+
+.doctors-schedule .fc-timegrid-slot-label-cushion {
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+
+.doctors-schedule .fc-bg-event,
+.doctors-schedule .fc-non-business {
+  background: transparent;
+}
+
+.doctors-schedule .fc-col-header-cell,
+.doctors-schedule .fc-timegrid-col,
+.doctors-schedule .fc-timegrid-axis,
+.doctors-schedule .fc-scroller {
+  background-color: var(--card) !important;
+}
+
+.doctors-schedule .fc-timegrid-col[data-resource-id]:not(:last-child),
+.doctors-schedule .fc-col-header-cell[data-resource-id]:not(:last-child) {
+  border-right: 3px solid var(--muted-foreground) !important;
+}
+
 .fc-timegrid-more-link {
   color: var(--foreground) !important;
   background: var(--muted) !important;

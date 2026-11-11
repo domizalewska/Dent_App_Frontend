@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import PatientForm from '~/components/patients/form/PatientForm.vue'
-import type { PatientType } from '~/types'
+import type { Patient } from '~/types'
 
 interface Props {
-  patient: PatientType
+  patient: Patient
 }
 
 const props = defineProps<Props>()
 
 const { editRecord } = usePatient()
 
-async function onSubmit(values: PatientType) {
+async function onSubmit(values: Patient) {
   await editRecord(props.patient.uuid, values)
 }
 </script>

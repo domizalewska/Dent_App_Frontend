@@ -57,7 +57,7 @@ function openAddDialog() {
 }
 
 function openEditDialog(uuid: string) {
-  const appointment = displayAppointments.value.find((a) => a.uuid === uuid)
+  const appointment = appointments.value?.find((a) => a.uuid === uuid)
   if (appointment) open(AppointmentDialog, { appointment })
 }
 </script>

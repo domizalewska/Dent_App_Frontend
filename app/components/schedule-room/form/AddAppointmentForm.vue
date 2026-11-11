@@ -10,7 +10,7 @@ import { RoomsEndpoints } from '~/features/rooms'
 import { UsersEndpoints } from '~/features/users'
 import { PatientsEndpoints } from '~/features/patients'
 import { TreatmentsEndpoints } from '~/features/treatments'
-import type { RoomType, User, PatientType, TreatmentType } from '~/types'
+import type { RoomType, User, Patient, TreatmentType } from '~/types'
 
 interface Props {
   date: string
@@ -74,8 +74,8 @@ function onSubmit(values: Omit<AppointmentPayload, 'date'>) {
         name="patient_uuid"
         label="Pacjent"
         :api-url="PatientsEndpoints.LIST_SELECT"
-        :option-value="(p: PatientType) => p.uuid"
-        :option-label="(p: PatientType) => `${p.first_name} ${p.last_name}`"
+        :option-value="(p: Patient) => p.uuid"
+        :option-label="(p: Patient) => `${p.first_name} ${p.last_name}`"
         immediate-fetch
       />
       <BaseSelectForm

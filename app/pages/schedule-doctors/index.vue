@@ -6,11 +6,12 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import plLocale from '@fullcalendar/core/locales/pl'
 import { Icon } from '@iconify/vue'
 import { useAPI } from '~/composables/useAPI'
-import { formatDateToString } from '~/utils/formatDate'
-import type { DoctorsScheduleResponse } from '~/types'
+import { useCalendarNav } from '~/composables/schedule/useCalendarNav'
+import type { AppointmentType, User } from '~/types'
 import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
-import { appointmentsByDoctorKey, AppointmentsEndpoints } from '~/features/appointments'
-import { mockScheduleDoctors } from '~/mock/schedule-doctors/mockScheduleDoctors'
+import { appointmentsKey, AppointmentsEndpoints } from '~/features/appointments'
+import { UsersEndpoints } from '~/features/users'
+import { mockScheduleDoctors, mockDentists } from '~/mock/schedule-doctors/mockScheduleDoctors'
 
 definePageMeta({ layout: 'dashboard', ssr: false })
 
@@ -21,94 +22,79 @@ const { setHeader, resetHeader } = useHeader()
 resetHeader()
 setHeader('Grafik lekarzy')
 
-const currentDate = ref(new Date())
-const calendarRef = ref()
-const calendarWrapper = ref<HTMLElement | null>(null)
+const { currentDate, calendarRef, calendarWrapper, goPrev, goNext, goToday, dateLabel, dateQuery } =
+  useCalendarNav()
 
-onMounted(() => {
-  const observer = new ResizeObserver(() => {
-    calendarRef.value?.getApi()?.updateSize()
-  })
-  if (calendarWrapper.value) observer.observe(calendarWrapper.value)
-  onUnmounted(() => observer.disconnect())
+const { data: dentistsData } = useAPI<User[]>(UsersEndpoints.DENTIST_LIST_SELECT, {
+  server: false,
+  default: () => mockDentists,
 })
 
-function goPrev() {
-  calendarRef.value?.getApi().prev()
-  currentDate.value = calendarRef.value?.getApi().getDate()
-}
-
-function goNext() {
-  calendarRef.value?.getApi().next()
-  currentDate.value = calendarRef.value?.getApi().getDate()
-}
-
-function goToday() {
-  calendarRef.value?.getApi().today()
-  currentDate.value = new Date()
-}
-
-const dateLabel = computed(() => formatDateToString(currentDate.value, 'EEEE, d MMMM yyyy'))
-
-const dateRangeQuery = computed(() => ({
-  date_from: currentDate.value.toISOString().slice(0, 10),
-  date_to: currentDate.value.toISOString().slice(0, 10),
-}))
-
-const { data: schedule, pending } = useAPI<DoctorsScheduleResponse>(
-  AppointmentsEndpoints.BY_DOCTORS,
-  {
-    key: appointmentsByDoctorKey,
-    query: dateRangeQuery,
-    server: false,
-    default: () => mockScheduleDoctors,
-  },
+const dentists = computed<User[]>(() =>
+  Array.isArray(dentistsData.value) ? dentistsData.value : mockDentists,
 )
 
-const selectedDoctorUuids = ref<Set<string>>(new Set())
-
-watch(
-  () => schedule.value?.doctors,
-  (doctors) => {
-    if (doctors?.length && selectedDoctorUuids.value.size === 0) {
-      selectedDoctorUuids.value = new Set(doctors.map((d) => d.uuid))
-    }
-  },
-  { immediate: true },
+const manualSelection = ref<Set<string> | null>(null)
+const selectedUuids = computed(
+  () => manualSelection.value ?? new Set(dentists.value.map((d) => d.uuid)),
 )
+
+function isDoctorSelected(uuid: string) {
+  return selectedUuids.value.has(uuid)
+}
 
 function toggleDoctor(uuid: string) {
-  const next = new Set(selectedDoctorUuids.value)
+  const next = new Set(selectedUuids.value)
   if (next.has(uuid)) {
     if (next.size > 1) next.delete(uuid)
   } else {
     next.add(uuid)
   }
-  selectedDoctorUuids.value = next
+  manualSelection.value = next
 }
 
+const appointmentQuery = computed(() => ({
+  ...dateQuery.value,
+  ...(selectedUuids.value.size > 0 && { doctor_uuids: [...selectedUuids.value] }),
+}))
+
+const { data: appointments, pending } = useAPI<AppointmentType[]>(AppointmentsEndpoints.BASE, {
+  key: appointmentsKey,
+  query: appointmentQuery,
+  server: false,
+  default: () => mockScheduleDoctors,
+})
+
 const resources = computed(() =>
-  schedule.value.doctors
-    .filter((d) => selectedDoctorUuids.value.has(d.uuid))
+  dentists.value
+    .filter((d) => isDoctorSelected(d.uuid))
     .map((d) => ({
       id: d.uuid,
       title: `${d.first_name} ${d.last_name}`,
-      extendedProps: { jobPosition: d.job_position?.name },
+      extendedProps: { jobPosition: d.job_positions?.[0]?.name },
     })),
 )
 
 const events = computed(() =>
-  Object.entries(schedule.value.appointments_by_doctor).flatMap(([doctorUuid, appointments]) =>
-    appointments.map((a) => ({
-      id: a.uuid,
-      resourceId: doctorUuid,
-      start: a.start_date,
-      end: a.end_date,
-      title: `${a.patient.first_name} ${a.patient.last_name}`,
-      extendedProps: { appointment: a },
-    })),
-  ),
+  (appointments.value ?? []).map((a) => ({
+    id: a.uuid,
+    resourceId: a.doctor.uuid,
+    start: a.start_date,
+    end: a.end_date,
+    title: `${a.patient.first_name} ${a.patient.last_name}`,
+    extendedProps: { appointment: a },
+  })),
 )
+
+function resourceLabel(arg: any) {
+  const el = document.createElement('div')
+  el.className = 'resource-label'
+  el.innerHTML = `
+    <div class="resource-label__name">${arg.resource.title}</div>
+    ${arg.resource.extendedProps.jobPosition ? `<div class="resource-label__role">${arg.resource.extendedProps.jobPosition}</div>` : ''}
+  `
+  return { domNodes: [el] }
+}
 
 const { open, close, activeComponent, activeProps } = useDialog()
 
@@ -117,9 +103,7 @@ function openAddDialog() {
 }
 
 function openEditDialog(uuid: string) {
-  const appointment = Object.values(schedule.value.appointments_by_doctor)
-    .flat()
-    .find((a) => a.uuid === uuid)
+  const appointment = (appointments.value ?? []).find((a) => a.uuid === uuid)
   if (appointment) open(AppointmentDialog, { appointment })
 }
 
@@ -141,15 +125,7 @@ const calendarOptions = computed(() => ({
   nowIndicator: true,
   resources: resources.value,
   events: events.value,
-  resourceLabelContent: (arg: any) => {
-    const el = document.createElement('div')
-    el.className = 'resource-label'
-    el.innerHTML = `
-      <div class="resource-label__name">${arg.resource.title}</div>
-      ${arg.resource.extendedProps.jobPosition ? `<div class="resource-label__role">${arg.resource.extendedProps.jobPosition}</div>` : ''}
-    `
-    return { domNodes: [el] }
-  },
+  resourceLabelContent: resourceLabel,
   eventClick: (info: any) => openEditDialog(info.event.id),
 }))
 </script>
@@ -179,18 +155,18 @@ const calendarOptions = computed(() => ({
       <div class="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-border bg-muted/30">
         <span class="text-xs text-muted-foreground font-medium shrink-0">Lekarze:</span>
         <button
-          v-for="doctor in schedule.doctors"
+          v-for="doctor in dentists"
           :key="doctor.uuid"
           type="button"
-          class="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium border transition-colors"
+          class="flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-medium border transition-colors"
           :class="
-            selectedDoctorUuids.has(doctor.uuid)
+            isDoctorSelected(doctor.uuid)
               ? 'bg-primary text-primary-foreground border-primary'
               : 'bg-transparent text-muted-foreground border-border hover:bg-accent'
           "
           @click="toggleDoctor(doctor.uuid)"
         >
-          <BaseUserAvatar :user="doctor" size="size-4" class="shrink-0" />
+          <BaseUserAvatar :user="doctor" size="size-6" class="shrink-0" />
           {{ doctor.first_name }} {{ doctor.last_name }}
         </button>
       </div>
@@ -198,86 +174,19 @@ const calendarOptions = computed(() => ({
 
     <component :is="activeComponent" v-bind="activeProps" @close="close" />
 
-    <div
-      v-if="pending"
-      class="flex flex-1 items-center justify-center text-muted-foreground text-sm"
-    >
-      Wczytywanie grafiku...
-    </div>
-
-    <div ref="calendarWrapper" v-else class="flex-1 overflow-auto doctors-schedule">
-      <div :style="{ minWidth: `${Math.max(selectedDoctorUuids.size, 2) * 50}%` }">
-        <ClientOnly>
-          <FullCalendar ref="calendarRef" :options="calendarOptions" />
-        </ClientOnly>
+    <ClientOnly>
+      <div
+        v-if="pending"
+        class="flex flex-1 items-center justify-center text-muted-foreground text-sm"
+      >
+        Wczytywanie grafiku...
       </div>
-    </div>
+
+      <div v-else ref="calendarWrapper" class="flex-1 overflow-auto doctors-schedule">
+        <div :style="{ minWidth: `${Math.max(resources.length, 2) * 50}%` }">
+          <FullCalendar :key="resources.length" ref="calendarRef" :options="calendarOptions" />
+        </div>
+      </div>
+    </ClientOnly>
   </Card>
 </template>
-
-<style>
-.doctors-schedule .fc-theme-standard td,
-.doctors-schedule .fc-theme-standard th {
-  border-color: var(--border);
-}
-
-.doctors-schedule .fc-theme-standard .fc-scrollgrid {
-  border-color: var(--border);
-}
-
-
-.doctors-schedule .fc-col-header-cell-cushion {
-  color: var(--foreground);
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.doctors-schedule .fc-daygrid-day-number {
-  color: var(--foreground);
-}
-
-.doctors-schedule .resource-label {
-  padding: 4px 2px;
-  text-align: center;
-}
-
-.doctors-schedule .resource-label__name {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--foreground);
-}
-
-.doctors-schedule .resource-label__role {
-  font-size: 10px;
-  color: var(--muted-foreground);
-  margin-top: 1px;
-}
-
-.doctors-schedule .fc-timegrid-slot-label-cushion {
-  font-size: 11px;
-  color: var(--muted-foreground);
-}
-
-.doctors-schedule .fc-bg-event,
-.doctors-schedule .fc-non-business {
-  background: transparent;
-}
-
-.doctors-schedule .fc-col-header-cell,
-.doctors-schedule .fc-timegrid-col,
-.doctors-schedule .fc-timegrid-axis,
-.doctors-schedule .fc-scroller {
-  background-color: var(--card) !important;
-}
-
-.doctors-schedule table {
-  border-collapse: separate !important;
-  border-spacing: 0 !important;
-}
-
-.doctors-schedule .fc-timegrid-col[data-resource-id]:not(:last-child),
-.doctors-schedule .fc-col-header-cell[data-resource-id]:not(:last-child) {
-  border-right: 3px solid var(--muted-foreground) !important;
-}
-</style>
