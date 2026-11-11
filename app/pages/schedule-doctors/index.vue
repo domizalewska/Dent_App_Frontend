@@ -234,39 +234,23 @@ const calendarOptions = computed(() => ({
 <style>
 .doctors-schedule .fc-theme-standard td,
 .doctors-schedule .fc-theme-standard th {
-  border-color: hsl(var(--border));
+  border-color: var(--border);
 }
 
 .doctors-schedule .fc-theme-standard .fc-scrollgrid {
-  border-color: hsl(var(--border));
+  border-color: var(--border);
 }
 
-.doctors-schedule .fc-col-header,
-.doctors-schedule .fc-col-header-cell,
-.doctors-schedule .fc-scrollgrid-section-header th,
-.doctors-schedule .fc-scrollgrid-section-header td {
-  background-color: hsl(var(--muted));
-}
-
-.doctors-schedule .fc-timegrid-col,
-.doctors-schedule .fc-daygrid-day,
-.doctors-schedule .fc-timegrid-axis {
-  background-color: hsl(var(--card));
-}
-
-.doctors-schedule .fc-scroller {
-  background-color: hsl(var(--card));
-}
 
 .doctors-schedule .fc-col-header-cell-cushion {
-  color: hsl(var(--foreground));
+  color: var(--foreground);
   text-decoration: none;
   font-size: 12px;
   font-weight: 500;
 }
 
 .doctors-schedule .fc-daygrid-day-number {
-  color: hsl(var(--foreground));
+  color: var(--foreground);
 }
 
 .doctors-schedule .resource-label {
@@ -277,22 +261,39 @@ const calendarOptions = computed(() => ({
 .doctors-schedule .resource-label__name {
   font-size: 12px;
   font-weight: 500;
-  color: hsl(var(--foreground));
+  color: var(--foreground);
 }
 
 .doctors-schedule .resource-label__role {
   font-size: 10px;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   margin-top: 1px;
 }
 
 .doctors-schedule .fc-timegrid-slot-label-cushion {
   font-size: 11px;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
 }
 
 .doctors-schedule .fc-bg-event,
 .doctors-schedule .fc-non-business {
   background: transparent;
+}
+
+.doctors-schedule .fc-col-header-cell,
+.doctors-schedule .fc-timegrid-col,
+.doctors-schedule .fc-timegrid-axis,
+.doctors-schedule .fc-scroller {
+  background-color: var(--card) !important;
+}
+
+.doctors-schedule table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.doctors-schedule .fc-timegrid-col.fc-day-sun,
+.doctors-schedule .fc-col-header-cell.fc-day-sun {
+  border-right: 3px solid var(--muted-foreground) !important;
 }
 </style>
