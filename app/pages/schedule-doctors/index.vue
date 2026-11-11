@@ -48,28 +48,12 @@ function goToday() {
   currentDate.value = new Date()
 }
 
-const dateLabel = computed(() => {
-  const d = currentDate.value
-  const day = d.getDay()
-  const monday = new Date(d)
-  monday.setDate(d.getDate() - (day === 0 ? 6 : day - 1))
-  const sunday = new Date(monday)
-  sunday.setDate(monday.getDate() + 6)
-  return `${formatDateToString(monday, 'd MMM')} – ${formatDateToString(sunday, 'd MMM yyyy')}`
-})
+const dateLabel = computed(() => formatDateToString(currentDate.value, 'EEEE, d MMMM yyyy'))
 
-const dateRangeQuery = computed(() => {
-  const d = currentDate.value
-  const day = d.getDay()
-  const monday = new Date(d)
-  monday.setDate(d.getDate() - (day === 0 ? 6 : day - 1))
-  const sunday = new Date(monday)
-  sunday.setDate(monday.getDate() + 6)
-  return {
-    date_from: monday.toISOString().slice(0, 10),
-    date_to: sunday.toISOString().slice(0, 10),
-  }
-})
+const dateRangeQuery = computed(() => ({
+  date_from: currentDate.value.toISOString().slice(0, 10),
+  date_to: currentDate.value.toISOString().slice(0, 10),
+}))
 
 const { data: schedule, pending } = useAPI<DoctorsScheduleResponse>(
   AppointmentsEndpoints.BY_DOCTORS,
@@ -141,7 +125,7 @@ function openEditDialog(uuid: string) {
 
 const calendarOptions = computed(() => ({
   plugins: [timeGridPlugin, resourceTimeGridPlugin, interactionPlugin],
-  initialView: 'resourceTimeGridWeek',
+  initialView: 'resourceTimeGridDay',
   initialDate: currentDate.value,
   locale: plLocale,
   schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
@@ -292,8 +276,8 @@ const calendarOptions = computed(() => ({
   border-spacing: 0 !important;
 }
 
-.doctors-schedule .fc-timegrid-col.fc-day-sun,
-.doctors-schedule .fc-col-header-cell.fc-day-sun {
+.doctors-schedule .fc-timegrid-col:not(:last-child),
+.doctors-schedule .fc-col-header-cell:not(:last-child) {
   border-right: 3px solid var(--muted-foreground) !important;
 }
 </style>
