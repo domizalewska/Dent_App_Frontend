@@ -144,6 +144,7 @@ const calendarOptions = computed(() => ({
   initialView: 'resourceTimeGridWeek',
   initialDate: currentDate.value,
   locale: plLocale,
+  schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
   headerToolbar: false,
   allDaySlot: false,
   slotMinTime: '06:00:00',
@@ -221,9 +222,11 @@ const calendarOptions = computed(() => ({
     </div>
 
     <div ref="calendarWrapper" v-else class="flex-1 overflow-auto doctors-schedule">
-      <ClientOnly>
-        <FullCalendar ref="calendarRef" :options="calendarOptions" />
-      </ClientOnly>
+      <div :style="{ minWidth: `${Math.max(selectedDoctorUuids.size, 2) * 50}%` }">
+        <ClientOnly>
+          <FullCalendar ref="calendarRef" :options="calendarOptions" />
+        </ClientOnly>
+      </div>
     </div>
   </Card>
 </template>
@@ -236,6 +239,23 @@ const calendarOptions = computed(() => ({
 
 .doctors-schedule .fc-theme-standard .fc-scrollgrid {
   border-color: hsl(var(--border));
+}
+
+.doctors-schedule .fc-col-header,
+.doctors-schedule .fc-col-header-cell,
+.doctors-schedule .fc-scrollgrid-section-header th,
+.doctors-schedule .fc-scrollgrid-section-header td {
+  background-color: hsl(var(--muted));
+}
+
+.doctors-schedule .fc-timegrid-col,
+.doctors-schedule .fc-daygrid-day,
+.doctors-schedule .fc-timegrid-axis {
+  background-color: hsl(var(--card));
+}
+
+.doctors-schedule .fc-scroller {
+  background-color: hsl(var(--card));
 }
 
 .doctors-schedule .fc-col-header-cell-cushion {
