@@ -1,1 +1,1 @@
-export * from './appoitment.type'
+export * from './visit.type'

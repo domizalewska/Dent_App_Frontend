@@ -2,7 +2,7 @@
 import DataTable from '~/components/ui/data-table/data-table.vue'
 import BaseTableSkeleton from '~/components/base/skeleton/table/BaseTableSkeleton.vue'
 import type { VisitType } from '~/types'
-import { patientAppointmentsColumns, PatientsEndpoints } from '~/features/patients'
+import { patientVisitsColumns, PatientsEndpoints } from '~/features/patients'
 
 interface Props {
   patientUuid: string
@@ -27,7 +27,7 @@ const { data, pending, error } = usePaginatedAPI<VisitType>(() =>
       <template v-else>
         <DataTable
           v-if="data?.data?.length"
-          :columns="patientAppointmentsColumns"
+          :columns="patientVisitsColumns"
           :data="data.data"
         />
         <p v-else class="py-8 text-center text-sm text-muted-foreground">Brak wizyt w archiwum</p>

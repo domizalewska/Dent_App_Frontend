@@ -8,7 +8,7 @@ import { Icon } from '@iconify/vue'
 import { useAPI } from '~/composables/useAPI'
 import { useCalendarNav } from '~/composables/schedule/useCalendarNav'
 import type { CalendarEventType, User } from '~/types'
-import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
+import CalendarEventDialog from '~/components/schedule-room/dialog/CalendarEventDialog.vue'
 import { CalendarEndpoints, calendarKey } from '~/features/calendar'
 import { UsersEndpoints } from '~/features/users'
 import { mockDentists, mockScheduleDoctors } from '~/mock/schedule-doctors/mockScheduleDoctors'
@@ -37,14 +37,14 @@ function handleSelection(val: string[]) {
   if (val.length > 0) selectedUuids.value = val
 }
 
-const appointmentQuery = computed(() => ({
+const calendarQuery = computed(() => ({
   ...dateQuery.value,
   ...(selectedUuids.value.length > 0 && { 'doctor_uuids[]': selectedUuids.value }),
 }))
 
 const { data: appointments, pending } = useAPI<CalendarEventType[]>(CalendarEndpoints.BASE, {
   key: calendarKey,
-  query: appointmentQuery,
+  query: calendarQuery,
   server: false,
   default: () => mockScheduleDoctors,
 })
@@ -84,12 +84,12 @@ function resourceLabel(arg: any) {
 const { open, close, activeComponent, activeProps } = useDialog()
 
 function openAddDialog() {
-  open(AppointmentDialog, { date: currentDate.value.toISOString().slice(0, 10) })
+  open(CalendarEventDialog, { date: currentDate.value.toISOString().slice(0, 10) })
 }
 
 function openEditDialog(uuid: string) {
   const appointment = (appointments.value ?? []).find((a) => a.uuid === uuid)
-  if (appointment) open(AppointmentDialog, { appointment })
+  if (appointment) open(CalendarEventDialog, { appointment })
 }
 
 const calendarOptions = computed(() => ({

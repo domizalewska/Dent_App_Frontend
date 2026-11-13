@@ -24,7 +24,7 @@ const statusConfig = (status: VisitStatus) => {
   }
 }
 
-export const patientAppointmentsColumns: ColumnDef<VisitType>[] = [
+export const patientVisitsColumns: ColumnDef<VisitType>[] = [
   {
     accessorKey: 'date',
     header: sortableHeader('Data'),

@@ -9,7 +9,7 @@ import { RoomsEndpoints, roomsKey } from '~/features/rooms'
 import { CalendarEndpoints, calendarKey } from '~/features/calendar'
 import RoomPlanCalendar from '~/components/schedule-room/calendar/RoomPlanCalendar.vue'
 import { mockRooms, mockScheduleAppointments } from '~/mock/schedule-room/mockScheduleRoom'
-import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
+import CalendarEventDialog from '~/components/schedule-room/dialog/CalendarEventDialog.vue'
 
 definePageMeta({
   layout: 'dashboard',
@@ -55,12 +55,12 @@ const { data: appointments, pending } = useAPI<CalendarEventType[]>(CalendarEndp
 const { open, close, activeComponent, activeProps } = useDialog()
 
 function openAddDialog() {
-  open(AppointmentDialog, { date: dateParam.value })
+  open(CalendarEventDialog, { date: dateParam.value })
 }
 
 function openEditDialog(uuid: string) {
   const appointment = appointments.value?.find((a) => a.uuid === uuid)
-  if (appointment) open(AppointmentDialog, { appointment })
+  if (appointment) open(CalendarEventDialog, { appointment })
 }
 </script>
 

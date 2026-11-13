@@ -15,6 +15,7 @@ import {
   CalendarCheck,
   CalendarClock,
   CalendarDays,
+  CalendarRange,
   ChartColumnBig,
   ClipboardList,
   LayoutDashboard,
@@ -53,9 +54,14 @@ const data = {
       icon: UserRoundSearch,
     },
     {
-      title: 'Grafik pracowników',
+      title: 'Mój grafik',
       url: '/schedule',
       icon: CalendarCheck,
+    },
+    {
+      title: 'Grafik pracowników',
+      url: '/schedule-employees',
+      icon: CalendarRange,
     },
     // {
     //   title: 'Grafik wizyt',

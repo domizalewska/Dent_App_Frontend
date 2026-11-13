@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CalendarEventPayload, CalendarEventType } from '~/types'
 import { useCalendar } from '~/composables/calendar/useCalendar'
-import AddAppointmentForm from '~/components/schedule-room/form/AddAppointmentForm.vue'
+import AddCalendarEventForm from '~/components/schedule-room/form/AddCalendarEventForm.vue'
 
 interface Props {
   appointment?: CalendarEventType
@@ -31,7 +31,7 @@ async function onSubmit(values: CalendarEventPayload) {
       <DialogHeader class="px-4 pt-6">
         <DialogTitle>{{ isEdit ? 'Edytuj wizytę' : 'Dodaj wizytę' }}</DialogTitle>
       </DialogHeader>
-      <AddAppointmentForm
+      <AddCalendarEventForm
         :date="date"
         :initial-values="appointment"
         @submit="onSubmit"

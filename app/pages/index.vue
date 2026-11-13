@@ -1,5 +1,4 @@
-<setup lang="ts"></setup>
-
-<template>
-  <NuxtWelcome />
-</template>
+<script setup lang="ts">
+definePageMeta({ middleware: 'auth' })
+navigateTo('/dashboard')
+</script>
