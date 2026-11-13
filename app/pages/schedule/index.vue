@@ -17,7 +17,7 @@ import type { ScheduleEvent, ScheduleRule } from '~/types'
 import { CalendarType, DayOfWeek } from '~/types'
 import { ScheduleRuleEndpoints, scheduleRulesKey } from '~/features/schedule'
 
-definePageMeta({ layout: 'dashboard' })
+definePageMeta({ layout: 'dashboard', somePermissions: ['schedule.index'] })
 
 const { set } = useBreadcrumbs()
 set([{ name: 'Grafik', link: '/schedule' }])

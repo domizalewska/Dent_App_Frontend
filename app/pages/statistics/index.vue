@@ -8,7 +8,7 @@ import type { StatisticUser } from '~/types'
 import { StatisticsEndpoints, statisticsKey, statisticsUsersColumns } from '~/features/statistics'
 import { mockStatisticsUsers } from '~/mock/statistics/mockStatistics'
 
-definePageMeta({ layout: 'dashboard' })
+definePageMeta({ layout: 'dashboard', somePermissions: ['statistics.index'] })
 
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()

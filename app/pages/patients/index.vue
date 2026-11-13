@@ -18,6 +18,7 @@ import { patientsKey } from '~/features/patients'
 
 definePageMeta({
   layout: 'dashboard',
+  somePermissions: ['patients.index'],
 })
 
 const { globalSearch, setSearch } = usePagination({

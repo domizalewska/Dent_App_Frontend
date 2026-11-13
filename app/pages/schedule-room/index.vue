@@ -81,7 +81,6 @@ function openEditDialog(uuid: string) {
             <Icon icon="lucide:chevron-right" class="size-4" />
           </Button>
         </div>
-
       </div>
 
       <Button @click="openAddDialog">

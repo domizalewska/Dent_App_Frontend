@@ -13,7 +13,7 @@ import { useDialog } from '~/composables/useDialog'
 import UsersDialog from '~/components/users/dialog/UsersDialog.vue'
 import { usersKey } from '~/features/users'
 
-definePageMeta({ layout: 'dashboard' })
+definePageMeta({ layout: 'dashboard', somePermissions: ['users.index'] })
 
 const isActive = ref(false)
 

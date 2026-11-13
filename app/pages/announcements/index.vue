@@ -11,7 +11,7 @@ import type { Announcement } from '~/types'
 import { AnnouncementsEndpoints, announcementsKey } from '~/features/announcements'
 import AnnouncementsDialog from '~/components/announcements/dialog/AnnouncementsDialog.vue'
 
-definePageMeta({ layout: 'dashboard' })
+definePageMeta({ layout: 'dashboard', somePermissions: ['announcements.index'] })
 
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()

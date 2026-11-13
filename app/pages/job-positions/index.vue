@@ -14,6 +14,7 @@ import { useDialog } from '~/composables/useDialog'
 
 definePageMeta({
   layout: 'dashboard',
+  somePermissions: ['job_positions.index'],
 })
 
 const { set } = useBreadcrumbs()

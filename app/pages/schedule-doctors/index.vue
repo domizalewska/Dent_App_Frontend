@@ -12,7 +12,7 @@ import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDial
 import { appointmentsByDoctorKey, AppointmentsEndpoints } from '~/features/appointments'
 import { mockScheduleDoctors } from '~/mock/schedule-doctors/mockScheduleDoctors'
 
-definePageMeta({ layout: 'dashboard', ssr: false })
+definePageMeta({ layout: 'dashboard', ssr: false, somePermissions: ['calendar.index'] })
 
 const { set } = useBreadcrumbs()
 set([{ name: 'Grafik lekarzy', link: '/schedule-doctors' }])

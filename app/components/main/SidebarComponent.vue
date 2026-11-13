@@ -20,11 +20,13 @@ import {
   LayoutDashboard,
   Megaphone,
   Settings2,
+  ShieldCheck,
   Stethoscope,
   UserRoundSearch,
   Users,
 } from 'lucide-vue-next'
 import NavMain from './NavMain.vue'
+import { Permissions } from '~/types'
 
 const props = defineProps<SidebarProps>()
 
@@ -41,46 +43,61 @@ const data = {
       title: 'Ogłoszenia',
       url: '/announcements',
       icon: Megaphone,
+      somePermissions: [Permissions.announcements.INDEX],
     },
     {
       title: 'Pracownicy',
       url: '/users',
       icon: Users,
+      somePermissions: [Permissions.users.INDEX],
     },
     {
       title: 'Pacjenci',
       url: '/patients',
       icon: UserRoundSearch,
+      somePermissions: [Permissions.patients.INDEX],
     },
     {
       title: 'Grafik pracowników',
       url: '/schedule',
       icon: CalendarCheck,
+      somePermissions: [Permissions.schedule.INDEX],
     },
     // {
     //   title: 'Grafik wizyt',
     //   url: '/schedule-room',
     //   icon: CalendarDays,
+    //   somePermissions: [Permissions.calendar.INDEX],
     // },
     {
       title: 'Grafik lekarzy',
       url: '/schedule-doctors',
       icon: CalendarClock,
+      somePermissions: [Permissions.calendar.INDEX],
     },
     {
       title: 'Stanowiska',
       url: '/job-positions',
       icon: Briefcase,
+      somePermissions: [Permissions.jobPositions.INDEX],
     },
     {
       title: 'Statystyki',
       url: '/statistics',
       icon: ChartColumnBig,
+      somePermissions: [Permissions.statistics.INDEX],
     },
     {
       title: 'Usługi',
       url: '/treatments',
       icon: ClipboardList,
+      somePermissions: [Permissions.treatments.INDEX],
+    },
+    {
+      title: 'Grupy uprawnień',
+      url: '/permission-groups',
+      icon: ShieldCheck,
+      somePermissions: [Permissions.permissionGroup.INDEX],
     },
   ],
 }

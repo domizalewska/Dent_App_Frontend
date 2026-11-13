@@ -11,7 +11,7 @@ import { getTreatmentsColumns, TreatmentsEndpoints, treatmentsKey } from '~/feat
 import { useTreatments } from '~/composables/treatments/useTreatments'
 import TreatmentsDialog from '~/components/treatments/dialog/TreatmentsDialog.vue'
 
-definePageMeta({ layout: 'dashboard' })
+definePageMeta({ layout: 'dashboard', somePermissions: ['treatments.index'] })
 
 const { set } = useBreadcrumbs()
 const { setHeader, resetHeader } = useHeader()

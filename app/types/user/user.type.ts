@@ -27,6 +27,8 @@ export type User = {
   background_path?: string
   job_positions?: JobPosition[]
   competencies: TreatmentType[]
+  auth_route?: string[]
+  is_superuser?: boolean
   street: string
   house_number: string
   apartment_number: string
