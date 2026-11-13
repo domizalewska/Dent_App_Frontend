@@ -71,13 +71,12 @@ const events = computed(() =>
 )
 
 function resourceLabel(arg: any) {
-  const el = document.createElement('div')
-  el.className = 'resource-label'
-  el.innerHTML = `
-    <div class="resource-label__name">${arg.resource.title}</div>
-    ${arg.resource.extendedProps.jobPosition ? `<div class="resource-label__role">${arg.resource.extendedProps.jobPosition}</div>` : ''}
-  `
-  return { domNodes: [el] }
+  return {
+    html: `
+      <div class="resource-label__name">${arg.resource.title}</div>
+      ${arg.resource.extendedProps.jobPosition ? `<div class="resource-label__role">${arg.resource.extendedProps.jobPosition}</div>` : ''}
+    `,
+  }
 }
 
 const { open, close, activeComponent, activeProps } = useDialog()

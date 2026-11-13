@@ -2,15 +2,12 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { Form } from 'vee-validate'
-import type { AppointmentPayload, AppointmentType } from '~/types'
-import BaseInputForm from '~/components/base/form/BaseInputForm.vue'
 import BaseSelectForm from '~/components/base/form/BaseSelectForm.vue'
 import BaseTextareaForm from '~/components/base/form/BaseTextareaForm.vue'
-import { RoomsEndpoints } from '~/features/rooms'
 import { UsersEndpoints } from '~/features/users'
 import { PatientsEndpoints } from '~/features/patients'
 import { TreatmentsEndpoints } from '~/features/treatments'
-import type { RoomType, User, Patient, TreatmentType } from '~/types'
+import type { AppointmentPayload, AppointmentType, Patient, TreatmentType, User } from '~/types'
 
 interface Props {
   date: string
@@ -22,7 +19,6 @@ const props = defineProps<Props>()
 const formInitialValues = computed(() =>
   props.initialValues
     ? {
-        room_uuid: props.initialValues.room.uuid,
         patient_uuid: props.initialValues.patient.uuid,
         doctor_uuid: props.initialValues.doctor.uuid,
         treatment_uuid: props.initialValues.treatment.uuid,
@@ -40,7 +36,6 @@ const emit = defineEmits<{
 
 const formSchema = toTypedSchema(
   z.object({
-    room_uuid: z.string().nonempty('Gabinet jest wymagany'),
     patient_uuid: z.string().nonempty('Pacjent jest wymagany'),
     doctor_uuid: z.string().nonempty('Lekarz jest wymagany'),
     treatment_uuid: z.string().nonempty('Usługa jest wymagana'),
@@ -63,13 +58,6 @@ function onSubmit(values: Omit<AppointmentPayload, 'date'>) {
     @submit="onSubmit"
   >
     <div class="px-4 py-4 flex flex-col gap-4">
-      <BaseSelectForm
-        name="room_uuid"
-        label="Gabinet"
-        :api-url="RoomsEndpoints.BASE"
-        :option-value="(r: RoomType) => r.uuid"
-        :option-label="(r: RoomType) => r.name"
-      />
       <BaseSelectForm
         name="patient_uuid"
         label="Pacjent"
@@ -95,8 +83,8 @@ function onSubmit(values: Omit<AppointmentPayload, 'date'>) {
     </div>
     <div class="px-4 py-4 flex flex-col gap-4">
       <div class="grid grid-cols-2 gap-4">
-        <BaseInputForm name="start" label="Godzina rozpoczęcia" placeholder="" type="time" />
-        <BaseInputForm name="end" label="Godzina zakończenia" placeholder="" type="time" />
+        <BaseTimePickerForm name="start" label="Godzina rozpoczęcia" />
+        <BaseTimePickerForm name="end" label="Godzina zakończenia" />
       </div>
       <BaseTextareaForm name="description" label="Uwagi" placeholder="Opcjonalne uwagi..." />
     </div>
