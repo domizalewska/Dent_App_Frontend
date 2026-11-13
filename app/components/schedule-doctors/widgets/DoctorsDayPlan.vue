@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { AppointmentType, User } from '~/types'
+import type { CalendarEventType, User } from '~/types'
 
 interface Props {
-  appointments: AppointmentType[]
+  appointments: CalendarEventType[]
   doctors: User[]
   date: Date
   view?: 'day' | 'week'

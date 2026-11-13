@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import type { AppointmentPayload, AppointmentType } from '~/types'
-import { useAppointments } from '~/composables/appointments/useAppointments'
+import type { CalendarEventPayload, CalendarEventType } from '~/types'
+import { useCalendar } from '~/composables/calendar/useCalendar'
 import AddAppointmentForm from '~/components/schedule-room/form/AddAppointmentForm.vue'
 
 interface Props {
-  appointment?: AppointmentType
+  appointment?: CalendarEventType
   date?: string
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<{ close: [] }>()
 
-const { addAppointment, editAppointment } = useAppointments()
+const { addCalendarEvent, editCalendarEvent } = useCalendar()
 
 const isEdit = computed(() => !!props.appointment)
-const date = computed(() => props.appointment?.start_date.slice(0, 10) ?? props.date ?? '')
+const date = computed(() => props.appointment?.date ?? props.date ?? '')
 
-async function onSubmit(values: AppointmentPayload) {
+async function onSubmit(values: CalendarEventPayload) {
   if (isEdit.value && props.appointment) {
-    await editAppointment(props.appointment.uuid, values).then(() => emit('close'))
+    await editCalendarEvent(props.appointment.uuid, values).then(() => emit('close'))
   } else {
-    await addAppointment(values).then(() => emit('close'))
+    await addCalendarEvent(values).then(() => emit('close'))
   }
 }
 </script>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { AppointmentType, RoomType } from '~/types'
+import type { CalendarEventType, RoomType } from '~/types'
 
 interface Props {
   rooms: RoomType[]
-  appointments: AppointmentType[]
+  appointments: CalendarEventType[]
   date: Date
 }
 

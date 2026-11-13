@@ -7,9 +7,9 @@ import plLocale from '@fullcalendar/core/locales/pl'
 import { Icon } from '@iconify/vue'
 import { useAPI } from '~/composables/useAPI'
 import { useCalendarNav } from '~/composables/schedule/useCalendarNav'
-import type { AppointmentType, User } from '~/types'
+import type { CalendarEventType, User } from '~/types'
 import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
-import { AppointmentsEndpoints, appointmentsKey } from '~/features/appointments'
+import { CalendarEndpoints, calendarKey } from '~/features/calendar'
 import { UsersEndpoints } from '~/features/users'
 import { mockDentists, mockScheduleDoctors } from '~/mock/schedule-doctors/mockScheduleDoctors'
 
@@ -42,8 +42,8 @@ const appointmentQuery = computed(() => ({
   ...(selectedUuids.value.length > 0 && { 'doctor_uuids[]': selectedUuids.value }),
 }))
 
-const { data: appointments, pending } = useAPI<AppointmentType[]>(AppointmentsEndpoints.BASE, {
-  key: appointmentsKey,
+const { data: appointments, pending } = useAPI<CalendarEventType[]>(CalendarEndpoints.BASE, {
+  key: calendarKey,
   query: appointmentQuery,
   server: false,
   default: () => mockScheduleDoctors,
@@ -62,10 +62,12 @@ const resources = computed(() =>
 const events = computed(() =>
   (appointments.value ?? []).map((a) => ({
     id: a.uuid,
-    resourceId: a.doctor.uuid,
-    start: a.start_date,
-    end: a.end_date,
-    title: `${a.patient.first_name} ${a.patient.last_name}`,
+    resourceId: a.users[0]?.uuid,
+    start: `${a.date}T${a.start_time}`,
+    end: `${a.date}T${a.end_time}`,
+    title: a.patients[0]
+      ? `${a.patients[0].first_name} ${a.patients[0].last_name}`
+      : (a.name ?? ''),
     extendedProps: { appointment: a },
   })),
 )

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ArrowRightIcon, ClockIcon } from 'lucide-vue-next'
-import type { AppointmentType } from '~/types'
+import type { CalendarEventType } from '~/types'
 
 defineProps<{
-  appointments: AppointmentType[]
+  appointments: CalendarEventType[]
   loading?: boolean
 }>()
 </script>

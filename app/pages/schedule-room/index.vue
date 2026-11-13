@@ -4,8 +4,9 @@ import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
 import { useAPI } from '~/composables/useAPI'
 import { formatDateToString } from '~/utils/formatDate'
-import type { AppointmentType, RoomType } from '~/types'
+import type { CalendarEventType, RoomType } from '~/types'
 import { RoomsEndpoints, roomsKey } from '~/features/rooms'
+import { CalendarEndpoints, calendarKey } from '~/features/calendar'
 import RoomPlanCalendar from '~/components/schedule-room/calendar/RoomPlanCalendar.vue'
 import { mockRooms, mockScheduleAppointments } from '~/mock/schedule-room/mockScheduleRoom'
 import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
@@ -45,7 +46,8 @@ const { data: rooms } = useAPI<RoomType[]>(RoomsEndpoints.BASE, {
   key: roomsKey,
   default: () => mockRooms,
 })
-const { data: appointments, pending } = useAPI<AppointmentType[]>('/appointment', {
+const { data: appointments, pending } = useAPI<CalendarEventType[]>(CalendarEndpoints.BASE, {
+  key: calendarKey,
   query: computed(() => ({ date: dateParam.value })),
   default: () => mockScheduleAppointments,
 })

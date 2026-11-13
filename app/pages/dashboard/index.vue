@@ -3,10 +3,10 @@ import { useBreadcrumbs } from '~/composables/useBreadcrumbs'
 import { useHeader } from '~/composables/useHeader'
 import { ActivityIcon, CalendarIcon, StethoscopeIcon } from 'lucide-vue-next'
 import { useAPI } from '~/composables/useAPI'
-import type { AppointmentType, User } from '~/types'
-import { AppointmentsEndpoints, appointmentsTodayKey } from '~/features/appointments'
+import type { CalendarEventType, User } from '~/types'
+import { CalendarEndpoints, calendarTodayKey } from '~/features/calendar'
 import { TeamActivityEndpoints, teamActivityKey } from '~/features/team-activity'
-import { mockTodayAppointments } from '~/mock/appointments/mockTodayAppointments'
+import { mockTodayCalendar } from '~/mock/calendar/mockTodayCalendar'
 
 definePageMeta({
   layout: 'dashboard',
@@ -19,14 +19,11 @@ set([{ name: 'Pulpit', link: '/dashboard' }])
 resetHeader()
 setHeader('Pulpit')
 
-const { data: appointments, status } = await useAPI<AppointmentType[]>(
-  AppointmentsEndpoints.TODAY,
-  {
-    key: appointmentsTodayKey,
-    server: false,
-    default: () => mockTodayAppointments,
-  },
-)
+const { data: appointments, status } = await useAPI<CalendarEventType[]>(CalendarEndpoints.TODAY, {
+  key: calendarTodayKey,
+  server: false,
+  default: () => mockTodayCalendar,
+})
 
 const { data: teamData, status: teamStatus } = await useAPI<User[]>(TeamActivityEndpoints.TODAY, {
   key: teamActivityKey,

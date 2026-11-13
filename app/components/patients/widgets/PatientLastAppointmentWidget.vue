@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Clock } from 'lucide-vue-next'
-import type { AppointmentType, PatientType } from '~/types'
+import type { CalendarEventType, PatientType } from '~/types'
 import { formatDateToString } from '~/utils/formatDate'
 
 interface Props {
   patient: PatientType
-  lastAppointment?: AppointmentType
+  lastAppointment?: CalendarEventType
 }
 
 defineProps<Props>()
@@ -24,10 +24,13 @@ defineProps<Props>()
         <div class="flex flex-col gap-0.5">
           <span class="text-sm font-medium">{{ lastAppointment.name }}</span>
           <span class="text-xs text-muted-foreground">
-            {{ formatDateToString(lastAppointment.start_date, 'dd MMMM yyyy, HH:mm') }}
+            {{ formatDateToString(lastAppointment.date, 'dd MMMM yyyy') }}
+            <template v-if="lastAppointment.start_time">
+              {{ lastAppointment.start_time.slice(0, 5) }}
+            </template>
           </span>
-          <span class="text-xs text-muted-foreground">
-            {{ lastAppointment.doctor.first_name }} {{ lastAppointment.doctor.last_name }}
+          <span v-if="lastAppointment.users[0]" class="text-xs text-muted-foreground">
+            {{ lastAppointment.users[0].first_name }} {{ lastAppointment.users[0].last_name }}
           </span>
         </div>
       </div>

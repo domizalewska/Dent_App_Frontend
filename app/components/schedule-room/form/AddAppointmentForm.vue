@@ -7,11 +7,11 @@ import BaseTextareaForm from '~/components/base/form/BaseTextareaForm.vue'
 import { UsersEndpoints } from '~/features/users'
 import { PatientsEndpoints } from '~/features/patients'
 import { TreatmentsEndpoints } from '~/features/treatments'
-import type { AppointmentPayload, AppointmentType, Patient, TreatmentType, User } from '~/types'
+import type { CalendarEventPayload, CalendarEventType, Patient, TreatmentType, User } from '~/types'
 
 interface Props {
   date: string
-  initialValues?: AppointmentType
+  initialValues?: CalendarEventType
 }
 
 const props = defineProps<Props>()
@@ -19,18 +19,18 @@ const props = defineProps<Props>()
 const formInitialValues = computed(() =>
   props.initialValues
     ? {
-        patient_uuid: props.initialValues.patient.uuid,
-        doctor_uuid: props.initialValues.doctor.uuid,
-        treatment_uuid: props.initialValues.treatment.uuid,
-        start: props.initialValues.start_date.slice(11, 16),
-        end: props.initialValues.end_date.slice(11, 16),
+        patient_uuid: props.initialValues.patients[0]?.uuid,
+        doctor_uuid: props.initialValues.users[0]?.uuid,
+        treatment_uuid: props.initialValues.treatment?.uuid,
+        start_time: props.initialValues.start_time?.slice(0, 5),
+        end_time: props.initialValues.end_time?.slice(0, 5),
         description: props.initialValues.description,
       }
     : undefined,
 )
 
 const emit = defineEmits<{
-  submit: [values: AppointmentPayload]
+  submit: [values: CalendarEventPayload]
   cancel: []
 }>()
 
@@ -39,14 +39,14 @@ const formSchema = toTypedSchema(
     patient_uuid: z.string().nonempty('Pacjent jest wymagany'),
     doctor_uuid: z.string().nonempty('Lekarz jest wymagany'),
     treatment_uuid: z.string().nonempty('Usługa jest wymagana'),
-    start: z.string().nonempty('Godzina rozpoczęcia jest wymagana'),
-    end: z.string().nonempty('Godzina zakończenia jest wymagana'),
+    start_time: z.string().nonempty('Godzina rozpoczęcia jest wymagana'),
+    end_time: z.string().nonempty('Godzina zakończenia jest wymagana'),
     description: z.string().optional(),
   }),
 )
 
-function onSubmit(values: Omit<AppointmentPayload, 'date'>) {
-  emit('submit', { ...values, date: props.date })
+function onSubmit(values: Omit<CalendarEventPayload, 'date' | 'type'>) {
+  emit('submit', { ...values, date: props.date, type: 'EXAMINATION' })
 }
 </script>
 
@@ -83,8 +83,8 @@ function onSubmit(values: Omit<AppointmentPayload, 'date'>) {
     </div>
     <div class="px-4 py-4 flex flex-col gap-4">
       <div class="grid grid-cols-2 gap-4">
-        <BaseTimePickerForm name="start" label="Godzina rozpoczęcia" />
-        <BaseTimePickerForm name="end" label="Godzina zakończenia" />
+        <BaseTimePickerForm name="start_time" label="Godzina rozpoczęcia" />
+        <BaseTimePickerForm name="end_time" label="Godzina zakończenia" />
       </div>
       <BaseTextareaForm name="description" label="Uwagi" placeholder="Opcjonalne uwagi..." />
     </div>
