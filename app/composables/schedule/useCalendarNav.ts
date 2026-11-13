@@ -33,5 +33,14 @@ export function useCalendarNav() {
     date_to: currentDate.value.toISOString().slice(0, 10),
   }))
 
-  return { currentDate, calendarRef, calendarWrapper, goPrev, goNext, goToday, dateLabel, dateQuery }
+  return {
+    currentDate,
+    calendarRef,
+    calendarWrapper,
+    goPrev,
+    goNext,
+    goToday,
+    dateLabel,
+    dateQuery,
+  }
 }

@@ -9,9 +9,9 @@ import { useAPI } from '~/composables/useAPI'
 import { useCalendarNav } from '~/composables/schedule/useCalendarNav'
 import type { AppointmentType, User } from '~/types'
 import AppointmentDialog from '~/components/schedule-room/dialog/AppointmentDialog.vue'
-import { appointmentsKey, AppointmentsEndpoints } from '~/features/appointments'
+import { AppointmentsEndpoints, appointmentsKey } from '~/features/appointments'
 import { UsersEndpoints } from '~/features/users'
-import { mockScheduleDoctors, mockDentists } from '~/mock/schedule-doctors/mockScheduleDoctors'
+import { mockDentists, mockScheduleDoctors } from '~/mock/schedule-doctors/mockScheduleDoctors'
 
 definePageMeta({ layout: 'dashboard', ssr: false })
 
@@ -28,34 +28,18 @@ const { currentDate, calendarRef, calendarWrapper, goPrev, goNext, goToday, date
 const { data: dentistsData } = useAPI<User[]>(UsersEndpoints.DENTIST_LIST_SELECT, {
   server: false,
   default: () => mockDentists,
+  transform: (res: User[] | { data: User[] }) => (Array.isArray(res) ? res : res.data),
 })
 
-const dentists = computed<User[]>(() =>
-  Array.isArray(dentistsData.value) ? dentistsData.value : mockDentists,
-)
+const selectedUuids = ref<string[]>((dentistsData.value ?? []).map((d) => d.uuid))
 
-const manualSelection = ref<Set<string> | null>(null)
-const selectedUuids = computed(
-  () => manualSelection.value ?? new Set(dentists.value.map((d) => d.uuid)),
-)
-
-function isDoctorSelected(uuid: string) {
-  return selectedUuids.value.has(uuid)
-}
-
-function toggleDoctor(uuid: string) {
-  const next = new Set(selectedUuids.value)
-  if (next.has(uuid)) {
-    if (next.size > 1) next.delete(uuid)
-  } else {
-    next.add(uuid)
-  }
-  manualSelection.value = next
+function handleSelection(val: string[]) {
+  if (val.length > 0) selectedUuids.value = val
 }
 
 const appointmentQuery = computed(() => ({
   ...dateQuery.value,
-  ...(selectedUuids.value.size > 0 && { doctor_uuids: [...selectedUuids.value] }),
+  ...(selectedUuids.value.length > 0 && { 'doctor_uuids[]': selectedUuids.value }),
 }))
 
 const { data: appointments, pending } = useAPI<AppointmentType[]>(AppointmentsEndpoints.BASE, {
@@ -66,8 +50,8 @@ const { data: appointments, pending } = useAPI<AppointmentType[]>(AppointmentsEn
 })
 
 const resources = computed(() =>
-  dentists.value
-    .filter((d) => isDoctorSelected(d.uuid))
+  (dentistsData.value ?? [])
+    .filter((d) => selectedUuids.value.includes(d.uuid))
     .map((d) => ({
       id: d.uuid,
       title: `${d.first_name} ${d.last_name}`,
@@ -154,21 +138,21 @@ const calendarOptions = computed(() => ({
 
       <div class="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-border bg-muted/30">
         <span class="text-xs text-muted-foreground font-medium shrink-0">Lekarze:</span>
-        <button
-          v-for="doctor in dentists"
-          :key="doctor.uuid"
-          type="button"
-          class="flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-medium border transition-colors"
-          :class="
-            isDoctorSelected(doctor.uuid)
-              ? 'bg-primary text-primary-foreground border-primary'
-              : 'bg-transparent text-muted-foreground border-border hover:bg-accent'
-          "
-          @click="toggleDoctor(doctor.uuid)"
+        <ToggleGroup
+          type="multiple"
+          :model-value="selectedUuids"
+          @update:model-value="handleSelection"
         >
-          <BaseUserAvatar :user="doctor" size="size-6" class="shrink-0" />
-          {{ doctor.first_name }} {{ doctor.last_name }}
-        </button>
+          <ToggleGroupItem
+            v-for="doctor in dentistsData"
+            :key="doctor.uuid"
+            :value="doctor.uuid"
+            class="flex items-center gap-1.5 text-xs"
+          >
+            <BaseUserAvatar :user="doctor" size="size-6" class="shrink-0" />
+            {{ doctor.first_name }} {{ doctor.last_name }}
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
     </div>
 
