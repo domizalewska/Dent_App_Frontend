@@ -52,32 +52,34 @@ function remove(e: MouseEvent, val: string) {
       <PopoverTrigger as-child>
         <div
           role="combobox"
-          class="min-h-9 w-full border border-input bg-transparent rounded-xl px-3 py-1.5 flex flex-wrap gap-1.5 items-center cursor-pointer hover:bg-accent/30 transition-colors"
+          class="h-9 w-full border border-input bg-transparent rounded-xl px-3 flex gap-1.5 items-center cursor-pointer hover:bg-accent/30 transition-colors overflow-hidden"
         >
-          <span v-if="selectedOptions.length === 0" class="text-sm text-muted-foreground flex-1">
+          <span v-if="selectedOptions.length === 0" class="text-sm text-muted-foreground flex-1 truncate">
             {{ placeholder }}
           </span>
-          <span
-            v-for="option in selectedOptions.slice(0, 3)"
-            :key="optionValue(option)"
-            class="flex items-center gap-1.5 bg-accent text-xs pl-1 pr-1.5 py-0.5 rounded-full"
-          >
-            <Avatar v-if="optionAvatar" class="size-4">
-              <AvatarImage :src="optionAvatar(option) ?? ''" />
-              <AvatarFallback class="text-[8px]">{{ optionLabel(option)[0] }}</AvatarFallback>
-            </Avatar>
-            {{ optionLabel(option) }}
-            <button
-              type="button"
-              class="text-muted-foreground hover:text-foreground"
-              @click="remove($event, optionValue(option))"
+          <template v-else>
+            <span
+              v-for="option in selectedOptions.slice(0, 2)"
+              :key="optionValue(option)"
+              class="flex items-center gap-1 bg-accent text-xs pl-2 pr-1.5 py-0.5 rounded-full shrink-0 max-w-[140px]"
             >
-              <XIcon class="size-3" />
-            </button>
-          </span>
-          <span v-if="selectedOptions.length > 3" class="text-xs text-muted-foreground">
-            +{{ selectedOptions.length - 3 }}
-          </span>
+              <Avatar v-if="optionAvatar" class="size-4 shrink-0">
+                <AvatarImage :src="optionAvatar(option) ?? ''" />
+                <AvatarFallback class="text-[8px]">{{ optionLabel(option)[0] }}</AvatarFallback>
+              </Avatar>
+              <span class="truncate">{{ optionLabel(option) }}</span>
+              <button
+                type="button"
+                class="text-muted-foreground hover:text-foreground shrink-0"
+                @click="remove($event, optionValue(option))"
+              >
+                <XIcon class="size-3" />
+              </button>
+            </span>
+            <span v-if="selectedOptions.length > 2" class="text-xs text-muted-foreground shrink-0">
+              +{{ selectedOptions.length - 2 }}
+            </span>
+          </template>
           <ChevronsUpDownIcon class="size-4 shrink-0 opacity-50 ml-auto" />
         </div>
       </PopoverTrigger>

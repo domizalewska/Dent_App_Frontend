@@ -7,10 +7,7 @@ import {
   permissionGroupsKey,
   getPermissionGroupColumns,
 } from '~/features/permission-groups'
-import { mockPermissionGroups } from '~/mock/permission-groups/mockPermissionGroups'
 import PermissionGroupDialog from '~/components/permission-groups/dialog/PermissionGroupDialog.vue'
-import AssignPermissionsDialog from '~/components/permission-groups/dialog/AssignPermissionsDialog.vue'
-
 definePageMeta({
   layout: 'dashboard',
   somePermissions: ['permission_group.index'],
@@ -37,10 +34,6 @@ function openEditDialog(group: PermissionGroupType) {
   open(PermissionGroupDialog, { group, isEdit: true })
 }
 
-function openAssignDialog(group: PermissionGroupType) {
-  open(AssignPermissionsDialog, { group })
-}
-
 function requestDelete(uuid: string) {
   pendingDeleteUuid.value = uuid
   deleteDialogOpen.value = true
@@ -53,11 +46,16 @@ async function confirmDelete() {
   }
 }
 
-const columns = getPermissionGroupColumns(openEditDialog, openAssignDialog, requestDelete)
+const columns = getPermissionGroupColumns(openEditDialog, requestDelete)
 
-const { data: groups, pending } = useAPI<PermissionGroupType[]>(PermissionGroupsEndpoints.BASE, {
-  key: permissionGroupsKey,
-  default: (): PermissionGroupType[] => mockPermissionGroups,
+const { data: rawGroups, pending } = useAPI<
+  PermissionGroupType[] | { data: PermissionGroupType[] }
+>(PermissionGroupsEndpoints.BASE, { key: permissionGroupsKey })
+
+const groups = computed<PermissionGroupType[]>(() => {
+  if (!rawGroups.value) return []
+  if (Array.isArray(rawGroups.value)) return rawGroups.value
+  return rawGroups.value.data ?? []
 })
 </script>
 
