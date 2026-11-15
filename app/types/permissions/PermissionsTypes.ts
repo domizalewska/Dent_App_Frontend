@@ -24,8 +24,10 @@ export const Permissions = {
 
 export type PermissionType = {
   uuid: string
-  name: string
-  description: string | null
+  resource: string
+  type: string
+  created_at: string
+  updated_at: string
 }
 
 export type PermissionGroupType = {

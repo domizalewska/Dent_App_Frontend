@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PermissionGroupType, PermissionGroupPayload } from '~/types'
+import type { PermissionGroupType } from '~/types'
 
 interface Props {
   group?: PermissionGroupType
@@ -8,14 +8,27 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits(['close'])
 
-const { addGroup, editGroup } = usePermissionGroups()
+const { addGroup, editGroup, assignPermissions } = usePermissionGroups()
 
-async function onSubmit(values: PermissionGroupPayload) {
+async function onSubmit(values: {
+  name: string
+  description?: string | null
+  permissionUuids: string[]
+}) {
+  const { permissionUuids, ...payload } = values
+
   if (props.isEdit && props.group) {
-    await editGroup(props.group.uuid, values)
+    await editGroup(props.group.uuid, payload)
+    if (permissionUuids.length) {
+      await assignPermissions(props.group.uuid, permissionUuids)
+    }
   } else {
-    await addGroup(values)
+    const created = await addGroup(payload) as { uuid: string } | undefined
+    if (created?.uuid && permissionUuids.length) {
+      await assignPermissions(created.uuid, permissionUuids)
+    }
   }
+
   emit('close')
 }
 </script>

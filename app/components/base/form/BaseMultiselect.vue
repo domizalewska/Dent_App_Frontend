@@ -16,10 +16,14 @@ const props = withDefaults(defineProps<Props>(), {
 
 const model = defineModel<string[]>({ default: () => [] })
 
-const { data } = useAPI<{ data: T[] }>(props.api)
+const { data } = useAPI<{ data: T[] } | T[]>(props.api)
 const open = ref(false)
 
-const options = computed(() => data.value?.data ?? [])
+const options = computed<T[]>(() => {
+  if (!data.value) return []
+  if (Array.isArray(data.value)) return data.value
+  return data.value.data ?? []
+})
 
 const selectedOptions = computed(() =>
   options.value.filter((o) => model.value.includes(props.optionValue(o))),

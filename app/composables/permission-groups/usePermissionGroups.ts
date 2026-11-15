@@ -10,8 +10,8 @@ export const usePermissionGroups = () => {
 
   async function addGroup(payload: PermissionGroupPayload) {
     return toast.promise(
-      api(PermissionGroupsEndpoints.BASE, { method: 'POST', body: payload }).then(() =>
-        refreshNuxtData(permissionGroupsKey),
+      api<{ uuid: string }>(PermissionGroupsEndpoints.BASE, { method: 'POST', body: payload }).then(
+        (res) => { refreshNuxtData(permissionGroupsKey); return res },
       ),
       {
         success: { message: 'Grupa uprawnień została dodana', style: toastSuccessStyle },

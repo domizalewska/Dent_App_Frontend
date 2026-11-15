@@ -2,7 +2,8 @@
 import { Form } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
-import type { PermissionGroupType } from '~/types'
+import type { PermissionGroupType, PermissionType } from '~/types'
+import { PermissionGroupsEndpoints } from '~/features/permission-groups'
 
 interface Props {
   group?: PermissionGroupType
@@ -22,8 +23,10 @@ const initialValues = {
   description: props.group?.description ?? '',
 }
 
+const selectedUuids = ref<string[]>(props.group?.permissions.map((p) => p.uuid) ?? [])
+
 function onSubmit(values: { name: string; description?: string | null }) {
-  emit('submit', values)
+  emit('submit', { ...values, permissionUuids: selectedUuids.value })
 }
 </script>
 
@@ -37,6 +40,14 @@ function onSubmit(values: { name: string; description?: string | null }) {
     <div class="flex-1 overflow-y-auto min-h-0 px-3 py-4 flex flex-col gap-4">
       <BaseInputForm name="name" label="Nazwa grupy" placeholder="Wpisz nazwę grupy" />
       <BaseTextareaForm name="description" label="Opis" placeholder="Opcjonalny opis grupy" />
+      <BaseMultiselect
+        v-model="selectedUuids"
+        :api="PermissionGroupsEndpoints.PERMISSIONS"
+        :option-value="(p: PermissionType) => p.uuid"
+        :option-label="(p: PermissionType) => `${p.resource} · ${p.type}`"
+        label="Uprawnienia"
+        placeholder="Wybierz uprawnienia..."
+      />
     </div>
     <div class="border-t px-3 py-3">
       <BaseAcceptDeclineButtons
