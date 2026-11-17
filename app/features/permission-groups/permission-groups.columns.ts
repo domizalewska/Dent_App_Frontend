@@ -1,11 +1,12 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import { Pencil, Trash2 } from 'lucide-vue-next'
+import { Pencil, Trash2, ShieldCheck } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
 import type { PermissionGroupType } from '~/types'
 
 export function getPermissionGroupColumns(
   onEdit: (group: PermissionGroupType) => void,
+  onAssignUsers: (group: PermissionGroupType) => void,
   onDelete: (uuid: string) => void,
 ): ColumnDef<PermissionGroupType>[] {
   return [
@@ -35,6 +36,20 @@ export function getPermissionGroupColumns(
       header: () => h('div', {}),
       cell: ({ row }) =>
         h('div', { class: 'flex items-center justify-end gap-1' }, [
+          h(
+            Button,
+            {
+              variant: 'ghost',
+              size: 'icon',
+              class: 'rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10',
+              'aria-label': 'Przypisz użytkowników',
+              onClick: (e: MouseEvent) => {
+                e.stopPropagation()
+                onAssignUsers(row.original)
+              },
+            },
+            { default: () => h(ShieldCheck, { class: 'size-4' }) },
+          ),
           h(
             Button,
             {

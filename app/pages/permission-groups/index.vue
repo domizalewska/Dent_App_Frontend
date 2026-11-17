@@ -8,6 +8,7 @@ import {
   permissionGroupsKey,
 } from '~/features/permission-groups'
 import PermissionGroupDialog from '~/components/permission-groups/dialog/PermissionGroupDialog.vue'
+import AssignUsersToGroupDialog from '~/components/permission-groups/dialog/AssignUsersToGroupDialog.vue'
 
 definePageMeta({
   layout: 'dashboard',
@@ -35,6 +36,10 @@ function openEditDialog(group: PermissionGroupType) {
   open(PermissionGroupDialog, { group, isEdit: true })
 }
 
+function openAssignUsersDialog(group: PermissionGroupType) {
+  open(AssignUsersToGroupDialog, { group })
+}
+
 function requestDelete(uuid: string) {
   pendingDeleteUuid.value = uuid
   deleteDialogOpen.value = true
@@ -47,7 +52,7 @@ async function confirmDelete() {
   }
 }
 
-const columns = getPermissionGroupColumns(openEditDialog, requestDelete)
+const columns = getPermissionGroupColumns(openEditDialog, openAssignUsersDialog, requestDelete)
 
 const { paramsData, setPage } = usePagination({ stateKey: 'permission-groups-table' })
 
