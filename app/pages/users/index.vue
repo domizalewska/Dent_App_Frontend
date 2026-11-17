@@ -11,6 +11,7 @@ import DataTable from '~/components/ui/data-table/data-table.vue'
 import { Icon } from '@iconify/vue'
 import { useDialog } from '~/composables/useDialog'
 import UsersDialog from '~/components/users/dialog/UsersDialog.vue'
+import AssignUserPermissionsDialog from '~/components/users/dialog/AssignUserPermissionsDialog.vue'
 import { usersKey } from '~/features/users'
 
 definePageMeta({ layout: 'dashboard', somePermissions: ['users.index'] })
@@ -28,7 +29,12 @@ resetHeader()
 setHeader('Pracownicy')
 
 const { deactivateUser } = useUser()
-const usersColumns = getUsersColumns(deactivateUser)
+
+function openAssignPermissionsDialog(user: User) {
+  open(AssignUserPermissionsDialog, { user })
+}
+
+const usersColumns = getUsersColumns(deactivateUser, openAssignPermissionsDialog)
 
 async function addOpenDialog() {
   open(UsersDialog)

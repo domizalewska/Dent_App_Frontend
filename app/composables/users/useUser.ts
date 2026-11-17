@@ -50,9 +50,22 @@ export const useUser = () => {
     await refreshNuxtData(usersKey)
   }
 
+  async function assignPermissionGroups(uuid: string, groupUuids: string[]) {
+    await api(UsersEndpoints.ASSIGN_PERMISSIONS(uuid), {
+      method: 'PATCH',
+      body: { permission_groups: groupUuids },
+    })
+    toast('Sukces!', {
+      description: 'Poprawnie przypisano grupy uprawnień',
+      style: toastSuccessStyle,
+      duration: 1500,
+    })
+  }
+
   return {
     deactivateUser,
     addUser,
     editUser,
+    assignPermissionGroups,
   }
 }

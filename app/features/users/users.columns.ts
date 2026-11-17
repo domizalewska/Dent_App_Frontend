@@ -1,5 +1,5 @@
 import { h } from 'vue'
-import { Trash2 } from 'lucide-vue-next'
+import { Trash2, ShieldCheck } from 'lucide-vue-next'
 import type { ColumnDef } from '@tanstack/vue-table'
 import { formatDateToString } from '~/utils/formatDate'
 import type { User } from '~/types'
@@ -8,7 +8,10 @@ import { Button } from '~/components/ui/button'
 import { Icon } from '@iconify/vue'
 import { sortableHeader } from '~/utils/sortingHelper'
 
-export const getUsersColumns = (deactivateUser: (uuid: string) => void): ColumnDef<User>[] => [
+export const getUsersColumns = (
+  deactivateUser: (uuid: string) => void,
+  onAssignPermissions: (user: User) => void,
+): ColumnDef<User>[] => [
   {
     accessorKey: 'last_name',
     header: () => h('div', { class: 'flex item-center text-center text-foreground' }, 'Użytkownik'),
@@ -122,9 +125,21 @@ export const getUsersColumns = (deactivateUser: (uuid: string) => void): ColumnD
     accessorKey: 'action',
     header: () => h('div', { class: 'flex item-center text-center text-foreground' }),
     cell: ({ row }) => {
-      return h(
-        'div',
-        { class: 'text-left font-normal text-muted-foreground' },
+      return h('div', { class: 'flex items-center justify-end gap-1' }, [
+        h(
+          Button,
+          {
+            variant: 'ghost',
+            size: 'icon',
+            class: 'rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10',
+            'aria-label': 'Przypisz grupy uprawnień',
+            onClick: (e: MouseEvent) => {
+              e.stopPropagation()
+              onAssignPermissions(row.original)
+            },
+          },
+          { default: () => h(ShieldCheck, { class: 'size-4' }) },
+        ),
         h(
           Button,
           {
@@ -140,7 +155,7 @@ export const getUsersColumns = (deactivateUser: (uuid: string) => void): ColumnD
           },
           { default: () => h(Trash2, { class: 'size-4' }) },
         ),
-      )
+      ])
     },
   },
 ]

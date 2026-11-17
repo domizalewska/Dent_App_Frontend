@@ -3,11 +3,12 @@ import { Icon } from '@iconify/vue'
 import DataTable from '~/components/ui/data-table/data-table.vue'
 import type { PermissionGroupType } from '~/types'
 import {
+  getPermissionGroupColumns,
   PermissionGroupsEndpoints,
   permissionGroupsKey,
-  getPermissionGroupColumns,
 } from '~/features/permission-groups'
 import PermissionGroupDialog from '~/components/permission-groups/dialog/PermissionGroupDialog.vue'
+
 definePageMeta({
   layout: 'dashboard',
   somePermissions: ['permission_group.index'],
@@ -48,25 +49,20 @@ async function confirmDelete() {
 
 const columns = getPermissionGroupColumns(openEditDialog, requestDelete)
 
-const { data: rawGroups, pending } = useAPI<
-  PermissionGroupType[] | { data: PermissionGroupType[] }
->(PermissionGroupsEndpoints.BASE, { key: permissionGroupsKey })
+const { paramsData, setPage } = usePagination({ stateKey: 'permission-groups-table' })
 
-const groups = computed<PermissionGroupType[]>(() => {
-  if (!rawGroups.value) return []
-  if (Array.isArray(rawGroups.value)) return rawGroups.value
-  return rawGroups.value.data ?? []
-})
+const { data: groupsData, status } = usePaginatedAPI<PermissionGroupType>(
+  PermissionGroupsEndpoints.BASE,
+  { key: permissionGroupsKey, query: paramsData },
+)
 </script>
 
 <template>
   <Card class="h-full">
-    <div v-if="pending">
-      <BaseSkeletonHeader />
-      <BaseTableSkeleton :columns="4" />
-    </div>
+    <BaseSkeletonHeader v-if="status === 'pending'" />
+    <BaseTableSkeleton v-if="status === 'pending'" :columns="4" />
 
-    <template v-else>
+    <template v-if="status !== 'pending'">
       <div class="flex flex-col px-4">
         <BaseHeader>
           <template #right>
@@ -81,7 +77,15 @@ const groups = computed<PermissionGroupType[]>(() => {
       </div>
 
       <div class="px-4">
-        <DataTable :columns="columns" :data="groups ?? []" />
+        <DataTable
+          v-if="groupsData"
+          :columns="columns"
+          :data="groupsData.data"
+          :total-items="groupsData.pagination.total"
+          :current-page="groupsData.pagination.current_page"
+          :per-page="groupsData.pagination.per_page"
+          @update:page="setPage"
+        />
       </div>
     </template>
 

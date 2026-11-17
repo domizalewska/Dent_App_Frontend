@@ -10,4 +10,5 @@ export const UsersEndpoints = {
   FILE_UPLOAD: (uuid: string) => `/user/${uuid}/file`,
   FILE_DOWNLOAD: (uuid: string, fileUuid: string) => `/user/${uuid}/file-download/${fileUuid}`,
   FILE_DELETE: (uuid: string, fileUuid: string) => `/user/${uuid}/file/${fileUuid}`,
+  ASSIGN_PERMISSIONS: (uuid: string) => `/user/${uuid}/permissions`,
 }

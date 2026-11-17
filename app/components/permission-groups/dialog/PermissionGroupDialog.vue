@@ -23,7 +23,7 @@ async function onSubmit(values: {
       await assignPermissions(props.group.uuid, permissionUuids)
     }
   } else {
-    const created = await addGroup(payload) as { uuid: string } | undefined
+    const created = (await addGroup(payload)) as { uuid: string } | undefined
     if (created?.uuid && permissionUuids.length) {
       await assignPermissions(created.uuid, permissionUuids)
     }
