@@ -60,5 +60,18 @@ export const usePermissionGroups = () => {
     )
   }
 
-  return { addGroup, editGroup, deleteGroup, assignPermissions }
+  async function assignUsers(uuid: string, userUuids: string[]) {
+    return toast.promise(
+      api(PermissionGroupsEndpoints.ASSIGN_USERS(uuid), {
+        method: 'PATCH',
+        body: { users: userUuids },
+      }).then(() => refreshNuxtData([permissionGroupsKey, permissionGroupDetailKey(uuid)])),
+      {
+        success: { message: 'Użytkownicy zostali przypisani', style: toastSuccessStyle },
+        error: { message: 'Błąd podczas przypisywania użytkowników', style: toastErrorStyle },
+      },
+    )
+  }
+
+  return { addGroup, editGroup, deleteGroup, assignPermissions, assignUsers }
 }

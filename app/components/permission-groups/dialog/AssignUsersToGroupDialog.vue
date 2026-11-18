@@ -8,16 +8,14 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits(['close'])
 
-const { assignPermissionGroups } = useUser()
+const { assignUsers } = usePermissionGroups()
 
 const selectedUserUuids = ref<string[]>([])
 const loading = ref(false)
 
 async function onSubmit() {
   loading.value = true
-  await Promise.all(
-    selectedUserUuids.value.map((userUuid) => assignPermissionGroups(userUuid, [props.group.uuid])),
-  )
+  await assignUsers(props.group.uuid, selectedUserUuids.value)
   loading.value = false
   emit('close')
 }
