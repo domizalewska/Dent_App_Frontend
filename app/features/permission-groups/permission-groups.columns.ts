@@ -3,6 +3,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { Pencil, Trash2, ShieldCheck } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
 import type { PermissionGroupType } from '~/types'
+import BaseUserAvatar from '~/components/base/avatar/BaseUserAvatar.vue'
 
 export function getPermissionGroupColumns(
   onEdit: (group: PermissionGroupType) => void,
@@ -30,6 +31,36 @@ export function getPermissionGroupColumns(
           { class: 'text-sm text-muted-foreground' },
           `${row.original.permissions.length} uprawnień`,
         ),
+    },
+    {
+      accessorKey: 'users',
+      header: () => h('div', { class: 'text-foreground' }, 'Użytkownicy'),
+      cell: ({ row }) => {
+        const users = row.original.users ?? []
+        if (users.length === 0) return h('div', { class: 'text-sm text-muted-foreground' }, '—')
+        const visible = users.slice(0, 4)
+        const rest = users.length - visible.length
+        return h('div', { class: 'flex items-center' }, [
+          ...visible.map((user, i) =>
+            h(BaseUserAvatar, {
+              user,
+              size: 'size-7',
+              class: i > 0 ? '-ml-2' : '',
+              style: { zIndex: visible.length - i },
+            }),
+          ),
+          rest > 0
+            ? h(
+                'span',
+                {
+                  class:
+                    'size-7 -ml-2 rounded-full bg-muted border-2 border-background flex items-center justify-center text-xs text-muted-foreground font-medium',
+                },
+                `+${rest}`,
+              )
+            : null,
+        ])
+      },
     },
     {
       accessorKey: 'action',

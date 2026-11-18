@@ -1,3 +1,4 @@
+import type { User } from '~/types/user'
 import {
   AnnouncementsPermissions,
   CalendarPermissions,
@@ -35,6 +36,7 @@ export type PermissionGroupType = {
   name: string
   description: string | null
   permissions: PermissionType[]
+  users?: User[]
 }
 
 export type PermissionGroupPayload = {
