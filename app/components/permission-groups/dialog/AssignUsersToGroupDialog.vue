@@ -10,7 +10,7 @@ const emit = defineEmits(['close'])
 
 const { assignUsers } = usePermissionGroups()
 
-const selectedUserUuids = ref<string[]>([])
+const selectedUserUuids = ref<string[]>(props.group.users?.map((u) => u.uuid) ?? [])
 const loading = ref(false)
 
 async function onSubmit() {

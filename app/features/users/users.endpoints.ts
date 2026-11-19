@@ -9,5 +9,10 @@ export const UsersEndpoints = {
   BACKGROUND: (uuid: string) => `/user/${uuid}/background`,
   FILE_UPLOAD: (uuid: string) => `/user/${uuid}/file`,
   FILE_DOWNLOAD: (uuid: string, fileUuid: string) => `/user/${uuid}/file-download/${fileUuid}`,
+  FILE_BACKGROUND_DOWNLOAD: (uuid: string, fileUuid: string) =>
+    `/user/${uuid}/file-background-download/${fileUuid}`,
+  FILE_NEW_VERSION: (uuid: string, fileUuid: string) =>
+    `/user/${uuid}/file-new-version/${fileUuid}`,
   FILE_DELETE: (uuid: string, fileUuid: string) => `/user/${uuid}/file/${fileUuid}`,
+  ASSIGN_JOB_POSITION: (uuid: string) => `/user/${uuid}/jobposition`,
 }

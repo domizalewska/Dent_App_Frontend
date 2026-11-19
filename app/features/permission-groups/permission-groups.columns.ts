@@ -2,6 +2,7 @@ import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
 import { Pencil, Trash2, ShieldCheck } from 'lucide-vue-next'
 import { Button } from '~/components/ui/button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import type { PermissionGroupType } from '~/types'
 import BaseUserAvatar from '~/components/base/avatar/BaseUserAvatar.vue'
 
@@ -39,24 +40,40 @@ export function getPermissionGroupColumns(
         const users = row.original.users ?? []
         if (users.length === 0) return h('div', { class: 'text-sm text-muted-foreground' }, '—')
         const visible = users.slice(0, 4)
-        const rest = users.length - visible.length
+        const rest = users.slice(4)
         return h('div', { class: 'flex items-center' }, [
           ...visible.map((user, i) =>
-            h(BaseUserAvatar, {
-              user,
-              size: 'size-7',
-              class: i > 0 ? '-ml-2' : '',
-              style: { zIndex: visible.length - i },
-            }),
+            h(TooltipProvider, { delayDuration: 100 }, () =>
+              h(Tooltip, () => [
+                h(TooltipTrigger, { asChild: true }, () =>
+                  h(BaseUserAvatar, {
+                    user,
+                    size: 'size-7',
+                    class: i > 0 ? '-ml-2' : '',
+                    style: { zIndex: visible.length - i },
+                  }),
+                ),
+                h(TooltipContent, () => `${user.first_name} ${user.last_name}`),
+              ]),
+            ),
           ),
-          rest > 0
-            ? h(
-                'span',
-                {
-                  class:
-                    'size-7 -ml-2 rounded-full bg-muted border-2 border-background flex items-center justify-center text-xs text-muted-foreground font-medium',
-                },
-                `+${rest}`,
+          rest.length > 0
+            ? h(TooltipProvider, { delayDuration: 100 }, () =>
+                h(Tooltip, () => [
+                  h(TooltipTrigger, { asChild: true }, () =>
+                    h(
+                      'span',
+                      {
+                        class:
+                          'size-7 -ml-2 rounded-full bg-muted border-2 border-background flex items-center justify-center text-xs text-muted-foreground font-medium cursor-default',
+                      },
+                      `+${rest.length}`,
+                    ),
+                  ),
+                  h(TooltipContent, () =>
+                    rest.map((u) => `${u.first_name} ${u.last_name}`).join(', '),
+                  ),
+                ]),
               )
             : null,
         ])
